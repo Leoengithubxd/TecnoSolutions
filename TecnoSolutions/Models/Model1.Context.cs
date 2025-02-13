@@ -12,11 +12,13 @@ namespace TecnoSolutions.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
-    public partial class Entities : DbContext
+    public partial class Entities3 : DbContext
     {
-        public Entities()
-            : base("name=Entities")
+        public Entities3()
+            : base("name=Entities3")
         {
         }
     
@@ -25,7 +27,102 @@ namespace TecnoSolutions.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<PERSON> People { get; set; }
-        public virtual DbSet<ROLE> ROLEs { get; set; }
+        public virtual DbSet<PERSON> PERSON { get; set; }
+        public virtual DbSet<ROLE> ROLE { get; set; }
+    
+        public virtual int sp_UserRegister(string firstName, string lastName, string document, string phone, string address, string department, string city, string email, string password, ObjectParameter registered, ObjectParameter message)
+        {
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var documentParameter = document != null ?
+                new ObjectParameter("Document", document) :
+                new ObjectParameter("Document", typeof(string));
+    
+            var phoneParameter = phone != null ?
+                new ObjectParameter("Phone", phone) :
+                new ObjectParameter("Phone", typeof(string));
+    
+            var addressParameter = address != null ?
+                new ObjectParameter("Address", address) :
+                new ObjectParameter("Address", typeof(string));
+    
+            var departmentParameter = department != null ?
+                new ObjectParameter("Department", department) :
+                new ObjectParameter("Department", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UserRegister", firstNameParameter, lastNameParameter, documentParameter, phoneParameter, addressParameter, departmentParameter, cityParameter, emailParameter, passwordParameter, registered, message);
+        }
+    
+        public virtual int sp_UserRegistered(string firstName, string lastName, string document, string phone, string address, string department, string city, string email, string password, ObjectParameter registered, ObjectParameter message)
+        {
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var documentParameter = document != null ?
+                new ObjectParameter("Document", document) :
+                new ObjectParameter("Document", typeof(string));
+    
+            var phoneParameter = phone != null ?
+                new ObjectParameter("Phone", phone) :
+                new ObjectParameter("Phone", typeof(string));
+    
+            var addressParameter = address != null ?
+                new ObjectParameter("Address", address) :
+                new ObjectParameter("Address", typeof(string));
+    
+            var departmentParameter = department != null ?
+                new ObjectParameter("Department", department) :
+                new ObjectParameter("Department", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UserRegistered", firstNameParameter, lastNameParameter, documentParameter, phoneParameter, addressParameter, departmentParameter, cityParameter, emailParameter, passwordParameter, registered, message);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> sp_VerifyUser(string email, string password)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_VerifyUser", emailParameter, passwordParameter);
+        }
     }
 }

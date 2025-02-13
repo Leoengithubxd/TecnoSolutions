@@ -9,8 +9,8 @@
           <Key>
             <PropertyRef Name="Id_Person" />
           </Key>
-          <Property Name="Id_Person" Type="int" Nullable="false" />
-          <Property Name="Id_Role" Type="int" Nullable="false" />
+          <Property Name="Id_Person" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Role" Type="int" />
           <Property Name="FirtsName" Type="varchar" MaxLength="50" />
           <Property Name="LastName" Type="varchar" MaxLength="50" />
           <Property Name="DocumentNumber" Type="varchar" MaxLength="50" />
@@ -29,7 +29,7 @@
           <Property Name="NameRole" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_PERSON_ROLE">
-          <End Role="ROLE" Type="Self.ROLE" Multiplicity="1" />
+          <End Role="ROLE" Type="Self.ROLE" Multiplicity="0..1" />
           <End Role="PERSON" Type="Self.PERSON" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ROLE">
@@ -40,6 +40,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_UserRegister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="LastName" Type="varchar" Mode="In" />
+          <Parameter Name="Document" Type="varchar" Mode="In" />
+          <Parameter Name="Phone" Type="varchar" Mode="In" />
+          <Parameter Name="Address" Type="varchar" Mode="In" />
+          <Parameter Name="Department" Type="varchar" Mode="In" />
+          <Parameter Name="City" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Registered" Type="bit" Mode="InOut" />
+          <Parameter Name="Message" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_UserRegistered" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="LastName" Type="varchar" Mode="In" />
+          <Parameter Name="Document" Type="varchar" Mode="In" />
+          <Parameter Name="Phone" Type="varchar" Mode="In" />
+          <Parameter Name="Address" Type="varchar" Mode="In" />
+          <Parameter Name="Department" Type="varchar" Mode="In" />
+          <Parameter Name="City" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Registered" Type="bit" Mode="InOut" />
+          <Parameter Name="Message" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_VerifyUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="PERSON" EntityType="Self.PERSON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
@@ -57,8 +87,8 @@
           <Key>
             <PropertyRef Name="Id_Person" />
           </Key>
-          <Property Name="Id_Person" Type="Int32" Nullable="false" />
-          <Property Name="Id_Role" Type="Int32" Nullable="false" />
+          <Property Name="Id_Person" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Role" Type="Int32" />
           <Property Name="FirtsName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DocumentNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -76,10 +106,10 @@
           </Key>
           <Property Name="Id_Role" Type="Int32" Nullable="false" />
           <Property Name="NameRole" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="People" Relationship="Self.FK_PERSON_ROLE" FromRole="ROLE" ToRole="PERSON" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_PERSON_ROLE" FromRole="ROLE" ToRole="PERSON" />
         </EntityType>
         <Association Name="FK_PERSON_ROLE">
-          <End Role="ROLE" Type="Self.ROLE" Multiplicity="1" />
+          <End Role="ROLE" Type="Self.ROLE" Multiplicity="0..1" />
           <End Role="PERSON" Type="Self.PERSON" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ROLE">
@@ -90,21 +120,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="People" EntityType="Self.PERSON" />
-          <EntitySet Name="ROLEs" EntityType="Self.ROLE" />
+        <EntityContainer Name="Entities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PERSON" EntityType="Self.PERSON" />
+          <EntitySet Name="ROLE" EntityType="Self.ROLE" />
           <AssociationSet Name="FK_PERSON_ROLE" Association="Self.FK_PERSON_ROLE">
-            <End Role="ROLE" EntitySet="ROLEs" />
-            <End Role="PERSON" EntitySet="People" />
+            <End Role="ROLE" EntitySet="ROLE" />
+            <End Role="PERSON" EntitySet="PERSON" />
           </AssociationSet>
+          <FunctionImport Name="sp_UserRegister">
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="Document" Mode="In" Type="String" />
+            <Parameter Name="Phone" Mode="In" Type="String" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="Department" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Registered" Mode="InOut" Type="Boolean" />
+            <Parameter Name="Message" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UserRegistered">
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="Document" Mode="In" Type="String" />
+            <Parameter Name="Phone" Mode="In" Type="String" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="Department" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Registered" Mode="InOut" Type="Boolean" />
+            <Parameter Name="Message" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_VerifyUser" ReturnType="Collection(Int32)">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="People">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities3">
+          <EntitySetMapping Name="PERSON">
             <EntityTypeMapping TypeName="Model.PERSON">
               <MappingFragment StoreEntitySet="PERSON">
                 <ScalarProperty Name="Id_Person" ColumnName="Id_Person" />
@@ -121,7 +181,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ROLEs">
+          <EntitySetMapping Name="ROLE">
             <EntityTypeMapping TypeName="Model.ROLE">
               <MappingFragment StoreEntitySet="ROLE">
                 <ScalarProperty Name="Id_Role" ColumnName="Id_Role" />
@@ -129,6 +189,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_UserRegister" FunctionName="Model.Store.sp_UserRegister" />
+          <FunctionImportMapping FunctionImportName="sp_UserRegistered" FunctionName="Model.Store.sp_UserRegistered" />
+          <FunctionImportMapping FunctionImportName="sp_VerifyUser" FunctionName="Model.Store.sp_VerifyUser" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -143,7 +206,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7dac04ec3dfd43a88471b370f4af2927" Name="Diagram1">
+      <Diagram DiagramId="2cebb10e1ba842408bc558ece939af6b" Name="Diagram1">
         <EntityTypeShape EntityType="Model.PERSON" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.ROLE" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
         <AssociationConnector Association="Model.FK_PERSON_ROLE" ManuallyRouted="false" />

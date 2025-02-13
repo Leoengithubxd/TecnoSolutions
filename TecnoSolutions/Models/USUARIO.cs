@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace TecnoSolutions.Dtos
+namespace TecnoSolutions.Models
 {
-    public class UserDto
+    public class USUARIO
     {
         public int IdPerson { get; set; }
         public string FirstName { get; set; }
@@ -17,6 +17,6 @@ namespace TecnoSolutions.Dtos
         public string City { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string VerifyPassword { get; set; }
+        public string VerifyPassword { get; set; }  
     }
 }

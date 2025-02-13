@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+<head>
+    <link href="~/Content/Style/Login.css" rel="stylesheet"/>
+</head>
+<form action="@Url.Action("Login","User")" method="post">
+    <div class="input-group mb-3">
+        <div class="input-group-append">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+        </div>
+        <input type="text" name="Email" class="form-control input_user" value="" placeholder="Email">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-append">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+        </div>
+        <input type="password" name="Password" class="form-control input_user" value="" placeholder="Password">
+    </div>
+    <div class="d-flex justify-content-center mt-3 login_container">
+        <button type="submit" name="button" class="btn login_btn">Login</button>
+    </div>
+
+    <p class="signup-link">
+        No account?
+        <a href="@Url.Action("SignUp", "User")">Sign up</a>
+    </p>
+
+</form>
+
+

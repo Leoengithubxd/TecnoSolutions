@@ -15,7 +15,7 @@ namespace TecnoSolutions.Models
     public partial class PERSON
     {
         public int Id_Person { get; set; }
-        public int Id_Role { get; set; }
+        public Nullable<int> Id_Role { get; set; }
         public string FirtsName { get; set; }
         public string LastName { get; set; }
         public string DocumentNumber { get; set; }
