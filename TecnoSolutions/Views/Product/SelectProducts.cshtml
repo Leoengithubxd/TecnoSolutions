@@ -1,0 +1,98 @@
+﻿@model List<TechnoSolutions.Dtos.ProductSelectionDto>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seleccionar Productos - TechnoSolutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .table-container {
+            background: #e7f1ff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 28px;
+            color: #0d6efd;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            border-radius: 8px;
+        }
+
+            .btn-primary:hover {
+                background-color: #0b5ed7;
+            }
+
+        .logo-right {
+            border-radius: 15px;
+        }
+
+        .alert-danger {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="text-center mb-4">
+            <img src="~/Content/Image/logo.jpeg" width="150" height="150" class="logo-right" alt="Logo">
+            <h2 class="header-title mt-3">Seleccionar Productos</h2>
+        </div>
+
+        @if (TempData["Message"] != null)
+        {
+<div class="alert alert-danger text-center">
+    @TempData["Message"]
+</div>}
+
+        <div class="table-container">
+            @using (Html.BeginForm("SelectProducts", "Product", FormMethod.Post))
+            {
+<table class="table table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>Producto</th>
+            <th>Precio Unitario</th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+<tr>
+    <td>
+        @Html.HiddenFor(m => Model[i].IdProduct)
+        @Html.HiddenFor(m => Model[i].Name)
+        @Html.HiddenFor(m => Model[i].UnitPrice)
+        @Model[i].Name
+    </td>
+    <td>@Model[i].UnitPrice.ToString("C")</td>
+    <td>
+        @Html.TextBoxFor(m => Model[i].Quantity, new { type = "number", min = "0", @class = "form-control" })
+    </td>
+</tr>}
+    </tbody>
+</table>
+                <button type="submit" class="btn btn-primary w-100">Comprar</button>            }
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

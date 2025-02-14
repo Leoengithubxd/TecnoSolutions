@@ -160,8 +160,9 @@ namespace TecnoSolutions.Views.User
 
             if (user.IdPerson != 0)
             {
-                Session["User"] = user;
-                return RedirectToAction("Index", "Home");
+                Session["IdUser"] = user.IdPerson;
+
+                return RedirectToAction("SelectProducts","Product");
             }
             else
             {
