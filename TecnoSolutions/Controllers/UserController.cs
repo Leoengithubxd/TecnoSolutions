@@ -17,7 +17,7 @@ namespace TecnoSolutions.Views.User
     public class UserController : Controller
     {
 
-        static string cadena = "Data Source=LEO;Initial Catalog=Sprint 1 (Login);Integrated Security=true";
+        static string cadena = "Data Source=LAPTOP-NP7BDMFC ;Initial Catalog=TechnoSolutions ;Integrated Security=true";
 
         // GET: User
         public ActionResult Index()
@@ -28,7 +28,73 @@ namespace TecnoSolutions.Views.User
         {
             return View();
         }
-        public ActionResult SignUp()
+        public ActionResult SignUpEmployees()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        
+            public ActionResult SignUpEmployees(UserDto user)
+            {
+                bool registered;
+                string message;
+
+                if (user.Password == user.VerifyPassword)
+                {
+                    user.Password = ConvertirSha256(user.Password);
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "The passwords must be the same. Try again.";
+                    return View();
+                }
+
+              
+
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_UserRegisteredEmployees", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@IdRole", user.IdRole);
+                    cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", user.LastName);
+                    cmd.Parameters.AddWithValue("@Document", user.Document);
+                    cmd.Parameters.AddWithValue("@Phone", user.Phone);
+                    cmd.Parameters.AddWithValue("@Address", user.Address);
+                    cmd.Parameters.AddWithValue("@Department", user.Department);
+                    cmd.Parameters.AddWithValue("@City", user.City);
+                    cmd.Parameters.AddWithValue("@Email", user.Email);
+                    cmd.Parameters.AddWithValue("@Password", user.Password);
+                    cmd.Parameters.AddWithValue("@Arl", user.Arl);
+                    cmd.Parameters.AddWithValue("@Eps", user.Eps);
+                    
+                    cmd.Parameters.AddWithValue("@Position", user.Position);
+
+                    SqlParameter outputRegistered = new SqlParameter("@Registered", SqlDbType.Bit) { Direction = ParameterDirection.Output };
+                    SqlParameter outputMessage = new SqlParameter("@Message", SqlDbType.VarChar, 100) { Direction = ParameterDirection.Output };
+
+                    cmd.Parameters.Add(outputRegistered);
+                    cmd.Parameters.Add(outputMessage);
+
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    registered = Convert.ToBoolean(outputRegistered.Value);
+                    message = outputMessage.Value.ToString();
+                }
+
+                ViewData["Message"] = message;
+
+                if (registered)
+                {
+                    return RedirectToAction("Login", "User");
+                }
+
+                return View();
+            }
+            public ActionResult SignUp()
         {
             return View();
         }
@@ -45,11 +111,12 @@ namespace TecnoSolutions.Views.User
                 ViewData["Mensaje"] = "The passwords must be the same. Try again.";
                 return View();
             }
-
+            int IdRol = 1;
             using (SqlConnection cn = new SqlConnection(cadena))
             {
-                SqlCommand cmd = new SqlCommand("sp_UserRegister", cn);
+                SqlCommand cmd = new SqlCommand("sp_UserRegistered", cn);
                 cmd.Parameters.AddWithValue("FirstName", user.FirstName);
+                cmd.Parameters.AddWithValue("IdRol", IdRol);
                 cmd.Parameters.AddWithValue("LastName", user.LastName);
                 cmd.Parameters.AddWithValue("Document", user.Document);
                 cmd.Parameters.AddWithValue("Phone", user.Phone);

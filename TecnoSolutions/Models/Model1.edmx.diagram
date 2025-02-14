@@ -4,10 +4,28 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2cebb10e1ba842408bc558ece939af6b" Name="Diagram1">
-        <EntityTypeShape EntityType="Model.PERSON" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.ROLE" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
-        <AssociationConnector Association="Model.FK_PERSON_ROLE" ManuallyRouted="false" />
+      <Diagram DiagramId="6d2356cdf3394bd8b3f6e7bd235bbc19" Name="Diagram1">
+        <EntityTypeShape EntityType="TechnoSolutionsModel.CREW" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.CREW_PERSON" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.PERSON" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.PRODUCT" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.PRODUCT_PERSON" Width="1.5" PointX="8.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.QUOTE" Width="1.5" PointX="5.25" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.QUOTE_PRODUCT" Width="1.5" PointX="7.5" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.ROLE" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.SERVICE" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.STATE" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnoSolutionsModel.sysdiagram" Width="1.5" PointX="7.75" PointY="9.25" IsExpanded="true" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_CREW_PERSON_CREW" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_CREW_PERSON_PERSON" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_PERSON_ROLE" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_PERSON_SERVICE" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_PRODUCT_PERSON_PERSON" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_QUOTE_PERSON" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_PRODUCT_PERSON_PRODUCT" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_QUOTE_PRODUCT_PRODUCT" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_QUOTE_PRODUCT_QUOTE" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnoSolutionsModel.FK_QUOTE_STATE" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

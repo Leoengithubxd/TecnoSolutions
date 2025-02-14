@@ -12,18 +12,15 @@ namespace TecnoSolutions.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ROLE
+    public partial class QUOTE_PRODUCT
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ROLE()
-        {
-            this.People = new HashSet<PERSON>();
-        }
+        public int IdQuoteProduct { get; set; }
+        public Nullable<int> IdProduct { get; set; }
+        public Nullable<int> IdQuote { get; set; }
+        public Nullable<double> TotalPriceProduct { get; set; }
+        public Nullable<double> TotalPrice { get; set; }
     
-        public int Id_Role { get; set; }
-        public string NameRole { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERSON> People { get; set; }
+        public virtual PRODUCT PRODUCT { get; set; }
+        public virtual QUOTE QUOTE { get; set; }
     }
 }

@@ -12,18 +12,18 @@ namespace TecnoSolutions.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ROLE
+    public partial class CREW
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ROLE()
+        public CREW()
         {
-            this.People = new HashSet<PERSON>();
+            this.CREW_PERSON = new HashSet<CREW_PERSON>();
         }
     
-        public int Id_Role { get; set; }
-        public string NameRole { get; set; }
+        public int IdCrew { get; set; }
+        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERSON> People { get; set; }
+        public virtual ICollection<CREW_PERSON> CREW_PERSON { get; set; }
     }
 }

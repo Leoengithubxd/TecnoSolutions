@@ -15,10 +15,10 @@ namespace TecnoSolutions.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class Entities3 : DbContext
+    public partial class TechnoSolutionsEntities10 : DbContext
     {
-        public Entities3()
-            : base("name=Entities3")
+        public TechnoSolutionsEntities10()
+            : base("name=TechnoSolutionsEntities10")
         {
         }
     
@@ -27,51 +27,122 @@ namespace TecnoSolutions.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<PERSON> PERSON { get; set; }
-        public virtual DbSet<ROLE> ROLE { get; set; }
+        public virtual DbSet<CREW> CREWs { get; set; }
+        public virtual DbSet<CREW_PERSON> CREW_PERSON { get; set; }
+        public virtual DbSet<PERSON> People { get; set; }
+        public virtual DbSet<PRODUCT> PRODUCTs { get; set; }
+        public virtual DbSet<PRODUCT_PERSON> PRODUCT_PERSON { get; set; }
+        public virtual DbSet<QUOTE> QUOTEs { get; set; }
+        public virtual DbSet<QUOTE_PRODUCT> QUOTE_PRODUCT { get; set; }
+        public virtual DbSet<ROLE> ROLEs { get; set; }
+        public virtual DbSet<SERVICE> SERVICEs { get; set; }
+        public virtual DbSet<STATE> STATEs { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     
-        public virtual int sp_UserRegister(string firstName, string lastName, string document, string phone, string address, string department, string city, string email, string password, ObjectParameter registered, ObjectParameter message)
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
-            var firstNameParameter = firstName != null ?
-                new ObjectParameter("FirstName", firstName) :
-                new ObjectParameter("FirstName", typeof(string));
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
     
-            var lastNameParameter = lastName != null ?
-                new ObjectParameter("LastName", lastName) :
-                new ObjectParameter("LastName", typeof(string));
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
     
-            var documentParameter = document != null ?
-                new ObjectParameter("Document", document) :
-                new ObjectParameter("Document", typeof(string));
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
     
-            var phoneParameter = phone != null ?
-                new ObjectParameter("Phone", phone) :
-                new ObjectParameter("Phone", typeof(string));
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
     
-            var addressParameter = address != null ?
-                new ObjectParameter("Address", address) :
-                new ObjectParameter("Address", typeof(string));
-    
-            var departmentParameter = department != null ?
-                new ObjectParameter("Department", department) :
-                new ObjectParameter("Department", typeof(string));
-    
-            var cityParameter = city != null ?
-                new ObjectParameter("City", city) :
-                new ObjectParameter("City", typeof(string));
-    
-            var emailParameter = email != null ?
-                new ObjectParameter("Email", email) :
-                new ObjectParameter("Email", typeof(string));
-    
-            var passwordParameter = password != null ?
-                new ObjectParameter("Password", password) :
-                new ObjectParameter("Password", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UserRegister", firstNameParameter, lastNameParameter, documentParameter, phoneParameter, addressParameter, departmentParameter, cityParameter, emailParameter, passwordParameter, registered, message);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
         }
     
-        public virtual int sp_UserRegistered(string firstName, string lastName, string document, string phone, string address, string department, string city, string email, string password, ObjectParameter registered, ObjectParameter message)
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        public virtual int sp_UserRegistered(string firstName, string lastName, string document, string phone, string address, string department, string city, string email, string password, ObjectParameter registered, ObjectParameter message, Nullable<int> idRol)
         {
             var firstNameParameter = firstName != null ?
                 new ObjectParameter("FirstName", firstName) :
@@ -109,7 +180,68 @@ namespace TecnoSolutions.Models
                 new ObjectParameter("Password", password) :
                 new ObjectParameter("Password", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UserRegistered", firstNameParameter, lastNameParameter, documentParameter, phoneParameter, addressParameter, departmentParameter, cityParameter, emailParameter, passwordParameter, registered, message);
+            var idRolParameter = idRol.HasValue ?
+                new ObjectParameter("IdRol", idRol) :
+                new ObjectParameter("IdRol", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UserRegistered", firstNameParameter, lastNameParameter, documentParameter, phoneParameter, addressParameter, departmentParameter, cityParameter, emailParameter, passwordParameter, registered, message, idRolParameter);
+        }
+    
+        public virtual int sp_UserRegisteredEmployees(Nullable<int> idRole, string firstName, string lastName, string document, string phone, string address, string department, string city, string email, string password, string arl, string eps, string position, ObjectParameter registered, ObjectParameter message)
+        {
+            var idRoleParameter = idRole.HasValue ?
+                new ObjectParameter("IdRole", idRole) :
+                new ObjectParameter("IdRole", typeof(int));
+    
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var documentParameter = document != null ?
+                new ObjectParameter("Document", document) :
+                new ObjectParameter("Document", typeof(string));
+    
+            var phoneParameter = phone != null ?
+                new ObjectParameter("Phone", phone) :
+                new ObjectParameter("Phone", typeof(string));
+    
+            var addressParameter = address != null ?
+                new ObjectParameter("Address", address) :
+                new ObjectParameter("Address", typeof(string));
+    
+            var departmentParameter = department != null ?
+                new ObjectParameter("Department", department) :
+                new ObjectParameter("Department", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            var arlParameter = arl != null ?
+                new ObjectParameter("Arl", arl) :
+                new ObjectParameter("Arl", typeof(string));
+    
+            var epsParameter = eps != null ?
+                new ObjectParameter("Eps", eps) :
+                new ObjectParameter("Eps", typeof(string));
+    
+            var positionParameter = position != null ?
+                new ObjectParameter("Position", position) :
+                new ObjectParameter("Position", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UserRegisteredEmployees", idRoleParameter, firstNameParameter, lastNameParameter, documentParameter, phoneParameter, addressParameter, departmentParameter, cityParameter, emailParameter, passwordParameter, arlParameter, epsParameter, positionParameter, registered, message);
         }
     
         public virtual ObjectResult<Nullable<int>> sp_VerifyUser(string email, string password)

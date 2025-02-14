@@ -12,18 +12,23 @@ namespace TecnoSolutions.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ROLE
+    public partial class PRODUCT
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ROLE()
+        public PRODUCT()
         {
-            this.People = new HashSet<PERSON>();
+            this.PRODUCT_PERSON = new HashSet<PRODUCT_PERSON>();
+            this.QUOTE_PRODUCT = new HashSet<QUOTE_PRODUCT>();
         }
     
-        public int Id_Role { get; set; }
-        public string NameRole { get; set; }
+        public int IdProduct { get; set; }
+        public string Name { get; set; }
+        public Nullable<double> Stock { get; set; }
+        public Nullable<double> UnitPrice { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERSON> People { get; set; }
+        public virtual ICollection<PRODUCT_PERSON> PRODUCT_PERSON { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QUOTE_PRODUCT> QUOTE_PRODUCT { get; set; }
     }
 }
