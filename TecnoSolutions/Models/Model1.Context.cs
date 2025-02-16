@@ -15,10 +15,10 @@ namespace TecnoSolutions.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class Entities7 : DbContext
+    public partial class BD_14_02Entities : DbContext
     {
-        public Entities7()
-            : base("name=Entities7")
+        public BD_14_02Entities()
+            : base("name=BD_14_02Entities")
         {
         }
     
@@ -27,16 +27,16 @@ namespace TecnoSolutions.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<CREW> CREWs { get; set; }
+        public virtual DbSet<CREW> CREW { get; set; }
         public virtual DbSet<CREW_PERSON> CREW_PERSON { get; set; }
-        public virtual DbSet<PERSON> People { get; set; }
-        public virtual DbSet<PRODUCT> PRODUCTs { get; set; }
+        public virtual DbSet<PERSON> PERSON { get; set; }
+        public virtual DbSet<PRODUCT> PRODUCT { get; set; }
         public virtual DbSet<PRODUCT_PERSON> PRODUCT_PERSON { get; set; }
-        public virtual DbSet<QUOTE> QUOTEs { get; set; }
+        public virtual DbSet<QUOTE> QUOTE { get; set; }
         public virtual DbSet<QUOTE_PRODUCT> QUOTE_PRODUCT { get; set; }
-        public virtual DbSet<ROLE> ROLEs { get; set; }
-        public virtual DbSet<SERVICE> SERVICEs { get; set; }
-        public virtual DbSet<STATE> STATEs { get; set; }
+        public virtual DbSet<ROLE> ROLE { get; set; }
+        public virtual DbSet<SERVICE> SERVICE { get; set; }
+        public virtual DbSet<STATE> STATE { get; set; }
     
         public virtual int sp_UserRegistered(string firstName, string lastName, string document, string phone, string address, string department, string city, string email, string password, ObjectParameter registered, ObjectParameter message, Nullable<int> idRol)
         {

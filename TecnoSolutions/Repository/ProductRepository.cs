@@ -11,9 +11,9 @@ namespace TechnoSolutions.Repositories
       
             public List<ProductSelectionDto> GetAllProducts()
             {
-                using (var db = new Entities7())
+                using (var db = new BD_14_02Entities())
                 {
-                    var products = db.PRODUCTs
+                    var products = db.PRODUCT
                         .Select(p => new
                         {
                             p.IdProduct,
@@ -40,7 +40,7 @@ namespace TechnoSolutions.Repositories
     {
         public void SaveSelectedProducts(int userId, List<ProductSelectionDto> selectedProducts)
         {
-            using (var db = new Entities7())
+            using (var db = new BD_14_02Entities())
             {
                 foreach (var product in selectedProducts)
                 {
