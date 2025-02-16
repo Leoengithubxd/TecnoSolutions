@@ -17,7 +17,10 @@ namespace TechnoSolutions.Controllers
             _productRepository = new ProductRepository();
             _productPersonRepository = new ProductPersonRepository();
         }
-
+        public ActionResult AddProducts()
+        {
+            return View();
+        }
         public ActionResult SelectProducts()
         {
             var products = _productRepository.GetAllProducts();
@@ -44,7 +47,7 @@ namespace TechnoSolutions.Controllers
 
             _productPersonRepository.SaveSelectedProducts(userId, productsToSave);
 
-            return RedirectToAction("PurchaseConfirmation");
+            return RedirectToAction("purchaseConfirmation");
         }
     }
 }

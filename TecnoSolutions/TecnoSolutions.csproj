@@ -210,7 +210,15 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Image\entrega-de-pedidos.png" />
+    <Content Include="Content\Image\financial-plan_8733607.png" />
+    <Content Include="Content\Image\informatica.png" />
+    <Content Include="Content\Image\it-systems_10365705 %281%29.png" />
+    <Content Include="Content\Image\listas-de-control %281%29.png" />
+    <Content Include="Content\Image\listas-de-control.png" />
     <Content Include="Content\Image\logo.jpeg" />
+    <Content Include="Content\Image\people_3239045.png" />
+    <Content Include="Content\Image\proveedor.png" />
     <Content Include="Content\Style\Login.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -268,6 +276,13 @@
     <Content Include="Views\User\SignUpEmployees.cshtml" />
     <Content Include="Views\Product\PurchaseConfirmation.cshtml" />
     <Content Include="Views\Product\SelectProducts.cshtml" />
+    <Content Include="Views\User\AdminHome.cshtml" />
+    <Content Include="Views\Product\AddProducts.cshtml" />
+    <Content Include="Views\Shared\_LayoutAsistente.cshtml" />
+    <Content Include="Views\User\AssistantHome.cshtml" />
+    <Content Include="Views\Shared\_LayoutCliente.cshtml" />
+    <Content Include="Views\User\Home.cshtml" />
+    <Content Include="Views\User\OrderManagement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
