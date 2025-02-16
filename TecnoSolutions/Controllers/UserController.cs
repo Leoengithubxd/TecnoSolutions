@@ -17,7 +17,7 @@ namespace TecnoSolutions.Views.User
     public class UserController : Controller
     {
 
-        static string cadena = "Data Source=LAPTOP-NP7BDMFC ;Initial Catalog=TechnoSolutions ;Integrated Security=true";
+        static string cadena = "Data Source=DESKTOP-9POBJOB ;Initial Catalog=BD 14_02.bacpac ;Integrated Security=true";
 
         // GET: User
         public ActionResult Index()
