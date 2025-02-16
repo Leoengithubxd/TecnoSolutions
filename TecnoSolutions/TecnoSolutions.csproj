@@ -135,8 +135,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AnalistController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ProductSelectionDto.cs" />
     <Compile Include="Dtos\EmployeesDto.cs" />
     <Compile Include="Global.asax.cs">
@@ -268,9 +270,12 @@
     <Content Include="Views\User\SignUpEmployees.cshtml" />
     <Content Include="Views\Product\PurchaseConfirmation.cshtml" />
     <Content Include="Views\Product\SelectProducts.cshtml" />
+    <Content Include="Views\Product\AnalistCrud.cshtml" />
+    <Content Include="Views\Product\DeleteCrud.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Analist\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
