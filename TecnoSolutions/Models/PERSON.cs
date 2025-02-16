@@ -14,18 +14,38 @@ namespace TecnoSolutions.Models
     
     public partial class PERSON
     {
-        public int Id_Person { get; set; }
-        public int Id_Role { get; set; }
-        public string FirtsName { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PERSON()
+        {
+            this.CREW_PERSON = new HashSet<CREW_PERSON>();
+            this.PRODUCT_PERSON = new HashSet<PRODUCT_PERSON>();
+            this.QUOTE = new HashSet<QUOTE>();
+        }
+    
+        public int IdPerson { get; set; }
+        public Nullable<int> IdRole { get; set; }
+        public Nullable<int> IdService { get; set; }
+        public Nullable<int> IdCrew { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string DocumentNumber { get; set; }
+        public string Document { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
         public string Department { get; set; }
         public string City { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string Arl { get; set; }
+        public string Eps { get; set; }
+        public string Position { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CREW_PERSON> CREW_PERSON { get; set; }
         public virtual ROLE ROLE { get; set; }
+        public virtual SERVICE SERVICE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PRODUCT_PERSON> PRODUCT_PERSON { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QUOTE> QUOTE { get; set; }
     }
 }

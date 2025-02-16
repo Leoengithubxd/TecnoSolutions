@@ -5,47 +5,313 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CREW">
+          <Key>
+            <PropertyRef Name="IdCrew" />
+          </Key>
+          <Property Name="IdCrew" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CREW_PERSON">
+          <Key>
+            <PropertyRef Name="IdCrewPerson" />
+          </Key>
+          <Property Name="IdCrewPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPerson" Type="int" />
+          <Property Name="IdCrew" Type="int" />
+        </EntityType>
         <EntityType Name="PERSON">
           <Key>
-            <PropertyRef Name="Id_Person" />
+            <PropertyRef Name="IdPerson" />
           </Key>
-          <Property Name="Id_Person" Type="int" Nullable="false" />
-          <Property Name="Id_Role" Type="int" Nullable="false" />
-          <Property Name="FirtsName" Type="varchar" MaxLength="50" />
-          <Property Name="LastName" Type="varchar" MaxLength="50" />
-          <Property Name="DocumentNumber" Type="varchar" MaxLength="50" />
+          <Property Name="IdPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRole" Type="int" />
+          <Property Name="IdService" Type="int" />
+          <Property Name="IdCrew" Type="int" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Document" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Phone" Type="varchar" MaxLength="50" />
           <Property Name="Address" Type="varchar" MaxLength="100" />
           <Property Name="Department" Type="varchar" MaxLength="50" />
           <Property Name="City" Type="varchar" MaxLength="50" />
           <Property Name="Email" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Arl" Type="varchar" MaxLength="50" />
+          <Property Name="Eps" Type="varchar" MaxLength="50" />
+          <Property Name="Position" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="IdProduct" />
+          </Key>
+          <Property Name="IdProduct" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="Stock" Type="float" />
+          <Property Name="UnitPrice" Type="float" />
+        </EntityType>
+        <EntityType Name="PRODUCT_PERSON">
+          <Key>
+            <PropertyRef Name="IdProductPerson" />
+          </Key>
+          <Property Name="IdProductPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPerson" Type="int" />
+          <Property Name="IdProduct" Type="int" />
+          <Property Name="Stock" Type="float" />
+          <Property Name="UnitPrice" Type="float" />
+          <Property Name="TotalPriceProduct" Type="float" />
+          <Property Name="TotalPrice" Type="float" />
+        </EntityType>
+        <EntityType Name="QUOTE">
+          <Key>
+            <PropertyRef Name="IdQuote" />
+          </Key>
+          <Property Name="IdQuote" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPerson" Type="int" />
+          <Property Name="IdState" Type="int" />
+          <Property Name="IdCrewPerson" Type="int" Nullable="false" />
+          <Property Name="ServiceAddress" Type="varchar" MaxLength="100" />
+          <Property Name="ServiceDepartment" Type="varchar" MaxLength="50" />
+          <Property Name="ServiceCity" Type="varchar" MaxLength="50" />
+          <Property Name="StarDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QUOTE_PRODUCT">
+          <Key>
+            <PropertyRef Name="IdQuoteProduct" />
+          </Key>
+          <Property Name="IdQuoteProduct" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdProduct" Type="int" />
+          <Property Name="IdQuote" Type="int" />
+          <Property Name="TotalPriceProduct" Type="float" />
+          <Property Name="TotalPrice" Type="float" />
         </EntityType>
         <EntityType Name="ROLE">
           <Key>
             <PropertyRef Name="Id_Role" />
           </Key>
-          <Property Name="Id_Role" Type="int" Nullable="false" />
+          <Property Name="Id_Role" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NameRole" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="SERVICE">
+          <Key>
+            <PropertyRef Name="IdService" />
+          </Key>
+          <Property Name="IdService" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="STATE">
+          <Key>
+            <PropertyRef Name="IdState" />
+          </Key>
+          <Property Name="IdState" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_CREW_PERSON_CREW">
+          <End Role="CREW" Type="Self.CREW" Multiplicity="0..1" />
+          <End Role="CREW_PERSON" Type="Self.CREW_PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CREW">
+              <PropertyRef Name="IdCrew" />
+            </Principal>
+            <Dependent Role="CREW_PERSON">
+              <PropertyRef Name="IdCrew" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CREW_PERSON_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="CREW_PERSON" Type="Self.CREW_PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="CREW_PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PERSON_ROLE">
-          <End Role="ROLE" Type="Self.ROLE" Multiplicity="1" />
+          <End Role="ROLE" Type="Self.ROLE" Multiplicity="0..1" />
           <End Role="PERSON" Type="Self.PERSON" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ROLE">
               <PropertyRef Name="Id_Role" />
             </Principal>
             <Dependent Role="PERSON">
-              <PropertyRef Name="Id_Role" />
+              <PropertyRef Name="IdRole" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PERSON_SERVICE">
+          <End Role="SERVICE" Type="Self.SERVICE" Multiplicity="0..1" />
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="IdService" />
+            </Principal>
+            <Dependent Role="PERSON">
+              <PropertyRef Name="IdService" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_PERSON_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="PRODUCT_PERSON" Type="Self.PRODUCT_PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="PRODUCT_PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_PERSON_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="0..1" />
+          <End Role="PRODUCT_PERSON" Type="Self.PRODUCT_PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="PRODUCT_PERSON">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="QUOTE">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_PRODUCT_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="0..1" />
+          <End Role="QUOTE_PRODUCT" Type="Self.QUOTE_PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="QUOTE_PRODUCT">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_PRODUCT_QUOTE">
+          <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="0..1" />
+          <End Role="QUOTE_PRODUCT" Type="Self.QUOTE_PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUOTE">
+              <PropertyRef Name="IdQuote" />
+            </Principal>
+            <Dependent Role="QUOTE_PRODUCT">
+              <PropertyRef Name="IdQuote" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_STATE">
+          <End Role="STATE" Type="Self.STATE" Multiplicity="0..1" />
+          <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATE">
+              <PropertyRef Name="IdState" />
+            </Principal>
+            <Dependent Role="QUOTE">
+              <PropertyRef Name="IdState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_UserRegistered" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="LastName" Type="varchar" Mode="In" />
+          <Parameter Name="Document" Type="varchar" Mode="In" />
+          <Parameter Name="Phone" Type="varchar" Mode="In" />
+          <Parameter Name="Address" Type="varchar" Mode="In" />
+          <Parameter Name="Department" Type="varchar" Mode="In" />
+          <Parameter Name="City" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Registered" Type="bit" Mode="InOut" />
+          <Parameter Name="Message" Type="varchar" Mode="InOut" />
+          <Parameter Name="IdRol" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_UserRegisteredEmployees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdRole" Type="int" Mode="In" />
+          <Parameter Name="FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="LastName" Type="varchar" Mode="In" />
+          <Parameter Name="Document" Type="varchar" Mode="In" />
+          <Parameter Name="Phone" Type="varchar" Mode="In" />
+          <Parameter Name="Address" Type="varchar" Mode="In" />
+          <Parameter Name="Department" Type="varchar" Mode="In" />
+          <Parameter Name="City" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Arl" Type="varchar" Mode="In" />
+          <Parameter Name="Eps" Type="varchar" Mode="In" />
+          <Parameter Name="Position" Type="varchar" Mode="In" />
+          <Parameter Name="Registered" Type="bit" Mode="InOut" />
+          <Parameter Name="Message" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_VerifyUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="CREW" EntityType="Self.CREW" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CREW_PERSON" EntityType="Self.CREW_PERSON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERSON" EntityType="Self.PERSON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT" EntityType="Self.PRODUCT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_PERSON" EntityType="Self.PRODUCT_PERSON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QUOTE" EntityType="Self.QUOTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QUOTE_PRODUCT" EntityType="Self.QUOTE_PRODUCT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SERVICE" EntityType="Self.SERVICE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STATE" EntityType="Self.STATE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CREW_PERSON_CREW" Association="Self.FK_CREW_PERSON_CREW">
+            <End Role="CREW" EntitySet="CREW" />
+            <End Role="CREW_PERSON" EntitySet="CREW_PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CREW_PERSON_PERSON" Association="Self.FK_CREW_PERSON_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="CREW_PERSON" EntitySet="CREW_PERSON" />
+          </AssociationSet>
           <AssociationSet Name="FK_PERSON_ROLE" Association="Self.FK_PERSON_ROLE">
             <End Role="ROLE" EntitySet="ROLE" />
             <End Role="PERSON" EntitySet="PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSON_SERVICE" Association="Self.FK_PERSON_SERVICE">
+            <End Role="SERVICE" EntitySet="SERVICE" />
+            <End Role="PERSON" EntitySet="PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_PERSON_PERSON" Association="Self.FK_PRODUCT_PERSON_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="PRODUCT_PERSON" EntitySet="PRODUCT_PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_PERSON_PRODUCT" Association="Self.FK_PRODUCT_PERSON_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="PRODUCT_PERSON" EntitySet="PRODUCT_PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_PERSON" Association="Self.FK_QUOTE_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="QUOTE" EntitySet="QUOTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_PRODUCT_PRODUCT" Association="Self.FK_QUOTE_PRODUCT_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="QUOTE_PRODUCT" EntitySet="QUOTE_PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_PRODUCT_QUOTE" Association="Self.FK_QUOTE_PRODUCT_QUOTE">
+            <End Role="QUOTE" EntitySet="QUOTE" />
+            <End Role="QUOTE_PRODUCT" EntitySet="QUOTE_PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_STATE" Association="Self.FK_QUOTE_STATE">
+            <End Role="STATE" EntitySet="STATE" />
+            <End Role="QUOTE" EntitySet="QUOTE" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -53,75 +319,430 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CREW">
+          <Key>
+            <PropertyRef Name="IdCrew" />
+          </Key>
+          <Property Name="IdCrew" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CREW_PERSON" Relationship="Self.FK_CREW_PERSON_CREW" FromRole="CREW" ToRole="CREW_PERSON" />
+        </EntityType>
+        <EntityType Name="CREW_PERSON">
+          <Key>
+            <PropertyRef Name="IdCrewPerson" />
+          </Key>
+          <Property Name="IdCrewPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPerson" Type="Int32" />
+          <Property Name="IdCrew" Type="Int32" />
+          <NavigationProperty Name="CREW" Relationship="Self.FK_CREW_PERSON_CREW" FromRole="CREW_PERSON" ToRole="CREW" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_CREW_PERSON_PERSON" FromRole="CREW_PERSON" ToRole="PERSON" />
+        </EntityType>
         <EntityType Name="PERSON">
           <Key>
-            <PropertyRef Name="Id_Person" />
+            <PropertyRef Name="IdPerson" />
           </Key>
-          <Property Name="Id_Person" Type="Int32" Nullable="false" />
-          <Property Name="Id_Role" Type="Int32" Nullable="false" />
-          <Property Name="FirtsName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DocumentNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRole" Type="Int32" />
+          <Property Name="IdService" Type="Int32" />
+          <Property Name="IdCrew" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Document" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Arl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Eps" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CREW_PERSON" Relationship="Self.FK_CREW_PERSON_PERSON" FromRole="PERSON" ToRole="CREW_PERSON" />
           <NavigationProperty Name="ROLE" Relationship="Self.FK_PERSON_ROLE" FromRole="PERSON" ToRole="ROLE" />
+          <NavigationProperty Name="SERVICE" Relationship="Self.FK_PERSON_SERVICE" FromRole="PERSON" ToRole="SERVICE" />
+          <NavigationProperty Name="PRODUCT_PERSON" Relationship="Self.FK_PRODUCT_PERSON_PERSON" FromRole="PERSON" ToRole="PRODUCT_PERSON" />
+          <NavigationProperty Name="QUOTE" Relationship="Self.FK_QUOTE_PERSON" FromRole="PERSON" ToRole="QUOTE" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="IdProduct" />
+          </Key>
+          <Property Name="IdProduct" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Stock" Type="Double" />
+          <Property Name="UnitPrice" Type="Double" />
+          <NavigationProperty Name="PRODUCT_PERSON" Relationship="Self.FK_PRODUCT_PERSON_PRODUCT" FromRole="PRODUCT" ToRole="PRODUCT_PERSON" />
+          <NavigationProperty Name="QUOTE_PRODUCT" Relationship="Self.FK_QUOTE_PRODUCT_PRODUCT" FromRole="PRODUCT" ToRole="QUOTE_PRODUCT" />
+        </EntityType>
+        <EntityType Name="PRODUCT_PERSON">
+          <Key>
+            <PropertyRef Name="IdProductPerson" />
+          </Key>
+          <Property Name="IdProductPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPerson" Type="Int32" />
+          <Property Name="IdProduct" Type="Int32" />
+          <Property Name="Stock" Type="Double" />
+          <Property Name="UnitPrice" Type="Double" />
+          <Property Name="TotalPriceProduct" Type="Double" />
+          <Property Name="TotalPrice" Type="Double" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_PRODUCT_PERSON_PERSON" FromRole="PRODUCT_PERSON" ToRole="PERSON" />
+          <NavigationProperty Name="PRODUCT" Relationship="Self.FK_PRODUCT_PERSON_PRODUCT" FromRole="PRODUCT_PERSON" ToRole="PRODUCT" />
+        </EntityType>
+        <EntityType Name="QUOTE">
+          <Key>
+            <PropertyRef Name="IdQuote" />
+          </Key>
+          <Property Name="IdQuote" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPerson" Type="Int32" />
+          <Property Name="IdState" Type="Int32" />
+          <Property Name="IdCrewPerson" Type="Int32" Nullable="false" />
+          <Property Name="ServiceAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceDepartment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StarDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_QUOTE_PERSON" FromRole="QUOTE" ToRole="PERSON" />
+          <NavigationProperty Name="QUOTE_PRODUCT" Relationship="Self.FK_QUOTE_PRODUCT_QUOTE" FromRole="QUOTE" ToRole="QUOTE_PRODUCT" />
+          <NavigationProperty Name="STATE" Relationship="Self.FK_QUOTE_STATE" FromRole="QUOTE" ToRole="STATE" />
+        </EntityType>
+        <EntityType Name="QUOTE_PRODUCT">
+          <Key>
+            <PropertyRef Name="IdQuoteProduct" />
+          </Key>
+          <Property Name="IdQuoteProduct" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdProduct" Type="Int32" />
+          <Property Name="IdQuote" Type="Int32" />
+          <Property Name="TotalPriceProduct" Type="Double" />
+          <Property Name="TotalPrice" Type="Double" />
+          <NavigationProperty Name="PRODUCT" Relationship="Self.FK_QUOTE_PRODUCT_PRODUCT" FromRole="QUOTE_PRODUCT" ToRole="PRODUCT" />
+          <NavigationProperty Name="QUOTE" Relationship="Self.FK_QUOTE_PRODUCT_QUOTE" FromRole="QUOTE_PRODUCT" ToRole="QUOTE" />
         </EntityType>
         <EntityType Name="ROLE">
           <Key>
             <PropertyRef Name="Id_Role" />
           </Key>
-          <Property Name="Id_Role" Type="Int32" Nullable="false" />
+          <Property Name="Id_Role" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameRole" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="People" Relationship="Self.FK_PERSON_ROLE" FromRole="ROLE" ToRole="PERSON" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_PERSON_ROLE" FromRole="ROLE" ToRole="PERSON" />
         </EntityType>
+        <EntityType Name="SERVICE">
+          <Key>
+            <PropertyRef Name="IdService" />
+          </Key>
+          <Property Name="IdService" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_PERSON_SERVICE" FromRole="SERVICE" ToRole="PERSON" />
+        </EntityType>
+        <EntityType Name="STATE">
+          <Key>
+            <PropertyRef Name="IdState" />
+          </Key>
+          <Property Name="IdState" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="QUOTE" Relationship="Self.FK_QUOTE_STATE" FromRole="STATE" ToRole="QUOTE" />
+        </EntityType>
+        <Association Name="FK_CREW_PERSON_CREW">
+          <End Role="CREW" Type="Self.CREW" Multiplicity="0..1" />
+          <End Role="CREW_PERSON" Type="Self.CREW_PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CREW">
+              <PropertyRef Name="IdCrew" />
+            </Principal>
+            <Dependent Role="CREW_PERSON">
+              <PropertyRef Name="IdCrew" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CREW_PERSON_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="CREW_PERSON" Type="Self.CREW_PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="CREW_PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PERSON_ROLE">
-          <End Role="ROLE" Type="Self.ROLE" Multiplicity="1" />
+          <End Role="ROLE" Type="Self.ROLE" Multiplicity="0..1" />
           <End Role="PERSON" Type="Self.PERSON" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ROLE">
               <PropertyRef Name="Id_Role" />
             </Principal>
             <Dependent Role="PERSON">
-              <PropertyRef Name="Id_Role" />
+              <PropertyRef Name="IdRole" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="People" EntityType="Self.PERSON" />
-          <EntitySet Name="ROLEs" EntityType="Self.ROLE" />
-          <AssociationSet Name="FK_PERSON_ROLE" Association="Self.FK_PERSON_ROLE">
-            <End Role="ROLE" EntitySet="ROLEs" />
-            <End Role="PERSON" EntitySet="People" />
+        <Association Name="FK_PERSON_SERVICE">
+          <End Role="SERVICE" Type="Self.SERVICE" Multiplicity="0..1" />
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="IdService" />
+            </Principal>
+            <Dependent Role="PERSON">
+              <PropertyRef Name="IdService" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_PERSON_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="PRODUCT_PERSON" Type="Self.PRODUCT_PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="PRODUCT_PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_PERSON">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="QUOTE">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_PERSON_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="0..1" />
+          <End Role="PRODUCT_PERSON" Type="Self.PRODUCT_PERSON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="PRODUCT_PERSON">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_PRODUCT_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="0..1" />
+          <End Role="QUOTE_PRODUCT" Type="Self.QUOTE_PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="QUOTE_PRODUCT">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_PRODUCT_QUOTE">
+          <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="0..1" />
+          <End Role="QUOTE_PRODUCT" Type="Self.QUOTE_PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUOTE">
+              <PropertyRef Name="IdQuote" />
+            </Principal>
+            <Dependent Role="QUOTE_PRODUCT">
+              <PropertyRef Name="IdQuote" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_STATE">
+          <End Role="STATE" Type="Self.STATE" Multiplicity="0..1" />
+          <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATE">
+              <PropertyRef Name="IdState" />
+            </Principal>
+            <Dependent Role="QUOTE">
+              <PropertyRef Name="IdState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BD_14_02Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CREW" EntityType="Self.CREW" />
+          <EntitySet Name="CREW_PERSON" EntityType="Self.CREW_PERSON" />
+          <EntitySet Name="PERSON" EntityType="Self.PERSON" />
+          <EntitySet Name="PRODUCT" EntityType="Self.PRODUCT" />
+          <EntitySet Name="PRODUCT_PERSON" EntityType="Self.PRODUCT_PERSON" />
+          <EntitySet Name="QUOTE" EntityType="Self.QUOTE" />
+          <EntitySet Name="QUOTE_PRODUCT" EntityType="Self.QUOTE_PRODUCT" />
+          <EntitySet Name="ROLE" EntityType="Self.ROLE" />
+          <EntitySet Name="SERVICE" EntityType="Self.SERVICE" />
+          <EntitySet Name="STATE" EntityType="Self.STATE" />
+          <AssociationSet Name="FK_CREW_PERSON_CREW" Association="Self.FK_CREW_PERSON_CREW">
+            <End Role="CREW" EntitySet="CREW" />
+            <End Role="CREW_PERSON" EntitySet="CREW_PERSON" />
           </AssociationSet>
+          <AssociationSet Name="FK_CREW_PERSON_PERSON" Association="Self.FK_CREW_PERSON_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="CREW_PERSON" EntitySet="CREW_PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSON_ROLE" Association="Self.FK_PERSON_ROLE">
+            <End Role="ROLE" EntitySet="ROLE" />
+            <End Role="PERSON" EntitySet="PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSON_SERVICE" Association="Self.FK_PERSON_SERVICE">
+            <End Role="SERVICE" EntitySet="SERVICE" />
+            <End Role="PERSON" EntitySet="PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_PERSON_PERSON" Association="Self.FK_PRODUCT_PERSON_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="PRODUCT_PERSON" EntitySet="PRODUCT_PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_PERSON" Association="Self.FK_QUOTE_PERSON">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="QUOTE" EntitySet="QUOTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_PERSON_PRODUCT" Association="Self.FK_PRODUCT_PERSON_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="PRODUCT_PERSON" EntitySet="PRODUCT_PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_PRODUCT_PRODUCT" Association="Self.FK_QUOTE_PRODUCT_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="QUOTE_PRODUCT" EntitySet="QUOTE_PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_PRODUCT_QUOTE" Association="Self.FK_QUOTE_PRODUCT_QUOTE">
+            <End Role="QUOTE" EntitySet="QUOTE" />
+            <End Role="QUOTE_PRODUCT" EntitySet="QUOTE_PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_STATE" Association="Self.FK_QUOTE_STATE">
+            <End Role="STATE" EntitySet="STATE" />
+            <End Role="QUOTE" EntitySet="QUOTE" />
+          </AssociationSet>
+          <FunctionImport Name="sp_UserRegistered">
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="Document" Mode="In" Type="String" />
+            <Parameter Name="Phone" Mode="In" Type="String" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="Department" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Registered" Mode="InOut" Type="Boolean" />
+            <Parameter Name="Message" Mode="InOut" Type="String" />
+            <Parameter Name="IdRol" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UserRegisteredEmployees">
+            <Parameter Name="IdRole" Mode="In" Type="Int32" />
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="Document" Mode="In" Type="String" />
+            <Parameter Name="Phone" Mode="In" Type="String" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="Department" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Arl" Mode="In" Type="String" />
+            <Parameter Name="Eps" Mode="In" Type="String" />
+            <Parameter Name="Position" Mode="In" Type="String" />
+            <Parameter Name="Registered" Mode="InOut" Type="Boolean" />
+            <Parameter Name="Message" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_VerifyUser" ReturnType="Collection(Int32)">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="People">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="BD_14_02Entities">
+          <EntitySetMapping Name="CREW">
+            <EntityTypeMapping TypeName="Model.CREW">
+              <MappingFragment StoreEntitySet="CREW">
+                <ScalarProperty Name="IdCrew" ColumnName="IdCrew" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CREW_PERSON">
+            <EntityTypeMapping TypeName="Model.CREW_PERSON">
+              <MappingFragment StoreEntitySet="CREW_PERSON">
+                <ScalarProperty Name="IdCrewPerson" ColumnName="IdCrewPerson" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdCrew" ColumnName="IdCrew" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSON">
             <EntityTypeMapping TypeName="Model.PERSON">
               <MappingFragment StoreEntitySet="PERSON">
-                <ScalarProperty Name="Id_Person" ColumnName="Id_Person" />
-                <ScalarProperty Name="Id_Role" ColumnName="Id_Role" />
-                <ScalarProperty Name="FirtsName" ColumnName="FirtsName" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="IdService" ColumnName="IdService" />
+                <ScalarProperty Name="IdCrew" ColumnName="IdCrew" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="DocumentNumber" ColumnName="DocumentNumber" />
+                <ScalarProperty Name="Document" ColumnName="Document" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Department" ColumnName="Department" />
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Arl" ColumnName="Arl" />
+                <ScalarProperty Name="Eps" ColumnName="Eps" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ROLEs">
+          <EntitySetMapping Name="PRODUCT">
+            <EntityTypeMapping TypeName="Model.PRODUCT">
+              <MappingFragment StoreEntitySet="PRODUCT">
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_PERSON">
+            <EntityTypeMapping TypeName="Model.PRODUCT_PERSON">
+              <MappingFragment StoreEntitySet="PRODUCT_PERSON">
+                <ScalarProperty Name="IdProductPerson" ColumnName="IdProductPerson" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="TotalPriceProduct" ColumnName="TotalPriceProduct" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QUOTE">
+            <EntityTypeMapping TypeName="Model.QUOTE">
+              <MappingFragment StoreEntitySet="QUOTE">
+                <ScalarProperty Name="IdQuote" ColumnName="IdQuote" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdState" ColumnName="IdState" />
+                <ScalarProperty Name="IdCrewPerson" ColumnName="IdCrewPerson" />
+                <ScalarProperty Name="ServiceAddress" ColumnName="ServiceAddress" />
+                <ScalarProperty Name="ServiceDepartment" ColumnName="ServiceDepartment" />
+                <ScalarProperty Name="ServiceCity" ColumnName="ServiceCity" />
+                <ScalarProperty Name="StarDate" ColumnName="StarDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QUOTE_PRODUCT">
+            <EntityTypeMapping TypeName="Model.QUOTE_PRODUCT">
+              <MappingFragment StoreEntitySet="QUOTE_PRODUCT">
+                <ScalarProperty Name="IdQuoteProduct" ColumnName="IdQuoteProduct" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="IdQuote" ColumnName="IdQuote" />
+                <ScalarProperty Name="TotalPriceProduct" ColumnName="TotalPriceProduct" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLE">
             <EntityTypeMapping TypeName="Model.ROLE">
               <MappingFragment StoreEntitySet="ROLE">
                 <ScalarProperty Name="Id_Role" ColumnName="Id_Role" />
@@ -129,6 +750,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SERVICE">
+            <EntityTypeMapping TypeName="Model.SERVICE">
+              <MappingFragment StoreEntitySet="SERVICE">
+                <ScalarProperty Name="IdService" ColumnName="IdService" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STATE">
+            <EntityTypeMapping TypeName="Model.STATE">
+              <MappingFragment StoreEntitySet="STATE">
+                <ScalarProperty Name="IdState" ColumnName="IdState" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_UserRegistered" FunctionName="Model.Store.sp_UserRegistered" />
+          <FunctionImportMapping FunctionImportName="sp_UserRegisteredEmployees" FunctionName="Model.Store.sp_UserRegisteredEmployees" />
+          <FunctionImportMapping FunctionImportName="sp_VerifyUser" FunctionName="Model.Store.sp_VerifyUser" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -143,7 +783,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />

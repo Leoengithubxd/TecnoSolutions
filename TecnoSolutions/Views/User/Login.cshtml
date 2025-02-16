@@ -1,0 +1,176 @@
+﻿@{ Layout = null; }
+@{
+    ViewBag.Title = "Login";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inicio de Sesión</title>
+    <!-- CDN de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/Style/Login.css" rel="stylesheet" />
+</head>
+<body class="d-flex align-items-center justify-content-center vh-100">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card login-card">
+                    <div class="row login-container">
+                        <!-- Formulario de Login -->
+                        <div class="col-md-6 login-form">
+                            <h2 class="text-center text-principal mb-4">Iniciar Sesión</h2>
+                            <form action="@Url.Action("Login","User")" method="post">
+                                <div class="mb-3">
+                                    <label for="Email" class="form-label " style="color:#ffff">Usuario</label>
+                                    <input type="text" name="Email" class="form-control input_user" value="" placeholder="Email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label" style="color:#ffff">Contraseña</label>
+                                    <input type="password" name="Password" class="form-control input_user" value="" placeholder="Password">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                                <p class="text-center mt-3" style="color:#ffff">
+                                    ¿No tienes una cuenta? <a href="/User/SignUp" class="text-decoration-none" style="color: #b8e5eb;"><u>Regístrate aquí</u></a>
+                                </p>
+                            </form>
+                        </div>
+
+                        <!-- Logo -->
+                        <div class="col-md-6 logo-container">
+                            <img src="~/Content/Image/logo.jpeg" alt="Logo" class="img-fluid">
+                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+<style>
+    body {
+        background-color: #7c8f97;
+    }
+
+    .nav-icon {
+        font-size: clamp(1.5rem, 3vw, 3rem); /* Iconos adaptativos */
+    }
+
+    .icon-footer {
+        font-size: 1rem;
+        color: darkolivegreen;
+    }
+
+    .body-content {
+        padding: 20px; /* En vez de position absolute */
+        min-height: 50vh;
+    }
+
+    .logo-left {
+        max-width: 150px;
+    }
+
+    .nav-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .navbar-toggler {
+        border: none;
+        background-color: transparent;
+    }
+
+
+    .vertical-menu .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        text-decoration: none;
+        color: saddlebrown;
+    }
+
+        .vertical-menu .nav-link img {
+            margin-right: 10px;
+            width: 32px;
+            height: 32px;
+        }
+
+    .login-card {
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .login-container {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        background-color: #091324;
+    }
+
+
+    .login-form {
+        width: 50%;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+
+
+
+    .text-principal {
+        color: #8deaf4;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #0d3039;
+        color: whitesmoke;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #091021;
+        }
+
+    .logo-container {
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #091324;
+        padding: 20px;
+    }
+
+        .logo-container img {
+            max-width: 80%;
+            height: auto;
+        }
+
+
+
+    .login-form, .logo-container {
+        width: 100%;
+        text-align: center;
+    }
+
+        .logo-container img {
+            max-width: 50%;
+        }
+</style>
