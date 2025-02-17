@@ -11,106 +11,163 @@
             background-color: #f4f4f9;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        .form_container input, .form_container select {
-            background-color: #ffffff;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            padding: 10px;
+        .form_container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #091324;
+            padding: 20px;
+        }
+        .table-primary {
+            --bs-table-bg: #0d3039;
+            --bs-table-color: whitesmoke;
         }
 
-        .login_btn {
-            background-color: #0d6efd;
-            color: white;
-            border-radius: 8px;
+        .table-container {
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #091324;
         }
-
-            .login_btn:hover {
-                background-color: #0b5ed7;
-            }
 
         .header-title {
             font-size: 28px;
             color: #0d6efd;
             text-align: center;
-            margin: 0 auto;
+            margin-bottom: 20px;
+            background-color: #0d3039;
         }
 
-        .logo-right {
-            border-radius: 15px;
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #0d3039;
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
-        .user_card {
-            background: #e7f1ff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
 
-        .body-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 70vh;
-        }
+            .btn-primary:hover {
+                background-color: #091021;
+            }
 
-        .form-label {
-            font-weight: bold;
+        .text-principal {
+            color: #8deaf4;
         }
 
         .alert-danger {
             border-radius: 8px;
         }
+        .form-label{
+            color:whitesmoke;
+        }
+        .user_card {
+            background-color: #091021;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
-    <div class="container py-5">
-        <div class="text-center mb-4">
-            <img src="~/Content/Image/logo.jpeg" width="150" height="150" class="logo-right" alt="Logo">
-            <h2 class="header-title mt-3">Registrar Empleados</h2>
-        </div>
-
-        <div class="body-content">
-            <div class="user_card w-100">
-                <div class="form_container">
+    <div class="container-fluid">
+                  
+        <div class="row justify-content-center">
+          
+            <div class="col-lg-8 col-md-12">
+                <h2 class="text-principal">Registrar Empleados</h2>
+                <div class="row form_container">
                     <form action='@Url.Action("SignUpEmployees", "User")' method="post">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Nombre</label>
-                                <input type="text" name="FirstName" class="form-control" placeholder="Nombre">
-                                <label class="form-label mt-3">Documento</label>
-                                <input type="text" name="Document" class="form-control" placeholder="Documento">
-                                <label class="form-label mt-3">Dirección</label>
-                                <input type="text" name="Address" class="form-control" placeholder="Dirección">
-                                <label class="form-label mt-3">Ciudad</label>
-                                <input type="text" name="City" class="form-control" placeholder="Ciudad">
-                                <label class="form-label mt-3">ARL</label>
-                                <input type="text" name="Arl" class="form-control" placeholder="ARL">
-                                <label class="form-label mt-3">Cargo</label>
-                                <input type="text" name="Position" class="form-control" placeholder="Cargo">
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre</label>
+                                    <input type="text" name="FirstName" class="form-control" placeholder="Nombre">
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Apellido</label>
-                                <input type="text" name="LastName" class="form-control" placeholder="Apellido">
-                                <label class="form-label mt-3">Teléfono</label>
-                                <input type="text" name="Phone" class="form-control" placeholder="Teléfono">
-                                <label class="form-label mt-3">Departamento</label>
-                                <input type="text" name="Department" class="form-control" placeholder="Departamento">
-                                <label class="form-label mt-3">Correo Electrónico</label>
-                                <input type="email" name="Email" class="form-control" placeholder="Correo Electrónico">
-                                <label class="form-label mt-3">EPS</label>
-                                <input type="text" name="Eps" class="form-control" placeholder="EPS">
-                                <label class="form-label mt-3">Rol</label>
-                                <select name="IdRole" class="form-control">
-                                    <option value="1">Usuario</option>
-                                    <option value="2">Empleado</option>
-                                    <option value="3">Analista</option>
-                                    <option value="4">Repartidor</option>
-                                    <option value="5">Asistente Administrativo</option>
-                                    <option value="6">Administrador</option>
-                                </select>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">Documento</label>
+                                    <input type="text" name="Document" class="form-control" placeholder="Documento">
+                                </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">Dirección</label>
+                                    <input type="text" name="Address" class="form-control" placeholder="Dirección">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">Ciudad</label>
+                                    <input type="text" name="City" class="form-control" placeholder="Ciudad">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">ARL</label>
+                                    <input type="text" name="Arl" class="form-control" placeholder="ARL">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">Cargo</label>
+                                    <input type="text" name="Position" class="form-control" placeholder="Cargo">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Apellido</label>
+                                    <input type="text" name="LastName" class="form-control" placeholder="Apellido">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">Teléfono</label>
+                                    <input type="text" name="Phone" class="form-control" placeholder="Teléfono">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">Departamento</label>
+                                    <input type="text" name="Department" class="form-control" placeholder="Departamento">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">Correo Electrónico</label>
+                                    <input type="email" name="Email" class="form-control" placeholder="Correo Electrónico">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">EPS</label>
+                                    <input type="text" name="Eps" class="form-control" placeholder="EPS">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label mt-3">Rol</label>
+                                    <select name="IdRole" class="form-control">
+                                        <option value="1">Usuario</option>
+                                        <option value="2">Empleado</option>
+                                        <option value="3">Analista</option>
+                                        <option value="4">Repartidor</option>
+                                        <option value="5">Asistente Administrativo</option>
+                                        <option value="6">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
                                 <label class="form-label mt-3">Contraseña</label>
                                 <input type="password" name="Password" class="form-control" placeholder="Contraseña">
                                 <label class="form-label mt-3">Verificar Contraseña</label>
@@ -118,19 +175,20 @@
                             </div>
                         </div>
 
+
                         @if (ViewData["Mensaje"] != null)
                         {
                             <div class="alert alert-danger mt-3">@ViewData["Mensaje"]</div>
                         }
 
-                        <button type="submit" class="btn login_btn w-100 mt-4">Registrarse</button>
+                        <button type="submit" class="btn-primary w-100 mt-4">Registrarse</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+                </div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -28,6 +28,26 @@ namespace TecnoSolutions.Views.User
         {
             return View();
         }
+        public ActionResult AdminHome()
+        {
+            return View();
+        }
+        public ActionResult AssistantHome()
+        {
+            return View();
+        }
+        public ActionResult Home()
+        {
+            return View();
+        }
+        public ActionResult OrderManagement()
+        {
+            return View();
+        }
+        public ActionResult Users()
+        {
+            return View();
+        }
         public ActionResult SignUpEmployees()
         {
             return View();
@@ -162,7 +182,7 @@ namespace TecnoSolutions.Views.User
             {
                 Session["IdUser"] = user.IdPerson;
 
-                return RedirectToAction("SelectProducts","Product");
+                return RedirectToAction("Home","User");
             }
             else
             {

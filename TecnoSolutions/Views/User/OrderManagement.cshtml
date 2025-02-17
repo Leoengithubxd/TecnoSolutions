@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewBag.Title = "OrderManagement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+
+    <div class="container">
+        <h1 class="text-principal">Gestion de pedidos</h1>
+
+        <div class="container text-start">
+            <div class="row justify-content-start">
+                <div class="col-auto">
+                    <div class="row ">
+                        <div class="col-auto">
+
+                            <select id="filterRoleState" class="form-select" onchange="filterTable()">
+                                <option value="">Filtrar por estado </option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="entregado">Entregado</option>
+                                <option value="cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text " id="basic-addon1">
+                            <i class=" bi bi-search-heart-fill nav-icon " style="font-size: 30px; color: #0d3039"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control " placeholder="Buscar en la tabla..." onkeyup="filterTable()" aria-describedby="basic-addon1">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col">
+            <div id="noResultsMessage" class="alert alert-warning" style="display: none;">
+                No se encontraron resultados para los filtros aplicados. Intente modificar los criterios de búsqueda.
+            </div>
+
+        </div>
+        <div class="table-container">
+            <table class="table table-custom">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Cliente</th>
+                        <th>Fecha Entrega</th>
+                        <th>Estado</th>
+                        <th>Ver detalles</th>
+
+                    </tr>
+                </thead>
+                @*<tbody id="tableBody">
+                        @foreach (var pedido in Model)
+                            {
+                                <tr>
+                                    <td>@pedido.IdPedido</td>
+                                    <td>@pedido.ClienteNombre</td>
+                                    <td>@pedido.FechaEntrega</td>
+                                    <td>@pedido.Estado</td>
+                                    <td>
+                                        <a href="@Url.Action("DetallePedido", "Admin", new { id = pedido.IdPedido })" class="btn btn-secondary">
+                                            <i class="bi bi-eye-fill nav-icon"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                    }
+
+                    </tbody>*@
+            </table>
+        </div>
+    </div>
+    </div>
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .table-primary {
+            --bs-table-bg: #0d3039;
+            --bs-table-color: whitesmoke;
+        }
+
+
+
+        .header-title {
+            font-size: 28px;
+            color: #0d6efd;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #0d3039;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #0d3039;
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #091021;
+            }
+
+            .btn-primary:hover {
+                background-color: #0b5ed7;
+            }
+
+        .text-principal {
+            color: whitesmoke;
+        }
+
+        .alert-danger {
+            border-radius: 8px;
+        }
+
+        .table-container {
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #091324;
+        }
+    </style>
+    <script>
+        function filterTable() {
+            // Obtener el valor del buscador y el filtro seleccionado
+            let searchValue = document.getElementById("searchInput").value.toLowerCase();
+            let filterValue = document.getElementById("filterRoleState").value.toLowerCase();
+            let table = document.getElementById("tableBody");
+            let rows = table.getElementsByTagName("tr");
+            let noResults = true;
+
+            // Recorrer todas las filas de la tabla
+            for (let i = 0; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName("td");
+                let match = false;
+
+                // Aplicar el filtro de búsqueda (busca en todas las celdas excepto en la última columna)
+                for (let j = 0; j < cells.length - 1; j++) {
+                    if (cells[j]) {
+                        let cellText = cells[j].textContent || cells[j].innerText;
+                        if (cellText.toLowerCase().indexOf(searchValue) > -1) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Aplicar filtro de rol o estado
+                let estado = cells[4].textContent.toLowerCase(); // Columna de Rol
+                let domici = cells[3].textContent.toLowerCase(); // Columna de Rol
+
+                if (filterValue === "" || estado === filterValue || domici === filterValue) {
+                    if (match) {
+                        rows[i].style.display = ""; // Mostrar fila si coincide con la búsqueda y el filtro
+                        noResults = false;
+                    } else {
+                        rows[i].style.display = "none"; // Ocultar fila si no coincide con la búsqueda
+                    }
+                } else {
+                    rows[i].style.display = "none"; // Ocultar fila si no coincide con el filtro
+                }
+            }
+
+            // Mostrar mensaje si no hubo resultados
+            document.getElementById("noResultsMessage").style.display = noResults ? "block" : "none";
+        }
+    </script>

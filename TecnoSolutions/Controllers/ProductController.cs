@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -20,7 +20,6 @@ namespace TecnoSolutions.Controllers
             _productRepository = new ProductRepository();
             _productPersonRepository = new ProductPersonRepository();
         }
-
         
         public ActionResult AnalistCrud()
         {
@@ -79,9 +78,11 @@ namespace TecnoSolutions.Controllers
             }
         }
 
-
-
         // GET: Select Products
+        public ActionResult AddProducts()
+        {
+            return View();
+        }
         public ActionResult SelectProducts()
         {
             var products = _productRepository.GetAllProducts(); // Obtiene la lista de productos
@@ -115,7 +116,7 @@ namespace TecnoSolutions.Controllers
 
             _productPersonRepository.SaveSelectedProducts(userId, productsToSave);
 
-            return RedirectToAction("PurchaseConfirmation");
+            return RedirectToAction("purchaseConfirmation");
         }
     }
 }
