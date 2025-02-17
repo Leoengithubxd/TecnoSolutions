@@ -10,7 +10,7 @@
 
     <style>
         .container-fluid {
-            min-height: 40vh;
+            min-height: 40vh; /* 100% de la altura de la ventana */
             display: flex;
             flex-direction: column;
             background-color: #7c8f97;
@@ -76,13 +76,13 @@
                     width: 32px;
                     height: 32px;
                 }
+
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             background-color: #7c8f97;
         }
-
     </style>
 </head>
 <body>
@@ -101,7 +101,7 @@
         <div class="collapse d-md-block" id="menuPrincipal">
             <ul class="nav nav-tabs justify-content-center">
                 <li class="nav-item">
-                    <a href="@Url.Action("AdminHome", "User")" class="nav-link">
+                    <a href="@Url.Action("AssistantHome", "User")" class="nav-link">
                         <i class="bi bi-house-door-fill nav-icon"></i>
                     </a>
                 </li>
@@ -129,8 +129,6 @@
                     DISTRIREDES
                 </p>
                 <p>&copy; @DateTime.Now.Year - DISTRIREDES Y COMUNICACIONES</p>
-
-
             </footer>
         </div>
 
