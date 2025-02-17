@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -95,6 +95,14 @@
             <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
                 <span class="bi bi-list nav-icon"></span>
             </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("Inicio", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Acerca de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Contacto", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("xdxd", "AnalistCrud", "Product", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+            </div>
         </div>
 
         <!-- Menú -->

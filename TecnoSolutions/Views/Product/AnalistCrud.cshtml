@@ -1,0 +1,60 @@
+﻿@model List<TecnoSolutions.Dtos.Product>
+
+<h2>Products</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No products available.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Stock</th>
+                <th>Unit Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Product in Model)
+            {
+                <tr id="Product-@Product.IdProduct">
+                    <td>@Product.Name</td>
+                    <td>@Product.Stock</td>
+                    <td>@Product.UnitPrice</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = Product.IdProduct }) |
+                        <button class="btn btn-danger delete-product" data-id="@Product.IdProduct">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).on('click', '.delete-product', function () {
+        var productId = $(this).data('id'); // Obtiene el ID del producto
+        if (confirm('Are you sure you want to delete this product?')) {
+            $.ajax({
+                url: '@Url.Action("Delete", "Product")', // URL del método Delete en el controlador
+                type: 'POST',
+                data: { idProduct: productId }, // Envía el ID del producto
+                success: function (response) {
+                    if (response.success) {
+                        $('#Product-' + productId).remove(); // Elimina la fila de la tabla
+                        alert('Product deleted successfully.');
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while deleting the product.');
+                }
+            });
+        }
+    });
+</script>

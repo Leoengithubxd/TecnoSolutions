@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -135,8 +135,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AnalistController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ProductSelectionDto.cs" />
     <Compile Include="Dtos\EmployeesDto.cs" />
     <Compile Include="Global.asax.cs">
@@ -276,6 +278,8 @@
     <Content Include="Views\User\SignUpEmployees.cshtml" />
     <Content Include="Views\Product\PurchaseConfirmation.cshtml" />
     <Content Include="Views\Product\SelectProducts.cshtml" />
+    <Content Include="Views\Product\AnalistCrud.cshtml" />
+    <Content Include="Views\Product\DeleteCrud.cshtml" />
     <Content Include="Views\User\AdminHome.cshtml" />
     <Content Include="Views\Product\AddProducts.cshtml" />
     <Content Include="Views\Shared\_LayoutAsistente.cshtml" />
@@ -286,6 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Analist\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
