@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using TecnoSolutions.Models;
 using TecnoSolutions.Dtos;
 using System;
+using System.Data;
+using Dapper;
+using MySql.Data.MySqlClient;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 public class ProductRepository
 {
@@ -44,56 +49,50 @@ public class ProductRepository
         }
     }
 
-    public PRODUCT GetProductById(int IdProduct)
+    public void DeleteProduct(int IdProduct) // Método que debe existir
     {
-        PRODUCT product = null;
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (IDbConnection db = DatabaseHelper.GetConnection())
         {
-            connection.Open();
-            SqlCommand command = new SqlCommand("SELECT * FROM PRODUCT WHERE IdProduct = @IdProduct", connection);
-            command.Parameters.AddWithValue("@IdProduct", IdProduct);
-            SqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                product = new PRODUCT
-                {
-                    IdProduct = (int)reader["Id"],
-                    Name = reader["Name"].ToString(),
-                    Stock = (int)reader["Stock"],
-                    UnitPrice = (double)reader["Description"]
-                };
-            }
+            string query = "DELETE FROM Product WHERE IdProduct = @IdProduct";
+            db.Execute(query, new { IdProduct = IdProduct });
         }
-        return product;
+    }
+
+    public Product GetProductById(int id)
+    {
+        using (IDbConnection db = DatabaseHelper.GetConnection())
+        {
+            // Cambia @Id a @id para que coincida con el nombre del parámetro en el objeto anónimo
+            return db.QuerySingleOrDefault<Product>("SELECT * FROM PRODUCT WHERE IdProduct = @id", new { id });
+        }
     }
 
     public void UpdateProduct(PRODUCT product)
     {
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (IDbConnection db = DatabaseHelper.GetConnection())
         {
-            connection.Open();
-            SqlCommand command = new SqlCommand("UPDATE Products SET Name = @Name, @Stock = @UnitPrice, UnitPrice = @UnitPrice WHERE IdProduct = @IdProduct", connection);
-            command.Parameters.AddWithValue("@IdProduct", product.IdProduct);
-            command.Parameters.AddWithValue("@Name", product.Name);
-            command.Parameters.AddWithValue("@Price", product.Stock);
-            command.Parameters.AddWithValue("@UnitPrice", product.UnitPrice);
-            command.ExecuteNonQuery();
+            string sql = "UPDATE PRODUCT SET Name = @Name, Stock = @Stock, UnitPrice = @UnitPrice WHERE IdProduct = @IdProduct";
+            var parameters = new
+            {
+                IdProduct = product.IdProduct, // Asegúrate de que el ID esté correctamente asignado
+                Name = product.Name,
+                Stock = product.Stock,
+                UnitPrice = product.UnitPrice
+            };
+
+            int rowsAffected = db.Execute(sql, parameters); // Ejecuta la consulta y obtiene el número de filas afectadas
+
+            // Agrega un log para verificar cuántas filas se actualizaron
+            Console.WriteLine($"Rows affected: {rowsAffected}");
         }
     }
 
-    public void DeleteProduct(int IdProduct)
+    public List<PRODUCT> GetProductsByIds(List<int> ids)
     {
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (IDbConnection db = DatabaseHelper.GetConnection())
         {
-            connection.Open();
-            SqlCommand command = new SqlCommand("DELETE FROM Products WHERE IdProduct = @IdProduct", connection);
-            command.Parameters.AddWithValue("@IdProduct", IdProduct);
-            command.ExecuteNonQuery();
+            string query = "SELECT * FROM PRODUCT WHERE IdProduct IN @Ids";
+            return db.Query<PRODUCT>(query, new { Ids = ids }).ToList();
         }
-    }
-
-    internal void EliminarUsuario(int idUsuario)
-    {
-        throw new NotImplementedException();
     }
 }

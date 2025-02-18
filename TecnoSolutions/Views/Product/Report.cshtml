@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Report";
+}
+
+@*@model List<TecnoSolutions.Models.PRODUCT>
+
+    <h2>Generate Report</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p>No products selected.</p>
+    }
+    else
+    {
+        <form method="post" action="@Url.Action("GeneratePDF", "Product")">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Requested Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model)
+                    {
+                        <tr>
+                            <td>@product.Name</td>
+                            <td>
+                                <input type="number" name="requestedStock[@product.IdProduct]" value="0" min="0" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+    <button type="submit" class="btn btn-primary">Generate PDF</button>
+        </form>
+    }*@
+@model List<TecnoSolutions.Models.PRODUCT>
+
+<form method="post" action="@Url.Action("GeneratePDF", "Product")">
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Requested Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[i].Name</td>
+                    <td>
+                        <input type="hidden" name="products[@i].IdProduct" value="@Model[i].IdProduct" />
+                        <input type="number" name="products[@i].RequestedStock" value="1" min="1" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button onclick="printInvoice()" type="submit"> Generate PDF</button>
+</form>
+<script>function printInVoice() {
+    window.print();
+}
+</script>
