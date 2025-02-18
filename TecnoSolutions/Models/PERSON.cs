@@ -19,7 +19,7 @@ namespace TecnoSolutions.Models
         {
             this.CREW_PERSON = new HashSet<CREW_PERSON>();
             this.PRODUCT_PERSON = new HashSet<PRODUCT_PERSON>();
-            this.QUOTEs = new HashSet<QUOTE>();
+            this.QUOTE = new HashSet<QUOTE>();
         }
     
         public int IdPerson { get; set; }
@@ -46,6 +46,6 @@ namespace TecnoSolutions.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRODUCT_PERSON> PRODUCT_PERSON { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QUOTE> QUOTEs { get; set; }
+        public virtual ICollection<QUOTE> QUOTE { get; set; }
     }
 }

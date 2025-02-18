@@ -1,9 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Product";
+    ViewBag.Title = "Quote";
     Layout = "~/Views/Shared/_LayoutCliente.cshtml";
 }
 
-@model List<TechnoSolutions.Dtos.ProductSelectionDto>
+@model List<TechnoSolutions.Dtos.ServiceSelectionDto>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -71,25 +71,24 @@
 <body>
     <div class="container">
         <div class="text-center mb-4">
-
-            <h2 class=" mt-3 text-principal">Seleccionar Productos</h2>
+            <h2 class="mt-3 text-principal">Seleccionar Servicios</h2>
         </div>
 
         @if (TempData["Message"] != null)
         {
             <div class="alert alert-danger text-center">
                 @TempData["Message"]
-            </div>}
+            </div>
+        }
 
         <div class="table-container">
-            @using (Html.BeginForm("SelectProducts", "Product", FormMethod.Post))
+            @using (Html.BeginForm("SelectServices", "Quote", FormMethod.Post))
             {
                 <table class="table table-hover">
                     <thead class="table-primary">
                         <tr>
-                            <th>Producto</th>
-                            <th>Precio Unitario</th>
-                            <th>Cantidad (Metros o Unidades)</th>
+                            <th>Servicio</th>
+                            <th>Seleccionar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,24 +96,36 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.HiddenFor(m => Model[i].IdProduct)
-                                    @Html.HiddenFor(m => Model[i].NameProduct)
-                                    @Html.HiddenFor(m => Model[i].UnitPrice)
-                                    @Model[i].NameProduct
+                                    @Html.HiddenFor(m => Model[i].IdService)
+                                    @Html.HiddenFor(m => Model[i].Name)
+                                    @Model[i].Name
                                 </td>
-                                <td>@Model[i].UnitPrice.ToString("C")</td>
                                 <td>
-                                    @Html.TextBoxFor(m => Model[i].Quantity, new { type = "number", min = "0", @class = "form-control" })
+                                    @Html.CheckBoxFor(m => Model[i].IsSelected)
+                                    @Html.HiddenFor(m => Model[i].Quantity, new { Value = 1 })
                                 </td>
                             </tr>
-}
+                        }
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-primary w-100">Agregar Productos</button>}
-        </div>
-    </div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+                <h3>Información de Contacto</h3>
+                <div class="form-group">
+                    <label for="address">Dirección:</label>
+                    <input type="text" name="address" id="address" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="department">Departamento:</label>
+                    <input type="text" name="department" id="department" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="city">Ciudad:</label>
+                    <input type="text" name="city" id="city" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Agregar Servicios</button>
+            }
+            </div>
+        </div>
 </body>
 </html>

@@ -57,34 +57,44 @@
           <Property Name="IdProductPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdPerson" Type="int" />
           <Property Name="IdProduct" Type="int" />
-          <Property Name="Stock" Type="float" />
+          <Property Name="NameProduct" Type="varchar" MaxLength="100" />
+          <Property Name="Quantity" Type="float" />
           <Property Name="UnitPrice" Type="float" />
           <Property Name="TotalPriceProduct" Type="float" />
-          <Property Name="TotalPrice" Type="float" />
         </EntityType>
         <EntityType Name="QUOTE">
           <Key>
             <PropertyRef Name="IdQuote" />
           </Key>
           <Property Name="IdQuote" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdPerson" Type="int" />
-          <Property Name="IdState" Type="int" />
-          <Property Name="IdCrewPerson" Type="int" Nullable="false" />
-          <Property Name="ServiceAddress" Type="varchar" MaxLength="100" />
-          <Property Name="ServiceDepartment" Type="varchar" MaxLength="50" />
-          <Property Name="ServiceCity" Type="varchar" MaxLength="50" />
-          <Property Name="StarDate" Type="datetime" Nullable="false" />
-          <Property Name="EndDate" Type="datetime" Nullable="false" />
+          <Property Name="IdPerson" Type="int" Nullable="false" />
+          <Property Name="IdState" Type="int" Nullable="false" />
+          <Property Name="IdCrewPerson" Type="int" />
+          <Property Name="ServiceAddress" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ServiceDepartment" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ServiceCity" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StarDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="Price" Type="float" />
         </EntityType>
         <EntityType Name="QUOTE_PRODUCT">
           <Key>
             <PropertyRef Name="IdQuoteProduct" />
           </Key>
           <Property Name="IdQuoteProduct" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdProduct" Type="int" />
           <Property Name="IdQuote" Type="int" />
-          <Property Name="TotalPriceProduct" Type="float" />
+          <Property Name="IdProduct" Type="int" />
+          <Property Name="Quantity" Type="float" />
           <Property Name="TotalPrice" Type="float" />
+        </EntityType>
+        <EntityType Name="QUOTE_SERVICE">
+          <Key>
+            <PropertyRef Name="IdQuoteService" />
+          </Key>
+          <Property Name="IdQuoteService" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdQuote" Type="int" />
+          <Property Name="IdService" Type="int" />
+          <Property Name="ServicePrice" Type="float" />
         </EntityType>
         <EntityType Name="ROLE">
           <Key>
@@ -180,7 +190,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_QUOTE_PERSON">
-          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="1" />
           <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PERSON">
@@ -215,8 +225,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QUOTE_SERVICE_QUOTE">
+          <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="0..1" />
+          <End Role="QUOTE_SERVICE" Type="Self.QUOTE_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUOTE">
+              <PropertyRef Name="IdQuote" />
+            </Principal>
+            <Dependent Role="QUOTE_SERVICE">
+              <PropertyRef Name="IdQuote" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QUOTE_SERVICE_SERVICE">
+          <End Role="SERVICE" Type="Self.SERVICE" Multiplicity="0..1" />
+          <End Role="QUOTE_SERVICE" Type="Self.QUOTE_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="IdService" />
+            </Principal>
+            <Dependent Role="QUOTE_SERVICE">
+              <PropertyRef Name="IdService" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QUOTE_STATE">
-          <End Role="STATE" Type="Self.STATE" Multiplicity="0..1" />
+          <End Role="STATE" Type="Self.STATE" Multiplicity="1" />
           <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="STATE">
@@ -270,6 +304,7 @@
           <EntitySet Name="PRODUCT_PERSON" EntityType="Self.PRODUCT_PERSON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QUOTE" EntityType="Self.QUOTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QUOTE_PRODUCT" EntityType="Self.QUOTE_PRODUCT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QUOTE_SERVICE" EntityType="Self.QUOTE_SERVICE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SERVICE" EntityType="Self.SERVICE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STATE" EntityType="Self.STATE" Schema="dbo" store:Type="Tables" />
@@ -308,6 +343,14 @@
           <AssociationSet Name="FK_QUOTE_PRODUCT_QUOTE" Association="Self.FK_QUOTE_PRODUCT_QUOTE">
             <End Role="QUOTE" EntitySet="QUOTE" />
             <End Role="QUOTE_PRODUCT" EntitySet="QUOTE_PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_SERVICE_QUOTE" Association="Self.FK_QUOTE_SERVICE_QUOTE">
+            <End Role="QUOTE" EntitySet="QUOTE" />
+            <End Role="QUOTE_SERVICE" EntitySet="QUOTE_SERVICE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_SERVICE_SERVICE" Association="Self.FK_QUOTE_SERVICE_SERVICE">
+            <End Role="SERVICE" EntitySet="SERVICE" />
+            <End Role="QUOTE_SERVICE" EntitySet="QUOTE_SERVICE" />
           </AssociationSet>
           <AssociationSet Name="FK_QUOTE_STATE" Association="Self.FK_QUOTE_STATE">
             <End Role="STATE" EntitySet="STATE" />
@@ -361,7 +404,7 @@
           <NavigationProperty Name="ROLE" Relationship="Self.FK_PERSON_ROLE" FromRole="PERSON" ToRole="ROLE" />
           <NavigationProperty Name="SERVICE" Relationship="Self.FK_PERSON_SERVICE" FromRole="PERSON" ToRole="SERVICE" />
           <NavigationProperty Name="PRODUCT_PERSON" Relationship="Self.FK_PRODUCT_PERSON_PERSON" FromRole="PERSON" ToRole="PRODUCT_PERSON" />
-          <NavigationProperty Name="QUOTEs" Relationship="Self.FK_QUOTE_PERSON" FromRole="PERSON" ToRole="QUOTE" />
+          <NavigationProperty Name="QUOTE" Relationship="Self.FK_QUOTE_PERSON" FromRole="PERSON" ToRole="QUOTE" />
         </EntityType>
         <EntityType Name="PRODUCT">
           <Key>
@@ -381,10 +424,10 @@
           <Property Name="IdProductPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdPerson" Type="Int32" />
           <Property Name="IdProduct" Type="Int32" />
-          <Property Name="Stock" Type="Double" />
+          <Property Name="NameProduct" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Double" />
           <Property Name="UnitPrice" Type="Double" />
           <Property Name="TotalPriceProduct" Type="Double" />
-          <Property Name="TotalPrice" Type="Double" />
           <NavigationProperty Name="PERSON" Relationship="Self.FK_PRODUCT_PERSON_PERSON" FromRole="PRODUCT_PERSON" ToRole="PERSON" />
           <NavigationProperty Name="PRODUCT" Relationship="Self.FK_PRODUCT_PERSON_PRODUCT" FromRole="PRODUCT_PERSON" ToRole="PRODUCT" />
         </EntityType>
@@ -393,16 +436,18 @@
             <PropertyRef Name="IdQuote" />
           </Key>
           <Property Name="IdQuote" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdPerson" Type="Int32" />
-          <Property Name="IdState" Type="Int32" />
-          <Property Name="IdCrewPerson" Type="Int32" Nullable="false" />
-          <Property Name="ServiceAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ServiceDepartment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ServiceCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="StarDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdPerson" Type="Int32" Nullable="false" />
+          <Property Name="IdState" Type="Int32" Nullable="false" />
+          <Property Name="IdCrewPerson" Type="Int32" />
+          <Property Name="ServiceAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ServiceDepartment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ServiceCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StarDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="Price" Type="Double" />
           <NavigationProperty Name="PERSON" Relationship="Self.FK_QUOTE_PERSON" FromRole="QUOTE" ToRole="PERSON" />
           <NavigationProperty Name="QUOTE_PRODUCT" Relationship="Self.FK_QUOTE_PRODUCT_QUOTE" FromRole="QUOTE" ToRole="QUOTE_PRODUCT" />
+          <NavigationProperty Name="QUOTE_SERVICE" Relationship="Self.FK_QUOTE_SERVICE_QUOTE" FromRole="QUOTE" ToRole="QUOTE_SERVICE" />
           <NavigationProperty Name="STATE" Relationship="Self.FK_QUOTE_STATE" FromRole="QUOTE" ToRole="STATE" />
         </EntityType>
         <EntityType Name="QUOTE_PRODUCT">
@@ -410,12 +455,23 @@
             <PropertyRef Name="IdQuoteProduct" />
           </Key>
           <Property Name="IdQuoteProduct" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdProduct" Type="Int32" />
           <Property Name="IdQuote" Type="Int32" />
-          <Property Name="TotalPriceProduct" Type="Double" />
+          <Property Name="IdProduct" Type="Int32" />
+          <Property Name="Quantity" Type="Double" />
           <Property Name="TotalPrice" Type="Double" />
           <NavigationProperty Name="PRODUCT" Relationship="Self.FK_QUOTE_PRODUCT_PRODUCT" FromRole="QUOTE_PRODUCT" ToRole="PRODUCT" />
           <NavigationProperty Name="QUOTE" Relationship="Self.FK_QUOTE_PRODUCT_QUOTE" FromRole="QUOTE_PRODUCT" ToRole="QUOTE" />
+        </EntityType>
+        <EntityType Name="QUOTE_SERVICE">
+          <Key>
+            <PropertyRef Name="IdQuoteService" />
+          </Key>
+          <Property Name="IdQuoteService" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdQuote" Type="Int32" />
+          <Property Name="IdService" Type="Int32" />
+          <Property Name="ServicePrice" Type="Double" />
+          <NavigationProperty Name="QUOTE" Relationship="Self.FK_QUOTE_SERVICE_QUOTE" FromRole="QUOTE_SERVICE" ToRole="QUOTE" />
+          <NavigationProperty Name="SERVICE" Relationship="Self.FK_QUOTE_SERVICE_SERVICE" FromRole="QUOTE_SERVICE" ToRole="SERVICE" />
         </EntityType>
         <EntityType Name="ROLE">
           <Key>
@@ -423,7 +479,7 @@
           </Key>
           <Property Name="Id_Role" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameRole" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="People" Relationship="Self.FK_PERSON_ROLE" FromRole="ROLE" ToRole="PERSON" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_PERSON_ROLE" FromRole="ROLE" ToRole="PERSON" />
         </EntityType>
         <EntityType Name="SERVICE">
           <Key>
@@ -431,7 +487,8 @@
           </Key>
           <Property Name="IdService" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="People" Relationship="Self.FK_PERSON_SERVICE" FromRole="SERVICE" ToRole="PERSON" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_PERSON_SERVICE" FromRole="SERVICE" ToRole="PERSON" />
+          <NavigationProperty Name="QUOTE_SERVICE" Relationship="Self.FK_QUOTE_SERVICE_SERVICE" FromRole="SERVICE" ToRole="QUOTE_SERVICE" />
         </EntityType>
         <EntityType Name="STATE">
           <Key>
@@ -439,7 +496,7 @@
           </Key>
           <Property Name="IdState" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="QUOTEs" Relationship="Self.FK_QUOTE_STATE" FromRole="STATE" ToRole="QUOTE" />
+          <NavigationProperty Name="QUOTE" Relationship="Self.FK_QUOTE_STATE" FromRole="STATE" ToRole="QUOTE" />
         </EntityType>
         <Association Name="FK_CREW_PERSON_CREW">
           <End Role="CREW" Type="Self.CREW" Multiplicity="0..1" />
@@ -502,7 +559,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_QUOTE_PERSON">
-          <End Role="PERSON" Type="Self.PERSON" Multiplicity="0..1" />
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="1" />
           <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PERSON">
@@ -549,8 +606,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QUOTE_SERVICE_QUOTE">
+          <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="0..1" />
+          <End Role="QUOTE_SERVICE" Type="Self.QUOTE_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUOTE">
+              <PropertyRef Name="IdQuote" />
+            </Principal>
+            <Dependent Role="QUOTE_SERVICE">
+              <PropertyRef Name="IdQuote" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QUOTE_STATE">
-          <End Role="STATE" Type="Self.STATE" Multiplicity="0..1" />
+          <End Role="STATE" Type="Self.STATE" Multiplicity="1" />
           <End Role="QUOTE" Type="Self.QUOTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="STATE">
@@ -561,56 +630,77 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities7" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CREWs" EntityType="Self.CREW" />
+        <Association Name="FK_QUOTE_SERVICE_SERVICE">
+          <End Role="SERVICE" Type="Self.SERVICE" Multiplicity="0..1" />
+          <End Role="QUOTE_SERVICE" Type="Self.QUOTE_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="IdService" />
+            </Principal>
+            <Dependent Role="QUOTE_SERVICE">
+              <PropertyRef Name="IdService" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BD_14_02Entities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CREW" EntityType="Self.CREW" />
           <EntitySet Name="CREW_PERSON" EntityType="Self.CREW_PERSON" />
-          <EntitySet Name="People" EntityType="Self.PERSON" />
-          <EntitySet Name="PRODUCTs" EntityType="Self.PRODUCT" />
+          <EntitySet Name="PERSON" EntityType="Self.PERSON" />
+          <EntitySet Name="PRODUCT" EntityType="Self.PRODUCT" />
           <EntitySet Name="PRODUCT_PERSON" EntityType="Self.PRODUCT_PERSON" />
-          <EntitySet Name="QUOTEs" EntityType="Self.QUOTE" />
+          <EntitySet Name="QUOTE" EntityType="Self.QUOTE" />
           <EntitySet Name="QUOTE_PRODUCT" EntityType="Self.QUOTE_PRODUCT" />
-          <EntitySet Name="ROLEs" EntityType="Self.ROLE" />
-          <EntitySet Name="SERVICEs" EntityType="Self.SERVICE" />
-          <EntitySet Name="STATEs" EntityType="Self.STATE" />
+          <EntitySet Name="QUOTE_SERVICE" EntityType="Self.QUOTE_SERVICE" />
+          <EntitySet Name="ROLE" EntityType="Self.ROLE" />
+          <EntitySet Name="SERVICE" EntityType="Self.SERVICE" />
+          <EntitySet Name="STATE" EntityType="Self.STATE" />
           <AssociationSet Name="FK_CREW_PERSON_CREW" Association="Self.FK_CREW_PERSON_CREW">
-            <End Role="CREW" EntitySet="CREWs" />
+            <End Role="CREW" EntitySet="CREW" />
             <End Role="CREW_PERSON" EntitySet="CREW_PERSON" />
           </AssociationSet>
           <AssociationSet Name="FK_CREW_PERSON_PERSON" Association="Self.FK_CREW_PERSON_PERSON">
-            <End Role="PERSON" EntitySet="People" />
+            <End Role="PERSON" EntitySet="PERSON" />
             <End Role="CREW_PERSON" EntitySet="CREW_PERSON" />
           </AssociationSet>
           <AssociationSet Name="FK_PERSON_ROLE" Association="Self.FK_PERSON_ROLE">
-            <End Role="ROLE" EntitySet="ROLEs" />
-            <End Role="PERSON" EntitySet="People" />
+            <End Role="ROLE" EntitySet="ROLE" />
+            <End Role="PERSON" EntitySet="PERSON" />
           </AssociationSet>
           <AssociationSet Name="FK_PERSON_SERVICE" Association="Self.FK_PERSON_SERVICE">
-            <End Role="SERVICE" EntitySet="SERVICEs" />
-            <End Role="PERSON" EntitySet="People" />
+            <End Role="SERVICE" EntitySet="SERVICE" />
+            <End Role="PERSON" EntitySet="PERSON" />
           </AssociationSet>
           <AssociationSet Name="FK_PRODUCT_PERSON_PERSON" Association="Self.FK_PRODUCT_PERSON_PERSON">
-            <End Role="PERSON" EntitySet="People" />
+            <End Role="PERSON" EntitySet="PERSON" />
             <End Role="PRODUCT_PERSON" EntitySet="PRODUCT_PERSON" />
           </AssociationSet>
           <AssociationSet Name="FK_QUOTE_PERSON" Association="Self.FK_QUOTE_PERSON">
-            <End Role="PERSON" EntitySet="People" />
-            <End Role="QUOTE" EntitySet="QUOTEs" />
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="QUOTE" EntitySet="QUOTE" />
           </AssociationSet>
           <AssociationSet Name="FK_PRODUCT_PERSON_PRODUCT" Association="Self.FK_PRODUCT_PERSON_PRODUCT">
-            <End Role="PRODUCT" EntitySet="PRODUCTs" />
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
             <End Role="PRODUCT_PERSON" EntitySet="PRODUCT_PERSON" />
           </AssociationSet>
           <AssociationSet Name="FK_QUOTE_PRODUCT_PRODUCT" Association="Self.FK_QUOTE_PRODUCT_PRODUCT">
-            <End Role="PRODUCT" EntitySet="PRODUCTs" />
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
             <End Role="QUOTE_PRODUCT" EntitySet="QUOTE_PRODUCT" />
           </AssociationSet>
           <AssociationSet Name="FK_QUOTE_PRODUCT_QUOTE" Association="Self.FK_QUOTE_PRODUCT_QUOTE">
-            <End Role="QUOTE" EntitySet="QUOTEs" />
+            <End Role="QUOTE" EntitySet="QUOTE" />
             <End Role="QUOTE_PRODUCT" EntitySet="QUOTE_PRODUCT" />
           </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_SERVICE_QUOTE" Association="Self.FK_QUOTE_SERVICE_QUOTE">
+            <End Role="QUOTE" EntitySet="QUOTE" />
+            <End Role="QUOTE_SERVICE" EntitySet="QUOTE_SERVICE" />
+          </AssociationSet>
           <AssociationSet Name="FK_QUOTE_STATE" Association="Self.FK_QUOTE_STATE">
-            <End Role="STATE" EntitySet="STATEs" />
-            <End Role="QUOTE" EntitySet="QUOTEs" />
+            <End Role="STATE" EntitySet="STATE" />
+            <End Role="QUOTE" EntitySet="QUOTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QUOTE_SERVICE_SERVICE" Association="Self.FK_QUOTE_SERVICE_SERVICE">
+            <End Role="SERVICE" EntitySet="SERVICE" />
+            <End Role="QUOTE_SERVICE" EntitySet="QUOTE_SERVICE" />
           </AssociationSet>
           <FunctionImport Name="sp_UserRegistered">
             <Parameter Name="FirstName" Mode="In" Type="String" />
@@ -653,8 +743,8 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities7">
-          <EntitySetMapping Name="CREWs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="BD_14_02Entities3">
+          <EntitySetMapping Name="CREW">
             <EntityTypeMapping TypeName="Model.CREW">
               <MappingFragment StoreEntitySet="CREW">
                 <ScalarProperty Name="IdCrew" ColumnName="IdCrew" />
@@ -671,7 +761,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="People">
+          <EntitySetMapping Name="PERSON">
             <EntityTypeMapping TypeName="Model.PERSON">
               <MappingFragment StoreEntitySet="PERSON">
                 <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
@@ -693,7 +783,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PRODUCTs">
+          <EntitySetMapping Name="PRODUCT">
             <EntityTypeMapping TypeName="Model.PRODUCT">
               <MappingFragment StoreEntitySet="PRODUCT">
                 <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
@@ -709,14 +799,14 @@
                 <ScalarProperty Name="IdProductPerson" ColumnName="IdProductPerson" />
                 <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
                 <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
-                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="NameProduct" ColumnName="NameProduct" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
                 <ScalarProperty Name="TotalPriceProduct" ColumnName="TotalPriceProduct" />
-                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="QUOTEs">
+          <EntitySetMapping Name="QUOTE">
             <EntityTypeMapping TypeName="Model.QUOTE">
               <MappingFragment StoreEntitySet="QUOTE">
                 <ScalarProperty Name="IdQuote" ColumnName="IdQuote" />
@@ -728,6 +818,7 @@
                 <ScalarProperty Name="ServiceCity" ColumnName="ServiceCity" />
                 <ScalarProperty Name="StarDate" ColumnName="StarDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -735,14 +826,24 @@
             <EntityTypeMapping TypeName="Model.QUOTE_PRODUCT">
               <MappingFragment StoreEntitySet="QUOTE_PRODUCT">
                 <ScalarProperty Name="IdQuoteProduct" ColumnName="IdQuoteProduct" />
-                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
                 <ScalarProperty Name="IdQuote" ColumnName="IdQuote" />
-                <ScalarProperty Name="TotalPriceProduct" ColumnName="TotalPriceProduct" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ROLEs">
+          <EntitySetMapping Name="QUOTE_SERVICE">
+            <EntityTypeMapping TypeName="Model.QUOTE_SERVICE">
+              <MappingFragment StoreEntitySet="QUOTE_SERVICE">
+                <ScalarProperty Name="IdQuoteService" ColumnName="IdQuoteService" />
+                <ScalarProperty Name="IdQuote" ColumnName="IdQuote" />
+                <ScalarProperty Name="IdService" ColumnName="IdService" />
+                <ScalarProperty Name="ServicePrice" ColumnName="ServicePrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLE">
             <EntityTypeMapping TypeName="Model.ROLE">
               <MappingFragment StoreEntitySet="ROLE">
                 <ScalarProperty Name="Id_Role" ColumnName="Id_Role" />
@@ -750,7 +851,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SERVICEs">
+          <EntitySetMapping Name="SERVICE">
             <EntityTypeMapping TypeName="Model.SERVICE">
               <MappingFragment StoreEntitySet="SERVICE">
                 <ScalarProperty Name="IdService" ColumnName="IdService" />
@@ -758,7 +859,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="STATEs">
+          <EntitySetMapping Name="STATE">
             <EntityTypeMapping TypeName="Model.STATE">
               <MappingFragment StoreEntitySet="STATE">
                 <ScalarProperty Name="IdState" ColumnName="IdState" />
@@ -783,7 +884,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />

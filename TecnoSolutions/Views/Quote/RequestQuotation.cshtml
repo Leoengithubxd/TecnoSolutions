@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Quote";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+@model List<TechnoSolutions.Dtos.ServiceSelectionDto>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seleccionar Productos - TechnoSolutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .table-primary {
+            --bs-table-bg: #0d3039;
+            --bs-table-color: whitesmoke;
+        }
+
+        .table-container {
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #091324;
+        }
+
+        .header-title {
+            font-size: 28px;
+            color: #0d6efd;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #0d3039;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #0d3039;
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #091021;
+            }
+
+            .btn-primary:hover {
+                background-color: #0b5ed7;
+            }
+
+        .text-principal {
+            color: whitesmoke;
+        }
+
+        .alert-danger {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-4">
+
+            <h2 class=" mt-3 text-principal">Tu cotizacion</h2>
+        </div>
+    </div>
+</body>
+</html>

@@ -17,13 +17,13 @@ namespace TecnoSolutions.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public STATE()
         {
-            this.QUOTEs = new HashSet<QUOTE>();
+            this.QUOTE = new HashSet<QUOTE>();
         }
     
         public int IdState { get; set; }
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QUOTE> QUOTEs { get; set; }
+        public virtual ICollection<QUOTE> QUOTE { get; set; }
     }
 }

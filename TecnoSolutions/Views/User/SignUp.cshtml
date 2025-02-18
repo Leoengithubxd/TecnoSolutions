@@ -32,25 +32,25 @@
                                         <div class="mb-3">
 
                                             <label for="nombre" class="form-label" style="color:#ffff">Nombre</label>
-                                            <input type="text" name="FirstName" class="form-control input_user" value="" placeholder="Nombre">
+                                            <input type="text" name="FirstName" class="form-control input_user" value="" placeholder="Nombre" required>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="apellido" class="form-label" style="color:#ffff">Apellido</label>
-                                            <input type="text" name="LastName" class="form-control input_user" value="" placeholder="Apellido">
+                                            <input type="text" name="LastName" class="form-control input_user" value="" placeholder="Apellido" required>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="documento" class="form-label" style="color:#ffff">Documento</label>
-                                            <input type="text" name="Document" class="form-control input_user" value="" placeholder="Documento">
+                                            <input type="text" name="Document" class="form-control input_user" value="" placeholder="Documento" required>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="telefono" class="form-label" style="color:#ffff">Teléfono</label>
-                                            <input type="text" name="Phone" class="form-control input_user" value="" placeholder="Telefono">
+                                            <input type="text" name="Phone" class="form-control input_user" value="" placeholder="Telefono" required>
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -73,27 +73,27 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
-                                            <label for="correo" class="form-label" style="color:#ffff">Correo</label>
-                                            <input type="text" name="Email" class="form-control input_user" value="" placeholder="Correo">
+                                            <label for="correo" class="form-label" style="color:#ffff">Correo </label>
+                                            <input type="text" name="Email" class="form-control input_user" value="" placeholder="Correo (gmail.com)" required>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="password" class="form-label" style="color:#ffff">Contraseña</label>
-                                            <input type="password" name="Password" class="form-control input_user" value="" placeholder="Contraseña">
+                                            <input type="password" name="Password" class="form-control input_user" value="" placeholder="Contraseña (+5, 1Mayus, No +*#%)" required>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="confirmarPassword" class="form-label" style="color:#ffff">Confirmar Contraseña</label>
-                                            <input type="password" name="VerifyPassword" class="form-control input_pass" value="" placeholder="Confirmar Contraseña">
+                                            <input type="password" name="VerifyPassword" class="form-control input_pass" value="" placeholder="Confirmar Contraseña" required>
                                         </div>
                                     </div>
                                 </div>
-                                @if (ViewData["Mensaje"] != null)
+                                @if (ViewData["Message"] != null)
                                 {
                                     <div class="alert alert-danger" role="alert">
-                                        @ViewData["Mensaje"]
+                                        @ViewData["Message"]
                                     </div>
                                 }
 

@@ -4,17 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="814d093b94c24a739c0be29d4fc6f059" Name="Diagram1">
-        <EntityTypeShape EntityType="Model.CREW" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.CREW_PERSON" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.PERSON" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.PRODUCT" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.PRODUCT_PERSON" Width="1.5" PointX="8.25" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.QUOTE" Width="1.5" PointX="5.25" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.QUOTE_PRODUCT" Width="1.5" PointX="7.5" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.ROLE" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.SERVICE" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.STATE" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="284831271a694a46bdb1e0f1f391fae9" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.CREW" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.CREW_PERSON" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.PERSON" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.PRODUCT" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.PRODUCT_PERSON" Width="1.5" PointX="8.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.QUOTE" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.QUOTE_PRODUCT" Width="1.5" PointX="7.5" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.QUOTE_SERVICE" Width="1.5" PointX="10.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ROLE" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.SERVICE" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.STATE" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
         <AssociationConnector Association="Model.FK_CREW_PERSON_CREW" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_CREW_PERSON_PERSON" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_PERSON_ROLE" ManuallyRouted="false" />
@@ -24,7 +25,9 @@
         <AssociationConnector Association="Model.FK_PRODUCT_PERSON_PRODUCT" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_QUOTE_PRODUCT_PRODUCT" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_QUOTE_PRODUCT_QUOTE" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_QUOTE_SERVICE_QUOTE" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_QUOTE_STATE" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_QUOTE_SERVICE_SERVICE" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -17,10 +17,10 @@ namespace TecnoSolutions.Models
         public int IdProductPerson { get; set; }
         public Nullable<int> IdPerson { get; set; }
         public Nullable<int> IdProduct { get; set; }
-        public Nullable<double> Stock { get; set; }
+        public string NameProduct { get; set; }
+        public Nullable<double> Quantity { get; set; }
         public Nullable<double> UnitPrice { get; set; }
         public Nullable<double> TotalPriceProduct { get; set; }
-        public Nullable<double> TotalPrice { get; set; }
     
         public virtual PERSON PERSON { get; set; }
         public virtual PRODUCT PRODUCT { get; set; }

@@ -1,7 +1,47 @@
-﻿
-@{
-    ViewBag.Title = "purchaseConfirmation";
+﻿@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
 }
 
-<h2>purchaseConfirmation</h2>
+@model List<TechnoSolutions.Dtos.ProductSelectionDto>
 
+<h2>Confirmación de Compra</h2>
+
+    @if (Model.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.NameProduct</td>
+                        <td>@product.Quantity</td>
+                        <td>@product.UnitPrice</td>
+                        <td>@product.TotalPriceProduct</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h3>Total a Pagar: $@ViewBag.TotalGeneral</h3>
+
+        <form action="@Url.Action("ConfirmPurchase", "Product")" method="post">
+            <button type="submit" class="btn btn-success">Comprar</button>
+        </form>
+
+        <form method="post" action="@Url.Action("CancelPurchase", "Product")">
+            <button type="submit" class="btn btn-danger">Cancelar</button>
+        </form>
+    }
+    else
+    {
+        <p>No hay productos seleccionados.</p>
+    }

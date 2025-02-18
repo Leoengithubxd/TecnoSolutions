@@ -18,21 +18,25 @@ namespace TecnoSolutions.Models
         public QUOTE()
         {
             this.QUOTE_PRODUCT = new HashSet<QUOTE_PRODUCT>();
+            this.QUOTE_SERVICE = new HashSet<QUOTE_SERVICE>();
         }
     
         public int IdQuote { get; set; }
-        public Nullable<int> IdPerson { get; set; }
-        public Nullable<int> IdState { get; set; }
-        public int IdCrewPerson { get; set; }
+        public int IdPerson { get; set; }
+        public int IdState { get; set; }
+        public Nullable<int> IdCrewPerson { get; set; }
         public string ServiceAddress { get; set; }
         public string ServiceDepartment { get; set; }
         public string ServiceCity { get; set; }
-        public System.DateTime StarDate { get; set; }
-        public System.DateTime EndDate { get; set; }
+        public Nullable<System.DateTime> StarDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
+        public Nullable<double> Price { get; set; }
     
         public virtual PERSON PERSON { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QUOTE_PRODUCT> QUOTE_PRODUCT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QUOTE_SERVICE> QUOTE_SERVICE { get; set; }
         public virtual STATE STATE { get; set; }
     }
 }

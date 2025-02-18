@@ -11,15 +11,15 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Runtime.InteropServices;
 using System.Web.Services.Description;
+using Microsoft.Ajax.Utilities;
+using System.Text.RegularExpressions;
 
 namespace TecnoSolutions.Views.User
 {
     public class UserController : Controller
     {
+        static string cadena = "Data Source=DESKTOP-MG8HU3J ;Initial Catalog=BD 14_02; Integrated Security=true";
 
-        static string cadena = "Data Source=DESKTOP-9POBJOB ;Initial Catalog=BD 14_02.bacpac ;Integrated Security=true";
-
-        // GET: User
         public ActionResult Index()
         {
             return View();
@@ -52,85 +52,146 @@ namespace TecnoSolutions.Views.User
         {
             return View();
         }
-        
-        [HttpPost]
-        
-            public ActionResult SignUpEmployees(UserDto user)
-            {
-                bool registered;
-                string message;
-
-                if (user.Password == user.VerifyPassword)
-                {
-                    user.Password = ConvertirSha256(user.Password);
-                }
-                else
-                {
-                    ViewData["Mensaje"] = "The passwords must be the same. Try again.";
-                    return View();
-                }
-
-              
-
-                using (SqlConnection cn = new SqlConnection(cadena))
-                {
-                    SqlCommand cmd = new SqlCommand("sp_UserRegisteredEmployees", cn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("@IdRole", user.IdRole);
-                    cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
-                    cmd.Parameters.AddWithValue("@LastName", user.LastName);
-                    cmd.Parameters.AddWithValue("@Document", user.Document);
-                    cmd.Parameters.AddWithValue("@Phone", user.Phone);
-                    cmd.Parameters.AddWithValue("@Address", user.Address);
-                    cmd.Parameters.AddWithValue("@Department", user.Department);
-                    cmd.Parameters.AddWithValue("@City", user.City);
-                    cmd.Parameters.AddWithValue("@Email", user.Email);
-                    cmd.Parameters.AddWithValue("@Password", user.Password);
-                    cmd.Parameters.AddWithValue("@Arl", user.Arl);
-                    cmd.Parameters.AddWithValue("@Eps", user.Eps);
-                    
-                    cmd.Parameters.AddWithValue("@Position", user.Position);
-
-                    SqlParameter outputRegistered = new SqlParameter("@Registered", SqlDbType.Bit) { Direction = ParameterDirection.Output };
-                    SqlParameter outputMessage = new SqlParameter("@Message", SqlDbType.VarChar, 100) { Direction = ParameterDirection.Output };
-
-                    cmd.Parameters.Add(outputRegistered);
-                    cmd.Parameters.Add(outputMessage);
-
-                    cn.Open();
-                    cmd.ExecuteNonQuery();
-
-                    registered = Convert.ToBoolean(outputRegistered.Value);
-                    message = outputMessage.Value.ToString();
-                }
-
-                ViewData["Message"] = message;
-
-                if (registered)
-                {
-                    return RedirectToAction("Login", "User");
-                }
-
-                return View();
-            }
-            public ActionResult SignUp()
+        public ActionResult SignUp()
         {
             return View();
         }
+
+
+        [HttpPost]
+        public ActionResult SignUpEmployees(UserDto user)
+        {
+            bool registered;
+            string message;
+            if (user.Document.Length < 0 || user.Document.Length > 10)
+            {
+                ViewData["Message"] = "El documento no puede ser mayor a 10";
+                return View();
+            }
+            if (!Regex.IsMatch(user.Phone, "^\\d{10}$"))
+            {
+                ViewData["Message"] = "El Telefono debe tener 10 digitos";
+                return View();
+            }
+            if (!user.Email.EndsWith("@gmail.com"))
+            {
+                ViewData["Message"] = "Solo se admiten cuentas (@gmail.com)";
+                return View();
+            }
+            if (user.Password.Length < 5 || user.Password.Length > 10)
+            {
+                ViewData["Message"] = "La Contraseña debe tener entre 5 y 15 caracteres";
+                return View();
+            }
+            if (!user.Password.Any(char.IsUpper))
+            {
+                ViewData["Message"] = "La Contraseña debe tener 1 letra en mayuscula";
+                return View();
+            }
+                else
+                {
+                    if (user.Password.Any(c => !char.IsLetterOrDigit(c)))
+                    {
+                        ViewData["Message"] = "La Contraseña no puede tener caracteres especiales";
+                        return View();
+                    }
+                    if ((user.Password != user.VerifyPassword))
+                    {
+                        ViewData["Mensaje"] = "La Contraseña y la Confirmacion no coinciden";
+                        return View();
+                    }
+                        else
+                        {
+                            user.Password = ConvertirSha256(user.Password);
+                        }
+                }
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                SqlCommand cmd = new SqlCommand("sp_UserRegisteredEmployees", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@IdRole", user.IdRole);
+                cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", user.LastName);
+                cmd.Parameters.AddWithValue("@Document", user.Document);
+                cmd.Parameters.AddWithValue("@Phone", user.Phone);
+                cmd.Parameters.AddWithValue("@Address", user.Address);
+                cmd.Parameters.AddWithValue("@Department", user.Department);
+                cmd.Parameters.AddWithValue("@City", user.City);
+                cmd.Parameters.AddWithValue("@Email", user.Email);
+                cmd.Parameters.AddWithValue("@Password", user.Password);
+                cmd.Parameters.AddWithValue("@Arl", user.Arl);
+                cmd.Parameters.AddWithValue("@Eps", user.Eps);
+                cmd.Parameters.AddWithValue("@Position", user.Position);
+
+                SqlParameter outputRegistered = new SqlParameter("@Registered", SqlDbType.Bit) { Direction = ParameterDirection.Output };
+                SqlParameter outputMessage = new SqlParameter("@Message", SqlDbType.VarChar, 100) { Direction = ParameterDirection.Output };
+
+                cmd.Parameters.Add(outputRegistered);
+                cmd.Parameters.Add(outputMessage);
+
+                cn.Open();
+                cmd.ExecuteNonQuery();
+
+                registered = Convert.ToBoolean(outputRegistered.Value);
+                message = outputMessage.Value.ToString();
+            }
+            ViewData["Message"] = message;
+            if (registered)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            return View();
+        }
+
+
         [HttpPost]
         public ActionResult SignUp(UserDto user)
         {
             bool registered;
             string message;
-            if (user.Password == user.VerifyPassword)
+            if (user.Document.Length < 0 || user.Document.Length > 10)
             {
-                user.Password = ConvertirSha256(user.Password);
-            } else
-            {
-                ViewData["Mensaje"] = "The passwords must be the same. Try again.";
+                ViewData["Message"] = "Tu documento no puede ser mayor a 10 digitos";
                 return View();
             }
+            if (!Regex.IsMatch(user.Phone, "^\\d{10}$"))
+            {
+                ViewData["Message"] = "Tu Telefono debe tener 10 digitos";
+                return View();
+            }
+            if (!user.Email.EndsWith("@gmail.com"))
+                {
+                    ViewData["Message"] = "Solo se admiten cuentas (@gmail.com)";
+                    return View();
+                }
+            if (user.Password.Length < 5 || user.Password.Length > 15)
+                {
+                    ViewData["Message"] = "La Contraseña debe tener entre 5 y 15 caracteres";
+                    return View();
+                }
+            if (!user.Password.Any(char.IsUpper))
+            {
+                ViewData["Message"] = "La Contraseña debe tener 1 letra en mayuscula";
+                return View();
+            }
+                else
+                {
+                    if (user.Password.Any(c => !char.IsLetterOrDigit(c)))
+                    {
+                        ViewData["Message"] = "La Contraseña no puede tener caracteres especiales";
+                        return View();
+                    }
+                    if ((user.Password != user.VerifyPassword))
+                    {
+                        ViewData["Mensaje"] = "La Contraseña y la Confirmacion no coinciden";
+                        return View();
+                    }
+                        else
+                        {
+                            user.Password = ConvertirSha256(user.Password);
+                        }
+                }
             int IdRol = 1;
             using (SqlConnection cn = new SqlConnection(cadena))
             {
@@ -151,17 +212,16 @@ namespace TecnoSolutions.Views.User
                 cn.Open();
                 cmd.ExecuteNonQuery();
                 registered = true;
-                //message= cmd.Parameters["Message"].Value.ToString();
+                message = cmd.Parameters["@Message"].Value.ToString();
             }
-            //ViewData["Message"] = message;
+            ViewData["Message"] = message;
             if (registered==true)
             {
                 return RedirectToAction("Login", "User");
             }
-
             return View();
-            
         }
+
 
         [HttpPost]
         public ActionResult Login(UserDto user)
@@ -177,11 +237,9 @@ namespace TecnoSolutions.Views.User
                 cmd.ExecuteNonQuery();
                 user.IdPerson = Convert.ToInt32(cmd.ExecuteScalar().ToString());
             }
-
             if (user.IdPerson != 0)
             {
                 Session["IdUser"] = user.IdPerson;
-
                 return RedirectToAction("Home","User");
             }
             else
@@ -190,21 +248,26 @@ namespace TecnoSolutions.Views.User
                 return View();
             }
         }
+
+
+
         public static string ConvertirSha256(string texto)
         {
-            //using System.Text;
-            //USAR LA REFERENCIA DE "System.Security.Cryptography"
-
-            StringBuilder Sb = new StringBuilder();
-            using (SHA256 hash = SHA256Managed.Create())
+            if (string.IsNullOrEmpty(texto))
             {
-                Encoding enc = Encoding.UTF8;
-                byte[] result = hash.ComputeHash(enc.GetBytes(texto));
-
-                foreach (byte b in result)
-                    Sb.Append(b.ToString("x2"));
+                throw new ArgumentNullException(nameof(texto), "Insert password");
             }
 
+            StringBuilder Sb = new StringBuilder();
+            using (SHA256 hash = SHA256.Create())  // SHA256.Create() en lugar de SHA256Managed
+            {
+                byte[] result = hash.ComputeHash(Encoding.UTF8.GetBytes(texto));
+
+                foreach (byte b in result)
+                {
+                    Sb.Append(b.ToString("x2"));
+                }
+            }
             return Sb.ToString();
         }
     }

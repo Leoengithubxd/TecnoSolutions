@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+@model List<TechnoSolutions.Dtos.ProductSelectionDto>
+
+<h2>Factura de Compra</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.NameProduct</td>
+                <td>@product.Quantity</td>
+                <td>@product.UnitPrice</td>
+                <td>@product.TotalPriceProduct</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Total: $@ViewBag.TotalGeneral</h3>
+<p>¡Gracias por tu compra!</p>
+
+<a href="@Url.Action("SelectProducts", "Product")" class="btn btn-primary">Volver</a>
+
+<button onclick="printInvoice()" class="btn btn-danger">Imprimir PDF</button>
+
+<script>function printInvoice() {
+        window.print();
+        }
+</script>

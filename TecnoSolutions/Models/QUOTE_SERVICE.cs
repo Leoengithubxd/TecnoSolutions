@@ -12,15 +12,14 @@ namespace TecnoSolutions.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class QUOTE_PRODUCT
+    public partial class QUOTE_SERVICE
     {
-        public int IdQuoteProduct { get; set; }
+        public int IdQuoteService { get; set; }
         public Nullable<int> IdQuote { get; set; }
-        public Nullable<int> IdProduct { get; set; }
-        public Nullable<double> Quantity { get; set; }
-        public Nullable<double> TotalPrice { get; set; }
+        public Nullable<int> IdService { get; set; }
+        public Nullable<double> ServicePrice { get; set; }
     
-        public virtual PRODUCT PRODUCT { get; set; }
         public virtual QUOTE QUOTE { get; set; }
+        public virtual SERVICE SERVICE { get; set; }
     }
 }
