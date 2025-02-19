@@ -18,7 +18,7 @@ namespace TecnoSolutions.Views.User
 {
     public class UserController : Controller
     {
-        static string cadena = "Data Source=DESKTOP-MG8HU3J ;Initial Catalog=BD 14_02; Integrated Security=true";
+        static string cadena = "Data Source= LEO ;Initial Catalog=BD 14_02; Integrated Security=true"; //DESKTOP-MG8HU3J, Carlitos
 
         public ActionResult Index()
         {

@@ -10,7 +10,7 @@ namespace TechnoSolutions.Repositories
     {
         public List<ServiceSelectionDto> GetAllServices() //Traer tabla Service
         {
-            using (var db = new BD_14_02Entities3())
+            using (var db = new BD_14_02Entities4())
             {
                 var services = db.SERVICE
                     .Select(p => new
@@ -34,7 +34,7 @@ namespace TechnoSolutions.Repositories
             int userId, List<ServiceSelectionDto> selectedServices, 
             string address, string department, string city) //Cargar Cotizacion
         {
-            using (var db = new BD_14_02Entities3())
+            using (var db = new BD_14_02Entities4())
             {
                 foreach (var service in selectedServices)
                 {

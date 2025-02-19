@@ -15,10 +15,10 @@ namespace TecnoSolutions.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class BD_14_02Entities3 : DbContext
+    public partial class BD_14_02Entities4 : DbContext
     {
-        public BD_14_02Entities3()
-            : base("name=BD_14_02Entities3")
+        public BD_14_02Entities4()
+            : base("name=BD_14_02Entities4")
         {
         }
     

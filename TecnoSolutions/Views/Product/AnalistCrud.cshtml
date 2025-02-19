@@ -1,0 +1,66 @@
+﻿@model List<TecnoSolutions.Dtos.Product>
+
+<h2>Products</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No products available.</p>
+}
+else
+{
+    <form method="post" action="@Url.Action("GenerateReport", "Product")">
+        <table>
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Stock</th>
+                    <th>Unit Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Product in Model)
+                {
+                    <tr id="Product-@Product.IdProduct">
+                        <td>
+                            <input type="checkbox" name="selectedProducts" value="@Product.IdProduct" />
+                        </td>
+                        <td>@Product.Name</td>
+                        <td>@Product.Stock</td>
+                        <td>@Product.UnitPrice</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = Product.IdProduct }, new { @class = "btn btn-primary" }) |
+                            <button type="button" class="btn btn-danger delete-product" data-id="@Product.IdProduct">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Generate Report</button>
+    </form>
+}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.delete-product').click(function () {
+                var productId = $(this).data('id');
+                if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Product")',
+                        type: 'POST',
+                        data: { id: productId },
+                        success: function (result) {
+                            // Eliminar la fila del producto de la tabla
+                            $('#Product-' + productId).remove();
+                            alert('Producto eliminado con éxito.');
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error al eliminar el producto: ' + error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>

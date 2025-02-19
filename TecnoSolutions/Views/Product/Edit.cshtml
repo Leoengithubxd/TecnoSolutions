@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+
+@model TecnoSolutions.Dtos.Product
+<form asp-action="Edit" method="post">
+    <div>
+        <label for="Name">Product Name:</label>
+        <input type="text" id="Name" name="Name" value="@Model.Name" />
+    </div>
+    <div>
+        <label for="Stock">Stock:</label>
+        <input type="number" id="Stock" name="Stock" value="@Model.Stock" />
+    </div>
+    <div>
+        <label for="UnitPrice">Unit Price:</label>
+        <input type="text" id="UnitPrice" name="UnitPrice" value="@Model.UnitPrice" />
+    </div>
+    <div>
+        <input type="hidden" name="IdProduct" value="@Model.IdProduct" />
+    </div>
+    <button type="submit">Save</button>
+</form>

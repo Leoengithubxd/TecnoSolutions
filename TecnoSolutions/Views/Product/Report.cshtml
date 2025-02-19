@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Report";
+}
+
+@model List<TecnoSolutions.Models.PRODUCT>
+
+<form method="post" action="@Url.Action("GeneratePDF", "Product")">
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Requested Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[i].Name</td>
+                    <td>
+                        <input type="hidden" name="products[@i].IdProduct" value="@Model[i].IdProduct" />
+                        <input type="number" name="products[@i].RequestedStock" value="1" min="1" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button onclick="printInvoice()" type="submit"> Generate PDF</button>
+</form>
+<script>
+function printInVoice() {
+    window.print();
+}
+</script>
