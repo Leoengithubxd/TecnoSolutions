@@ -14,7 +14,7 @@ namespace TechnoSolutions.Repositories
 {
     public class ProductRepository
     {
-        public string connectionString = "Data Source= LEO ; Initial Catalog= BD 14_02 ; Integrated Security=true";
+        public string connectionString = "Data Source= LAPTOP-NP7BDMFC ; Initial Catalog= BD 14_02 ; Integrated Security=true";
 
 
         public List<Product> GetAllProducts()
@@ -91,7 +91,7 @@ namespace TechnoSolutions.Repositories
     {
         public void SaveSelectedProducts(int userId, List<ProductSelectionDto> selectedProducts) //Llenar tabla Product_Person
         {
-            using (var db = new BD_14_02Entities())
+            using (var db = new BD_14_03Entities())
             {
                 foreach (var product in selectedProducts)
                 {
@@ -112,7 +112,7 @@ namespace TechnoSolutions.Repositories
 
         public List<ProductSelectionDto> GetSelectedProducts(int userId) //Traer productos seleccionados de tabla Product_Person
         {
-            using (var db = new BD_14_02Entities())
+            using (var db = new BD_14_03Entities())
             {
                 var productsSelected = db.PRODUCT_PERSON
                 .Where(p => p.IdPerson == userId)
@@ -140,7 +140,7 @@ namespace TechnoSolutions.Repositories
 
         public void DeleteUserProducts(int userId) //Eliminar productos seleccionados tabla Product_Person
         {
-            using (var db = new BD_14_02Entities())
+            using (var db = new BD_14_03Entities())
             {
                 var userProducts = db.PRODUCT_PERSON.Where(p => p.IdPerson == userId).ToList();
 

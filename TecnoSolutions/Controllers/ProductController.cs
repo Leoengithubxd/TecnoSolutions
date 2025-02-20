@@ -197,7 +197,7 @@ namespace TechnoSolutions.Controllers
                 IdProduct = p.IdProduct,
                 Name = p.Name,
                 Stock = requestedStock.ContainsKey(p.IdProduct) ? requestedStock[p.IdProduct] : p.Stock,
-                UnitPrice = p.UnitPrice
+                UnitPrice = (double?)Convert.ToDecimal(p.UnitPrice)
             }).ToList();
 
             // Generar el reporte en PDF desde la vista

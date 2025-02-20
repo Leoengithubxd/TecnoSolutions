@@ -1,0 +1,51 @@
+﻿@model List<TechnoSolutions.Dtos.QuoteDto>
+
+<h2>Mis Cotizaciones</h2>
+
+@using (Html.BeginForm("UpdateQuotes", "ProductQuote", FormMethod.Post))
+{
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Número Cotización</th>
+                <th>Dirección</th>
+                <th>Departamento</th>
+                <th>Ciudad</th>
+                <th>Cuadrilla</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    @Html.HiddenFor(m => Model[i].IdQuote)
+                    <td>@Model[i].IdQuote</td>
+                    <td>@Model[i].ServiceAddress</td>
+                    <td>@Model[i].ServiceDepartment</td>
+                    <td>@Model[i].ServiceCity</td>
+                    <td>
+                        @Html.TextBoxFor(m => Model[i].IdCrewPerson, new { @class = "form-control", type = "number", placeholder = "Cuadrilla" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => Model[i].StarDate, new { @class = "form-control", type = "date" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => Model[i].EndDate, new { @class = "form-control", type = "date" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => Model[i].Price, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Precio" })
+                    </td>
+                    <td>
+                        <a href="@Url.Action("SelectProductsQuote", "ProductQuote", new { idQuote = Model[i].IdQuote })" class="btn btn-success">Agregar Productos</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+}

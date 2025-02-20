@@ -1,12 +1,12 @@
-﻿
-@{
-    ViewBag.Title = "Report";
+﻿@{
+    ViewBag.Title = "Product Request Report";
 }
-
 @model List<TecnoSolutions.Models.PRODUCT>
 
-<form method="post" action="@Url.Action("GeneratePDF", "Product")">
-    <table>
+<h2>📝 Product Request Report</h2>
+
+<form method="post" action="@Url.Action("SendEmail", "Analist")">
+    <table border="1" cellpadding="8" cellspacing="0">
         <thead>
             <tr>
                 <th>Product Name</th>
@@ -20,16 +20,19 @@
                     <td>@Model[i].Name</td>
                     <td>
                         <input type="hidden" name="products[@i].IdProduct" value="@Model[i].IdProduct" />
-                        <input type="number" name="products[@i].RequestedStock" value="1" min="1" />
+                        <input type="hidden" name="products[@i].Name" value="@Model[i].Name" />
+                        <input type="number" name="products[@i].RequestedStock" value="1" min="1" required />
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <button onclick="printInvoice()" type="submit"> Generate PDF</button>
+    <br />
+    <button type="submit">📧 Enviar Correo</button>
 </form>
+
 <script>
-function printInVoice() {
-    window.print();
-}
+    function printInvoice() {
+        window.print();
+    }
 </script>
