@@ -59,5 +59,51 @@ namespace TechnoSolutions.Repositories
                 db.SaveChanges();
             }
         }
-    }
+        public void SaveQuoteProducts(int idQuote, List<ProductSelectionDto> selectedProducts)
+        {
+            using (var db = new BD_14_03Entities())
+            {
+                // Aquí ya NO creamos la cotización, porque ya existe
+                var quote = db.QUOTEs.Find(idQuote);
+
+                if (quote == null)
+                {
+                    throw new Exception("No se encontró la cotización con el Id especificado.");
+                }
+
+                foreach (var product in selectedProducts)
+                {
+                    var quoteProduct = new QUOTE_PRODUCT
+                    {
+                        IdQuote = idQuote,
+                        IdProduct = product.IdProduct,
+                        Quantity = product.Quantity,
+                        TotalPrice = (double?)(product.UnitPrice * product.Quantity)
+                    };
+                    db.QUOTE_PRODUCT.Add(quoteProduct);
+                }
+                db.SaveChanges();
+            }
+        }
+
+
+        public List<ProductSelectionDto> GetQuoteProducts(int quoteId)
+        {
+            using (var db = new BD_14_03Entities())
+            {
+                var products = db.QUOTE_PRODUCT
+                    .Where(qp => qp.IdQuote == quoteId)
+                    .Select(qp => new ProductSelectionDto
+                    {
+                        IdProduct = (int)qp.IdProduct,
+                        Quantity = (int)qp.Quantity,
+                        TotalPriceProduct = Convert.ToDecimal(qp.TotalPrice)
+                    }).ToList();
+
+                return products;
+            }
+        }
+
+    
+}
 }
