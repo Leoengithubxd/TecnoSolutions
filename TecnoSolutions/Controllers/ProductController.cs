@@ -242,7 +242,7 @@ namespace TechnoSolutions.Controllers
 
 
         [HttpPost] //Cargar tabla Product_Person
-        public ActionResult SelectProducts(List<ProductSelectionDto> selectedProducts)
+        public ActionResult SelectProducts(List<ProductSelectionDto > selectedProducts, string address, string department, string city)
         {
             var userId = (Session["IdUser"] != null) ? (int)Session["IdUser"] : 0;
 
@@ -256,12 +256,12 @@ namespace TechnoSolutions.Controllers
                 TempData["Message"] = "Debe seleccionar al menos un producto y especificar la cantidad.";
                 return RedirectToAction("SelectProducts");
             }
-            _productPersonRepository.SaveSelectedProducts(userId, productsToSave);
+            _productPersonRepository.SaveSelectedProducts(userId, productsToSave, address, department, city);
             return RedirectToAction("PurchaseConfirmation","Product");
         }
 
         [HttpPost] //Confirmar Compra
-        public ActionResult ConfirmPurchase()
+        public ActionResult ConfirmPurchase(List<ProductSelectionDto> selectedProducts, string address, string department, string city)
         {
             var userId = (Session["IdUser"] != null) ? (int)Session["IdUser"] : 0;
 
@@ -275,7 +275,7 @@ namespace TechnoSolutions.Controllers
                 TempData["Message"] = "No tienes productos seleccionados.";
                 return RedirectToAction("SelectProducts");
             }
-            _productPersonRepository.DeleteUserProducts(userId);
+            _productPersonRepository.CreateInvoice(userId, purchaseProducts, address, department, city);
 
             TempData["Message"] = "Compra realizada";
 

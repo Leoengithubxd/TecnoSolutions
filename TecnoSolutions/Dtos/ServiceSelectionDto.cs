@@ -8,7 +8,7 @@
         public int Quantity { get; set; }
         public string ServiceAddress { get; set; }
         public string ServiceDepartment { get; set; }
-        public string ServiceCitY { get; set; }
+        public string ServiceCity { get; set; }
         public int IdState { get; set; }
     }
 }
