@@ -26,6 +26,72 @@ namespace TechnoSolutions.Controllers
         {
             return View();
         }
+        public ActionResult ApproveQuote()
+        {
+            using (var db = new BD_14_02Entities())
+            {
+                var quotes = db.QUOTE
+                    .Select(p => new
+                    {
+                        p.IdQuote,
+                        p.IdState,
+                        p.Price
+                    })
+                    .AsEnumerable()
+                    .Select(p => new QuoteDto
+                    {
+                        IdQuote = p.IdQuote,
+                        IdState = p.IdState,
+                        Price = Convert.ToDecimal(p.Price)
+                    })
+                    .ToList();
+
+                return View(quotes);
+            }
+        }
+
+
+        public ActionResult QuoteDetails(int id)
+{
+    using (var db = new BD_14_02Entities())
+    {
+        var quote = db.QUOTE
+            .Where(p => p.IdQuote == id)
+            .Select(p => new
+            {
+                p.IdQuote,
+                p.IdPerson,
+                p.IdState,
+                p.ServiceAddress,
+                p.ServiceDepartment,
+                p.ServiceCity,
+                p.StarDate,
+                p.EndDate,
+                p.Price
+            })
+            .AsEnumerable()
+            .Select(p => new QuoteDto
+            {
+                IdQuote = p.IdQuote,
+                IdPerson = p.IdPerson,
+                IdState = p.IdState,
+                ServiceAddress = p.ServiceAddress,
+                ServiceDepartment = p.ServiceDepartment,
+                ServiceCity = p.ServiceCity,
+                StarDate = p.StarDate,
+                EndDate = p.EndDate,
+                Price = p.Price.HasValue ? Convert.ToDecimal(p.Price) : 0
+            })
+            .FirstOrDefault();
+
+        if (quote == null)
+        {
+            return HttpNotFound();
+        }
+
+        return View(quote);
+    }
+}
 
 
         [HttpPost]

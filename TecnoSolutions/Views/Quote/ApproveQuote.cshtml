@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "ApproveQuote";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID Cotización</th>
+            <th>Estado</th>
+            <th>Precio</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quote in Model)
+        {
+            <tr>
+                <td>@quote.IdQuote</td>
+                <td>@quote.IdState</td>
+                <td>@quote.Price.ToString("C")</td>
+                <td>
+                    <a href="@Url.Action("QuoteDetails", "Quote", new { id = quote.IdQuote })" class="btn btn-primary">
+                        Ver Detalles
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -163,6 +163,7 @@
     <Compile Include="Controllers\QuoteController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
+    <Compile Include="Dtos\QuoteDto.cs" />
     <Compile Include="Dtos\ServiceSelectionDto.cs" />
     <Compile Include="Dtos\ProductSelectionDto.cs" />
     <Compile Include="Dtos\EmployeesDto.cs" />
@@ -333,6 +334,8 @@
     <Content Include="Views\Product\Report.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\AnalistCrud.cshtml" />
+    <Content Include="Views\Quote\ApproveQuote.cshtml" />
+    <Content Include="Views\Quote\QuoteDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

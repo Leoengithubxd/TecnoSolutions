@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "QuoteDetails";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+
+<h2>Detalles de la Cotización</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID Cotización:</th>
+        <td>@Model.IdQuote</td>
+    </tr>
+    <tr>
+        <th>ID Persona:</th>
+        <td>@Model.IdPerson</td>
+    </tr>
+    <tr>
+        <th>Estado:</th>
+        <td>@Model.IdState</td>
+    </tr>
+    <tr>
+        <th>Dirección de Servicio:</th>
+        <td>@Model.ServiceAddress</td>
+    </tr>
+    <tr>
+        <th>Departamento:</th>
+        <td>@Model.ServiceDepartment</td>
+    </tr>
+    <tr>
+        <th>Ciudad:</th>
+        <td>@Model.ServiceCity</td>
+    </tr>
+    <tr>
+        <th>Fecha Inicio:</th>
+        <td>@Model.StarDate?  ("dd/MM/yyyy")</td>
+    </tr>
+    <tr>
+        <th>Fecha Fin:</th>
+        <td>@Model.EndDate? ("dd/MM/yyyy")</td>
+    </tr>
+    <tr>
+        <th>Precio:</th>
+        <td>@Model.Price.ToString("C")</td>
+    </tr>
+</table>
+
+<a href="@Url.Action("ApproveQuote", "Quote")" class="btn btn-secondary">Volver</a>
+
