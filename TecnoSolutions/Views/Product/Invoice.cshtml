@@ -7,36 +7,46 @@
 
 <h2>Factura de Compra</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@product.NameProduct</td>
-                <td>@product.Quantity</td>
-                <td>@product.UnitPrice</td>
-                <td>@product.TotalPriceProduct</td>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.NameProduct</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.UnitPrice</td>
+                    <td>@product.TotalPriceProduct</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h3>Total: $@ViewBag.TotalGeneral</h3>
+    <p>¡Gracias por tu compra!</p>
+
+    <a href="@Url.Action("SelectProducts", "Product")" class="btn btn-primary">Volver</a>
+    <div>
+        <h4>Dirección de Envío</h4>
+        @if (Model.Any()) 
+        {
+            var firstProduct = Model.First();
+            <p><strong>Dirección:</strong> @firstProduct.ProductsAddress</p>
+            <p><strong>Ciudad:</strong> @firstProduct.ProductsCity</p>
+            <p><strong>Departamento:</strong> @firstProduct.ProductsDepartment</p>
         }
-    </tbody>
-</table>
+    </div>
 
-<h3>Total: $@ViewBag.TotalGeneral</h3>
-<p>¡Gracias por tu compra!</p>
+    <button onclick="printInvoice()" class="btn">Imprimir PDF</button>
 
-<a href="@Url.Action("SelectProducts", "Product")" class="btn btn-primary">Volver</a>
-
-<button onclick="printInvoice()" class="btn btn-danger">Imprimir PDF</button>
-
-<script>function printInvoice() {
-        window.print();
+    <script>
+    function printInvoice() {
+            window.print();
         }
-</script>
+    </script>

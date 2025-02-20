@@ -11,5 +11,8 @@ namespace TecnoSolutions.Dtos
         public string Name { get; set; }
         public float Stock { get; set; }
         public string UnitPrice { get; set; }
+        public string ProductsAddress { get; set; }
+        public string ProductsDepartment { get; set; }
+        public string ProductsCity { get; set; }
     }
 }

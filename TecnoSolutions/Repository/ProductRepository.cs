@@ -89,7 +89,8 @@ namespace TechnoSolutions.Repositories
     }
     public class ProductPersonRepository
     {
-        public void SaveSelectedProducts(int userId, List<ProductSelectionDto> selectedProducts) //Llenar tabla Product_Person
+        public void SaveSelectedProducts(int userId, List<ProductSelectionDto> selectedProducts,
+            string address, string department, string city) //Llenar tabla Product_Person
         {
             using (var db = new BD_14_03Entities())
             {
@@ -103,6 +104,9 @@ namespace TechnoSolutions.Repositories
                         Quantity = product.Quantity,
                         UnitPrice = (double?)product.UnitPrice,
                         TotalPriceProduct = (double?)(product.UnitPrice * product.Quantity),
+                        Address = address,
+                        Department = department,
+                        City = city,
                     };
                     db.PRODUCT_PERSON.Add(productPerson);
                 }
@@ -122,7 +126,10 @@ namespace TechnoSolutions.Repositories
                     p.NameProduct,
                     p.Quantity,
                     p.UnitPrice,
-                    p.TotalPriceProduct
+                    p.TotalPriceProduct,
+                    p.Address,
+                    p.Department,
+                    p.City
                 })
                 .AsEnumerable() 
                 .Select(p1 => new ProductSelectionDto
@@ -131,7 +138,10 @@ namespace TechnoSolutions.Repositories
                     NameProduct = p1.NameProduct,
                     UnitPrice = Convert.ToDecimal(p1.UnitPrice),
                     Quantity = (int)p1.Quantity,
-                    TotalPriceProduct = Convert.ToDecimal(p1.TotalPriceProduct)
+                    TotalPriceProduct = Convert.ToDecimal(p1.TotalPriceProduct),
+                    ProductsAddress = p1.Address,
+                    ProductsDepartment = p1.Department,
+                    ProductsCity = p1.City
                 })
                 .ToList();
                 return productsSelected;
@@ -151,5 +161,32 @@ namespace TechnoSolutions.Repositories
                 }
             }
         }
-    }
+
+        public void CreateInvoice(int userId,List<ProductSelectionDto> selectedProducts, string address, string department, string city) //Llenar tabla Invoice
+        {
+            using (var db = new BD_14_02Entities())
+            {
+                int lastInvoiceId = db.INVOICE.Any() ? db.INVOICE.Max(i => i.IdInvoice) : 0;
+                foreach (var invoice in selectedProducts)
+                {
+                    lastInvoiceId++;
+                    var invoiceProducts = new INVOICE
+                    {
+                        IdInvoice = lastInvoiceId,
+                        IdPerson = userId,
+                        IdProduct = invoice.IdProduct,
+                        NameProduct = invoice.NameProduct,
+                        Quantity = invoice.Quantity,
+                        UnitPrice = (double)invoice.UnitPrice,
+                        TotalPriceProduct = (double)(invoice.UnitPrice * invoice.Quantity),
+                        Address =invoice.ProductsAddress,
+                        Department = invoice.ProductsDepartment,
+                        City = invoice.ProductsCity,
+                    };
+                    db.INVOICE.Add(invoiceProducts);
+                }
+                db.SaveChanges();
+            }
+        }
+        }
 }

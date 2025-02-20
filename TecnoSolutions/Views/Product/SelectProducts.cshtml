@@ -81,39 +81,52 @@
                 @TempData["Message"]
             </div>}
 
-        <div class="table-container">
-            @using (Html.BeginForm("SelectProducts", "Product", FormMethod.Post))
-            {
-                <table class="table table-hover">
-                    <thead class="table-primary">
+    <div class="table-container">
+        @using (Html.BeginForm("SelectProducts", "Product", FormMethod.Post))
+        {
+            <table class="table table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad (Metros o Unidades)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
                         <tr>
-                            <th>Producto</th>
-                            <th>Precio Unitario</th>
-                            <th>Cantidad (Metros o Unidades)</th>
+                            <td>
+                                @Html.HiddenFor(m => Model[i].IdProduct)
+                                @Html.HiddenFor(m => Model[i].NameProduct)
+                                @Html.HiddenFor(m => Model[i].UnitPrice)
+                                @Model[i].NameProduct
+                            </td>
+                            <td>@Model[i].UnitPrice.ToString("C")</td>
+                            <td>
+                                @Html.TextBoxFor(m => Model[i].Quantity, new { type = "number", min = "0", @class = "form-control" })
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.Count; i++)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.HiddenFor(m => Model[i].IdProduct)
-                                    @Html.HiddenFor(m => Model[i].NameProduct)
-                                    @Html.HiddenFor(m => Model[i].UnitPrice)
-                                    @Model[i].NameProduct
-                                </td>
-                                <td>@Model[i].UnitPrice.ToString("C")</td>
-                                <td>
-                                    @Html.TextBoxFor(m => Model[i].Quantity, new { type = "number", min = "0", @class = "form-control" })
-                                </td>
-                            </tr>
-}
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary w-100">Agregar Productos</button>}
-        </div>
+                    }
+                </tbody>
+            </table>
+            <h3>Información de Contacto</h3>
+            <div class="form-group">
+                <label for="address">Dirección:</label>
+                <input type="text" name="address" id="address" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="department">Departamento:</label>
+                <input type="text" name="department" id="department" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="city">Ciudad:</label>
+                <input type="text" name="city" id="city" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Agregar Products</button>
+        }   
     </div>
-
+    </div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 </body>

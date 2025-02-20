@@ -8,5 +8,8 @@
         public decimal UnitPrice { get; set; }
         public decimal TotalPriceProduct { get; set; }
         public bool IsSelected { get; set; }
+        public string ProductsAddress { get; set; }
+        public string ProductsDepartment { get; set; }
+        public string ProductsCity { get; set; }
     }
 }
