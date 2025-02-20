@@ -18,6 +18,7 @@ namespace TecnoSolutions.Models
         public PERSON()
         {
             this.CREW_PERSON = new HashSet<CREW_PERSON>();
+            this.INVOICE = new HashSet<INVOICE>();
             this.PRODUCT_PERSON = new HashSet<PRODUCT_PERSON>();
             this.QUOTE = new HashSet<QUOTE>();
         }
@@ -41,6 +42,8 @@ namespace TecnoSolutions.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CREW_PERSON> CREW_PERSON { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INVOICE> INVOICE { get; set; }
         public virtual ROLE ROLE { get; set; }
         public virtual SERVICE SERVICE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

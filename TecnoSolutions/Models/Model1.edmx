@@ -20,6 +20,21 @@
           <Property Name="IdPerson" Type="int" />
           <Property Name="IdCrew" Type="int" />
         </EntityType>
+        <EntityType Name="INVOICE">
+          <Key>
+            <PropertyRef Name="IdInvoice" />
+          </Key>
+          <Property Name="IdInvoice" Type="int" Nullable="false" />
+          <Property Name="IdPerson" Type="int" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
+          <Property Name="NameProduct" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="UnitPrice" Type="float" Nullable="false" />
+          <Property Name="TotalPriceProduct" Type="float" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Department" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="PERSON">
           <Key>
             <PropertyRef Name="IdPerson" />
@@ -61,6 +76,9 @@
           <Property Name="Quantity" Type="float" />
           <Property Name="UnitPrice" Type="float" />
           <Property Name="TotalPriceProduct" Type="float" />
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="Department" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="QUOTE">
           <Key>
@@ -138,6 +156,30 @@
             </Principal>
             <Dependent Role="CREW_PERSON">
               <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_INVOICE_INVOICE">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="1" />
+          <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="INVOICE">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_INVOICE_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="INVOICE">
+              <PropertyRef Name="IdProduct" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -299,6 +341,7 @@
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CREW" EntityType="Self.CREW" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CREW_PERSON" EntityType="Self.CREW_PERSON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="INVOICE" EntityType="Self.INVOICE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERSON" EntityType="Self.PERSON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PRODUCT" EntityType="Self.PRODUCT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PRODUCT_PERSON" EntityType="Self.PRODUCT_PERSON" Schema="dbo" store:Type="Tables" />
@@ -315,6 +358,14 @@
           <AssociationSet Name="FK_CREW_PERSON_PERSON" Association="Self.FK_CREW_PERSON_PERSON">
             <End Role="PERSON" EntitySet="PERSON" />
             <End Role="CREW_PERSON" EntitySet="CREW_PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INVOICE_INVOICE" Association="Self.FK_INVOICE_INVOICE">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="INVOICE" EntitySet="INVOICE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INVOICE_PRODUCT" Association="Self.FK_INVOICE_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="INVOICE" EntitySet="INVOICE" />
           </AssociationSet>
           <AssociationSet Name="FK_PERSON_ROLE" Association="Self.FK_PERSON_ROLE">
             <End Role="ROLE" EntitySet="ROLE" />
@@ -380,6 +431,23 @@
           <NavigationProperty Name="CREW" Relationship="Self.FK_CREW_PERSON_CREW" FromRole="CREW_PERSON" ToRole="CREW" />
           <NavigationProperty Name="PERSON" Relationship="Self.FK_CREW_PERSON_PERSON" FromRole="CREW_PERSON" ToRole="PERSON" />
         </EntityType>
+        <EntityType Name="INVOICE">
+          <Key>
+            <PropertyRef Name="IdInvoice" />
+          </Key>
+          <Property Name="IdInvoice" Type="Int32" Nullable="false" />
+          <Property Name="IdPerson" Type="Int32" Nullable="false" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
+          <Property Name="NameProduct" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="UnitPrice" Type="Double" Nullable="false" />
+          <Property Name="TotalPriceProduct" Type="Double" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PERSON" Relationship="Self.FK_INVOICE_INVOICE" FromRole="INVOICE" ToRole="PERSON" />
+          <NavigationProperty Name="PRODUCT" Relationship="Self.FK_INVOICE_PRODUCT" FromRole="INVOICE" ToRole="PRODUCT" />
+        </EntityType>
         <EntityType Name="PERSON">
           <Key>
             <PropertyRef Name="IdPerson" />
@@ -401,6 +469,7 @@
           <Property Name="Eps" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CREW_PERSON" Relationship="Self.FK_CREW_PERSON_PERSON" FromRole="PERSON" ToRole="CREW_PERSON" />
+          <NavigationProperty Name="INVOICE" Relationship="Self.FK_INVOICE_INVOICE" FromRole="PERSON" ToRole="INVOICE" />
           <NavigationProperty Name="ROLE" Relationship="Self.FK_PERSON_ROLE" FromRole="PERSON" ToRole="ROLE" />
           <NavigationProperty Name="SERVICE" Relationship="Self.FK_PERSON_SERVICE" FromRole="PERSON" ToRole="SERVICE" />
           <NavigationProperty Name="PRODUCT_PERSON" Relationship="Self.FK_PRODUCT_PERSON_PERSON" FromRole="PERSON" ToRole="PRODUCT_PERSON" />
@@ -414,6 +483,7 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Stock" Type="Double" />
           <Property Name="UnitPrice" Type="Double" />
+          <NavigationProperty Name="INVOICE" Relationship="Self.FK_INVOICE_PRODUCT" FromRole="PRODUCT" ToRole="INVOICE" />
           <NavigationProperty Name="PRODUCT_PERSON" Relationship="Self.FK_PRODUCT_PERSON_PRODUCT" FromRole="PRODUCT" ToRole="PRODUCT_PERSON" />
           <NavigationProperty Name="QUOTE_PRODUCT" Relationship="Self.FK_QUOTE_PRODUCT_PRODUCT" FromRole="PRODUCT" ToRole="QUOTE_PRODUCT" />
         </EntityType>
@@ -428,6 +498,9 @@
           <Property Name="Quantity" Type="Double" />
           <Property Name="UnitPrice" Type="Double" />
           <Property Name="TotalPriceProduct" Type="Double" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="PERSON" Relationship="Self.FK_PRODUCT_PERSON_PERSON" FromRole="PRODUCT_PERSON" ToRole="PERSON" />
           <NavigationProperty Name="PRODUCT" Relationship="Self.FK_PRODUCT_PERSON_PRODUCT" FromRole="PRODUCT_PERSON" ToRole="PRODUCT" />
         </EntityType>
@@ -519,6 +592,30 @@
             </Principal>
             <Dependent Role="CREW_PERSON">
               <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_INVOICE_INVOICE">
+          <End Role="PERSON" Type="Self.PERSON" Multiplicity="1" />
+          <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSON">
+              <PropertyRef Name="IdPerson" />
+            </Principal>
+            <Dependent Role="INVOICE">
+              <PropertyRef Name="IdPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_INVOICE_PRODUCT">
+          <End Role="PRODUCT" Type="Self.PRODUCT" Multiplicity="1" />
+          <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="INVOICE">
+              <PropertyRef Name="IdProduct" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -642,9 +739,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BD_14_02Entities4" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="BD_14_02Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CREW" EntityType="Self.CREW" />
           <EntitySet Name="CREW_PERSON" EntityType="Self.CREW_PERSON" />
+          <EntitySet Name="INVOICE" EntityType="Self.INVOICE" />
           <EntitySet Name="PERSON" EntityType="Self.PERSON" />
           <EntitySet Name="PRODUCT" EntityType="Self.PRODUCT" />
           <EntitySet Name="PRODUCT_PERSON" EntityType="Self.PRODUCT_PERSON" />
@@ -661,6 +759,14 @@
           <AssociationSet Name="FK_CREW_PERSON_PERSON" Association="Self.FK_CREW_PERSON_PERSON">
             <End Role="PERSON" EntitySet="PERSON" />
             <End Role="CREW_PERSON" EntitySet="CREW_PERSON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INVOICE_INVOICE" Association="Self.FK_INVOICE_INVOICE">
+            <End Role="PERSON" EntitySet="PERSON" />
+            <End Role="INVOICE" EntitySet="INVOICE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INVOICE_PRODUCT" Association="Self.FK_INVOICE_PRODUCT">
+            <End Role="PRODUCT" EntitySet="PRODUCT" />
+            <End Role="INVOICE" EntitySet="INVOICE" />
           </AssociationSet>
           <AssociationSet Name="FK_PERSON_ROLE" Association="Self.FK_PERSON_ROLE">
             <End Role="ROLE" EntitySet="ROLE" />
@@ -743,7 +849,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="BD_14_02Entities4">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="BD_14_02Entities">
           <EntitySetMapping Name="CREW">
             <EntityTypeMapping TypeName="Model.CREW">
               <MappingFragment StoreEntitySet="CREW">
@@ -758,6 +864,22 @@
                 <ScalarProperty Name="IdCrewPerson" ColumnName="IdCrewPerson" />
                 <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
                 <ScalarProperty Name="IdCrew" ColumnName="IdCrew" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INVOICE">
+            <EntityTypeMapping TypeName="Model.INVOICE">
+              <MappingFragment StoreEntitySet="INVOICE">
+                <ScalarProperty Name="IdInvoice" ColumnName="IdInvoice" />
+                <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="NameProduct" ColumnName="NameProduct" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="TotalPriceProduct" ColumnName="TotalPriceProduct" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="City" ColumnName="City" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -803,6 +925,9 @@
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
                 <ScalarProperty Name="TotalPriceProduct" ColumnName="TotalPriceProduct" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="City" ColumnName="City" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

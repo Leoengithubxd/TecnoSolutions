@@ -91,7 +91,7 @@ namespace TechnoSolutions.Repositories
     {
         public void SaveSelectedProducts(int userId, List<ProductSelectionDto> selectedProducts) //Llenar tabla Product_Person
         {
-            using (var db = new BD_14_02Entities4())
+            using (var db = new BD_14_02Entities())
             {
                 foreach (var product in selectedProducts)
                 {
@@ -112,7 +112,7 @@ namespace TechnoSolutions.Repositories
 
         public List<ProductSelectionDto> GetSelectedProducts(int userId) //Traer productos seleccionados de tabla Product_Person
         {
-            using (var db = new BD_14_02Entities4())
+            using (var db = new BD_14_02Entities())
             {
                 var productsSelected = db.PRODUCT_PERSON
                 .Where(p => p.IdPerson == userId)
@@ -140,7 +140,7 @@ namespace TechnoSolutions.Repositories
 
         public void DeleteUserProducts(int userId) //Eliminar productos seleccionados tabla Product_Person
         {
-            using (var db = new BD_14_02Entities4())
+            using (var db = new BD_14_02Entities())
             {
                 var userProducts = db.PRODUCT_PERSON.Where(p => p.IdPerson == userId).ToList();
 
