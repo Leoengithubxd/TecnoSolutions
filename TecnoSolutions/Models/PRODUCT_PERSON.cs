@@ -21,9 +21,6 @@ namespace TecnoSolutions.Models
         public Nullable<double> Quantity { get; set; }
         public Nullable<double> UnitPrice { get; set; }
         public Nullable<double> TotalPriceProduct { get; set; }
-        public string Address { get; set; }
-        public string Department { get; set; }
-        public string City { get; set; }
     
         public virtual PERSON PERSON { get; set; }
         public virtual PRODUCT PRODUCT { get; set; }
