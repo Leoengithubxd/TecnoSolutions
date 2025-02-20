@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "ListQuotes";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+@model List<TecnoSolutions.Dtos.QuoteDto>
+
+<h2>Listado de Cotizaciones</h2>
+
+@using (Html.BeginForm("SaveQuotes", "Quote", FormMethod.Post))
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Número de Cotización</th>
+                <th>Persona</th>
+                <th>Estado</th>
+                <th>Id Crew</th>
+                <th>Dirección</th>
+                <th>Fecha de Inicio</th>
+                <th>Fecha Final</th>
+                <th>Precio Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model[i].IdQuote
+                        @Html.HiddenFor(m => m[i].IdQuote)
+                    </td>
+                    <td>@Model[i].PersonName</td>
+                    <td>@Model[i].State</td>
+                    <td>
+                        @Html.DropDownListFor(m => m[i].IdCrew, new SelectList(new[] { 1, 2, 3 }, Model[i].IdCrew), new { @class = "form-control" })
+                    </td>
+                    <td>@Model[i].ServiceAddress</td>
+                    <td>
+                        @Html.TextBoxFor(m => m[i].StarDate, new { @class = "form-control", type = "datetime-local" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m[i].EndDate, new { @class = "form-control", type = "datetime-local" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m[i].Price, new { @class = "form-control", type = "number" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+}
