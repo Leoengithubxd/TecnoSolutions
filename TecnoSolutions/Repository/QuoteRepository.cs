@@ -10,9 +10,9 @@ namespace TechnoSolutions.Repositories
     {
         public List<ServiceSelectionDto> GetAllServices() //Traer tabla Service
         {
-            using (var db = new BD_14_02Entities())
+            using (var db = new BD_14_03Entities())
             {
-                var services = db.SERVICE
+                var services = db.SERVICEs
                     .Select(p => new
                     {
                         p.IdService,
@@ -34,7 +34,7 @@ namespace TechnoSolutions.Repositories
             int userId, List<ServiceSelectionDto> selectedServices, 
             string address, string department, string city) //Cargar Cotizacion
         {
-            using (var db = new BD_14_02Entities())
+            using (var db = new BD_14_03Entities())
             {
                 foreach (var service in selectedServices)
                 {
@@ -46,7 +46,7 @@ namespace TechnoSolutions.Repositories
                         ServiceDepartment = department,
                         ServiceCity = city,
                     };
-                    db.QUOTE.Add(quote);
+                    db.QUOTEs.Add(quote);
                     db.SaveChanges();
 
                     var quoteService = new QUOTE_SERVICE
