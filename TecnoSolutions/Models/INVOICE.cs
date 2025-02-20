@@ -12,15 +12,15 @@ namespace TecnoSolutions.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PRODUCT_PERSON
+    public partial class INVOICE
     {
-        public int IdProductPerson { get; set; }
-        public Nullable<int> IdPerson { get; set; }
-        public Nullable<int> IdProduct { get; set; }
+        public int IdInvoice { get; set; }
+        public int IdPerson { get; set; }
+        public int IdProduct { get; set; }
         public string NameProduct { get; set; }
-        public Nullable<double> Quantity { get; set; }
-        public Nullable<double> UnitPrice { get; set; }
-        public Nullable<double> TotalPriceProduct { get; set; }
+        public double Quantity { get; set; }
+        public double UnitPrice { get; set; }
+        public double TotalPriceProduct { get; set; }
         public string Address { get; set; }
         public string Department { get; set; }
         public string City { get; set; }

@@ -15,10 +15,10 @@ namespace TecnoSolutions.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class BD_14_02Entities4 : DbContext
+    public partial class BD_14_02Entities : DbContext
     {
-        public BD_14_02Entities4()
-            : base("name=BD_14_02Entities4")
+        public BD_14_02Entities()
+            : base("name=BD_14_02Entities")
         {
         }
     
@@ -29,6 +29,7 @@ namespace TecnoSolutions.Models
     
         public virtual DbSet<CREW> CREW { get; set; }
         public virtual DbSet<CREW_PERSON> CREW_PERSON { get; set; }
+        public virtual DbSet<INVOICE> INVOICE { get; set; }
         public virtual DbSet<PERSON> PERSON { get; set; }
         public virtual DbSet<PRODUCT> PRODUCT { get; set; }
         public virtual DbSet<PRODUCT_PERSON> PRODUCT_PERSON { get; set; }
