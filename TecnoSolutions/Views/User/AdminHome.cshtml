@@ -27,7 +27,7 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a href="@Url.Action("OrderManagement", "User")" class="btn img-button">
+                    <a href="@Url.Action("ApproveQuoteAdmin", "Quote")" class="btn img-button">
                         <img src="~/Content/Image/entrega-de-pedidos.png" alt="Botón de imagen" class="img-fluid ">
                         <span class="img-button-text">Pedidos</span>
                     </a>
@@ -36,7 +36,7 @@
 
                 <div class="col">
 
-                    <a href="@Url.Action("Productos", "Admin")" class="btn img-button">
+                    <a href="@Url.Action("Products", "Product")" class="btn img-button">
                         <img src="~/Content/Image/listas-de-control (1).png" alt="Botón de imagen" class="img-fluid ">
                         <span class="img-button-text">Inventario</span>
                     </a>
@@ -67,7 +67,8 @@
         overflow: hidden; /* Oculta cualquier parte de la imagen que sobresalga del contenedor */
     }
 
-    .button-container {
+    .button-container { 
+        background-color:antiquewhite;
         position: absolute;
         bottom: 10px; /* Coloca el botón 10px por encima de la parte inferior de la imagen */
         left: 50%; /* Centra el botón horizontalmente */
@@ -102,7 +103,7 @@
         transition: background 0.3s;
     }
     .img-button {
-        background-color: whitesmoke;
+       
         border: ridge;
     }
         .text-principal {

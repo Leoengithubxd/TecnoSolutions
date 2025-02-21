@@ -1,9 +1,8 @@
-﻿@{
+﻿@model List<TecnoSolutions.Dtos.Product>
+@{
     ViewBag.Title = "AddProducts";
-    Layout = "~/Views/Shared/_LayoutAsistente.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model List<TecnoSolutions.Dtos.Product>
-
 <h2>Products</h2>
 
 @if (Model == null || !Model.Any())
@@ -16,37 +15,27 @@ else
         <table class=" table table-container">
             <thead class=" table table-primary">
                 <tr>
-                    
+
                     <th>Name</th>
                     <th>Stock</th>
                     <th>Unit Price</th>
-                    <th>Actions</th>
+
                 </tr>
             </thead>
             <tbody>
                 @foreach (var Product in Model)
                 {
                     <tr id="Product-@Product.IdProduct">
-                        
+
                         <td>@Product.Name</td>
                         <td>@Product.Stock</td>
                         <td>@Product.UnitPrice</td>
-                        <td>
-                            <a href="@Url.Action("Edit", new { id = Product.IdProduct })" class="btn btn-primary btn-sm">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a> |
-                            <button type="button" class="btn btn-danger btn-sm delete-product" data-id="@Product.IdProduct">
-                                <i class="bi bi-trash"></i> Delete
-                            </button>
-                        </td>
-
-
 
                     </tr>
                 }
             </tbody>
         </table>
-        
+        <button type="submit" class="btn btn-primary">Generar Reporte</button>
     </form>
 }
 
@@ -121,7 +110,7 @@ else
             background-color: #091021;
         }
 
-    
+
 
     .btn-danger {
         background-color: #dc3545;

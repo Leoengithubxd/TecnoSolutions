@@ -1,35 +1,98 @@
-﻿
+﻿@{
+
+}
 @{
     ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_LayoutAsistente.cshtml";
 }
-
 @model List<TecnoSolutions.Models.PRODUCT>
 
-<form method="post" action="@Url.Action("GeneratePDF", "Product")">
-    <table>
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Requested Stock</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                <tr>
-                    <td>@Model[i].Name</td>
-                    <td>
-                        <input type="hidden" name="products[@i].IdProduct" value="@Model[i].IdProduct" />
-                        <input type="number" name="products[@i].RequestedStock" value="1" min="1" />
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <button onclick="printInvoice()" type="submit"> Generate PDF</button>
-</form>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-lg-8 col-md-10">
+        <div class="card login-card">
+            <div class="card-body">
+                <h2 class="text-center text-principal mb-4">Generar Reporte</h2>
+                <form method="post" action="@Url.Action("GeneratePDF", "Product")">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Stock Requerido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                    <tr>
+                                        <td>@Model[i].Name</td>
+                                        <td>
+                                            <input type="hidden" name="products[@i].IdProduct" value="@Model[i].IdProduct" />
+                                            <input type="number" name="products[@i].RequestedStock" class="form-control" value="1" min="1" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <button type="submit" class="btn btn-primary w-50">Generar PDF</button>
+                        <button type="button" class="btn btn-secondary w-50 ms-2" onclick="printInvoice()">Imprimir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-function printInVoice() {
-    window.print();
-}
+    function printInvoice() {
+        window.print();
+    }
 </script>
+
+<style>
+    body {
+        background-color: #7c8f97;
+    }
+
+    .login-card {
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 30px;
+        background-color: #091324;
+        color: white;
+    }
+
+    .text-principal {
+        color: #8deaf4;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-primary {
+        background-color: #0d3039;
+        color: whitesmoke;
+    }
+
+        .btn-primary:hover {
+            background-color: #091021;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+</style>

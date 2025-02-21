@@ -40,6 +40,10 @@ namespace TecnoSolutions.Views.User
         {
             return View();
         }
+        public ActionResult AnalysticHome()
+        {
+            return View();
+        }
         public ActionResult OrderManagement()
         {
             return View();
@@ -240,7 +244,7 @@ namespace TecnoSolutions.Views.User
             if (user.IdPerson != 0)
             {
                 Session["IdUser"] = user.IdPerson;
-                return RedirectToAction("Home","User");
+                return RedirectToAction("AdminHome","User");
             }
             else
             {

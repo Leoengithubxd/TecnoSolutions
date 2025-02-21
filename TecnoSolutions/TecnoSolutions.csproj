@@ -336,6 +336,17 @@
     <Content Include="Views\Product\AnalistCrud.cshtml" />
     <Content Include="Views\Quote\ApproveQuote.cshtml" />
     <Content Include="Views\Quote\QuoteDetails.cshtml" />
+    <Content Include="Views\Quote\ApproveQuoteAdmin.cshtml" />
+    <Content Include="Views\Quote\QuoteDetailsA.cshtml" />
+    <Content Include="Views\Product\Products.cshtml" />
+    <Content Include="Views\Quote\ApproveQuoteAssis.cshtml" />
+    <Content Include="Views\Quote\QuoteDetailsAS.cshtml" />
+    <Content Include="Views\User\AnalysticHome.cshtml" />
+    <Content Include="Views\Shared\_LayoutAnalista.cshtml" />
+    <Content Include="Views\Product\AnalistCrudCom.cshtml" />
+    <Content Include="Views\Product\AnalistCrudAna.cshtml" />
+    <Content Include="Views\Quote\ApproveQuoteAna.cshtml" />
+    <Content Include="Views\Quote\QuoteDetailsAna.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

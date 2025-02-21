@@ -32,6 +32,21 @@ namespace TechnoSolutions.Controllers
             var products = _productRepository.GetAllProducts();
             return View(products);
         }
+        public ActionResult AnalistCrudCom()
+        {
+            var products = _productRepository.GetAllProducts();
+            return View(products);
+        }
+        public ActionResult AnalistCrudAna()
+        {
+            var products = _productRepository.GetAllProducts();
+            return View(products);
+        }
+        public ActionResult Products()
+        {
+            var products = _productRepository.GetAllProducts();
+            return View(products);
+        }
         public ActionResult Edit(int id)
         {
             var product = _productRepository.GetProductById(id);

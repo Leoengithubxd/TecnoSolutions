@@ -1,9 +1,9 @@
 ﻿@{
     ViewBag.Title = "ApproveQuote";
-    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+    Layout = "~/Views/Shared/_LayoutAnalista.cshtml";
 }
 
-<h2>Aprobación de Cotización</h2>
+<h2>Cotizaciones</h2>
 
 <table class="table table-striped">
     <thead class="table-primary">
@@ -22,7 +22,7 @@
                 <td>@quote.IdState</td>
                 <td>@quote.Price.ToString("C")</td>
                 <td>
-                    <a href="@Url.Action("QuoteDetails", "Quote", new { id = quote.IdQuote })" class="btn btn-primary">
+                    <a href="@Url.Action("QuoteDetailsA", "Quote", new { id = quote.IdQuote })" class="btn btn-primary">
                         Ver Detalles
                     </a>
                 </td>
@@ -31,15 +31,9 @@
     </tbody>
 </table>
 
-<a href="@Url.Action("SelectProducts", "Product")" class="btn btn-secondary">Volver</a>
+<a href="@Url.Action("AdminHome", "User")" class="btn btn-secondary">Volver</a>
 
-<button onclick="printQuote()" class="btn btn-info">Imprimir Cotización</button>
 
-<script>
-    function printQuote() {
-        window.print();
-    }
-</script>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">

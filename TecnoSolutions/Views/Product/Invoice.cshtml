@@ -1,52 +1,69 @@
 ﻿@{
-    ViewBag.Title = "Product";
+    ViewBag.Title = "Factura de Compra";
     Layout = "~/Views/Shared/_LayoutCliente.cshtml";
 }
 
 @model List<TechnoSolutions.Dtos.ProductSelectionDto>
 
-<h2>Factura de Compra</h2>
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center mb-4 text-primary">Factura de Compra</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio Unitario</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model)
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model)
+                    {
+                        <tr>
+                            <td>@product.NameProduct</td>
+                            <td>@product.Quantity</td>
+                            <td>$@product.UnitPrice</td>
+                            <td><strong>$@product.TotalPriceProduct</strong></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end">
+            <h3 class="text-success">Total: <strong>$@ViewBag.TotalGeneral</strong></h3>
+        </div>
+
+        <hr>
+
+        <div class="mb-4">
+            <h4 class="text-secondary">Dirección de Envío</h4>
+            @if (Model.Any())
             {
-                <tr>
-                    <td>@product.NameProduct</td>
-                    <td>@product.Quantity</td>
-                    <td>@product.UnitPrice</td>
-                    <td>@product.TotalPriceProduct</td>
-                </tr>
+                var firstProduct = Model.First();
+                <p><strong>Dirección:</strong> @firstProduct.ProductsAddress</p>
+                <p><strong>Ciudad:</strong> @firstProduct.ProductsCity</p>
+                <p><strong>Departamento:</strong> @firstProduct.ProductsDepartment</p>
             }
-        </tbody>
-    </table>
-    <h3>Total: $@ViewBag.TotalGeneral</h3>
-    <p>¡Gracias por tu compra!</p>
+        </div>
 
-    <a href="@Url.Action("SelectProducts", "Product")" class="btn btn-primary">Volver</a>
-    <div>
-        <h4>Dirección de Envío</h4>
-        @if (Model.Any()) 
-        {
-            var firstProduct = Model.First();
-            <p><strong>Dirección:</strong> @firstProduct.ProductsAddress</p>
-            <p><strong>Ciudad:</strong> @firstProduct.ProductsCity</p>
-            <p><strong>Departamento:</strong> @firstProduct.ProductsDepartment</p>
-        }
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("SelectProducts", "Product")" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+
+            <button onclick="printInvoice()" class="btn btn-success">
+                <i class="bi bi-printer"></i> Imprimir PDF
+            </button>
+        </div>
     </div>
+</div>
 
-    <button onclick="printInvoice()" class="btn">Imprimir PDF</button>
-
-    <script>
+<script>
     function printInvoice() {
-            window.print();
-        }
-    </script>
+        window.print();
+    }
+</script>

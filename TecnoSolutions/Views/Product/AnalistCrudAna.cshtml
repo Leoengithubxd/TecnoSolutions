@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "AddProducts";
-    Layout = "~/Views/Shared/_LayoutAsistente.cshtml";
+    Layout = "~/Views/Shared/_LayoutAnalista.cshtml";
 }
 @model List<TecnoSolutions.Dtos.Product>
 
@@ -16,7 +16,7 @@ else
         <table class=" table table-container">
             <thead class=" table table-primary">
                 <tr>
-                    
+
                     <th>Name</th>
                     <th>Stock</th>
                     <th>Unit Price</th>
@@ -27,7 +27,7 @@ else
                 @foreach (var Product in Model)
                 {
                     <tr id="Product-@Product.IdProduct">
-                        
+
                         <td>@Product.Name</td>
                         <td>@Product.Stock</td>
                         <td>@Product.UnitPrice</td>
@@ -46,7 +46,7 @@ else
                 }
             </tbody>
         </table>
-        
+
     </form>
 }
 
@@ -121,7 +121,7 @@ else
             background-color: #091021;
         }
 
-    
+
 
     .btn-danger {
         background-color: #dc3545;
