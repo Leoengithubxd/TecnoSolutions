@@ -3,7 +3,7 @@
     ViewBag.Title = "AddProducts";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Products</h2>
+<h2>Inputs</h2>
 
 @if (Model == null || !Model.Any())
 {
@@ -11,33 +11,40 @@
 }
 else
 {
-    <form method="post" action="@Url.Action("GenerateReport", "Product")">
-        <table class=" table table-container">
-            <thead class=" table table-primary">
-                <tr>
+    <table class=" table table-container">
+        <thead class=" table table-primary">
+            <tr>
 
-                    <th>Name</th>
-                    <th>Stock</th>
-                    <th>Unit Price</th>
+                <th>Name</th>
+                <th>Stock</th>
+                <th>Unit Price</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Product in Model)
+            {
+                <tr id="Product-@Product.IdProduct">
+
+                    <td>@Product.Name</td>
+                    <td>@Product.Stock</td>
+                    <td>@Product.UnitPrice</td>
 
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var Product in Model)
-                {
-                    <tr id="Product-@Product.IdProduct">
+            }
+        </tbody>
+    </table>
+    <button onclick="printInvoice()" class="btn btn-success">
+        <i class="bi bi-printer"></i> Imprimir PDF
+    </button>
+    <a href="@Url.Action("AdminHome", "User")" class="btn btn-atras">Volver</a>
 
-                        <td>@Product.Name</td>
-                        <td>@Product.Stock</td>
-                        <td>@Product.UnitPrice</td>
-
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <button type="submit" class="btn btn-primary">Generar Reporte</button>
-    </form>
 }
+<script>
+    function printInvoice() {
+        window.print();
+    }
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -111,7 +118,17 @@ else
         }
 
 
-
+    .btn-atras {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #808080;
+        color: whitesmoke;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
     .btn-danger {
         background-color: #dc3545;
     }

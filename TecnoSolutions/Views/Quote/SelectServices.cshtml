@@ -50,6 +50,17 @@
             cursor: pointer;
             transition: background 0.3s;
         }
+        .btn-atras {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #808080;
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
 
             .btn-primary:hover {
                 background-color: #091021;
@@ -81,51 +92,51 @@
             </div>
         }
 
-        <div class="table-container">
-            @using (Html.BeginForm("SelectServices", "Quote", FormMethod.Post))
-            {
-                <table class="table table-hover">
-                    <thead class="table-primary">
+    <div class="table-container">
+        @using (Html.BeginForm("SelectServices", "Quote", FormMethod.Post))
+        {
+            <table class="table table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Servicio</th>
+                        <th>Seleccionar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
                         <tr>
-                            <th>Servicio</th>
-                            <th>Seleccionar</th>
+                            <td>
+                                @Html.HiddenFor(m => Model[i].IdService)
+                                @Html.HiddenFor(m => Model[i].Name)
+                                @Model[i].Name
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(m => Model[i].IsSelected)
+                                @Html.HiddenFor(m => Model[i].Quantity, new { Value = 1 })
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.Count; i++)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.HiddenFor(m => Model[i].IdService)
-                                    @Html.HiddenFor(m => Model[i].Name)
-                                    @Model[i].Name
-                                </td>
-                                <td>
-                                    @Html.CheckBoxFor(m => Model[i].IsSelected)
-                                    @Html.HiddenFor(m => Model[i].Quantity, new { Value = 1 })
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                    }
+                </tbody>
+            </table>
 
-                <h3>Información de Contacto</h3>
-                <div class="form-group">
-                    <label for="address">Dirección:</label>
-                    <input type="text" name="address" id="address" class="form-control" required />
-                </div>
-                <div class="form-group">
-                    <label for="department">Departamento:</label>
-                    <input type="text" name="department" id="department" class="form-control" required />
-                </div>
-                <div class="form-group">
-                    <label for="city">Ciudad:</label>
-                    <input type="text" name="city" id="city" class="form-control" required />
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Agregar Servicios</button>
-
-            }
+            <h3>Información de Contacto</h3>
+            <div class="form-group">
+                <label for="address">Dirección:</label>
+                <input type="text" name="address" id="address" class="form-control" required />
             </div>
+            <div class="form-group">
+                <label for="department">Departamento:</label>
+                <input type="text" name="department" id="department" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="city">Ciudad:</label>
+                <input type="text" name="city" id="city" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Agregar Servicios</button>
+            <a href="@Url.Action("Home", "User")" class="btn btn-atras">Volver</a>
+        }
+    </div>
         </div>
 </body>
 </html>

@@ -1,0 +1,40 @@
+﻿@model TechnoSolutions.Dtos.SelectProductsQuoteDto
+
+@{
+    ViewBag.Title = "Seleccionar Productos";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+<h2>Seleccionar Productos para la Cotización #@Model.IdQuote</h2>
+
+@using (Html.BeginForm("SaveSelectedProducts", "Quote", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.IdQuote)
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio Unitario</th>
+                <th>Stock Disponible</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Products.Count; i++)
+            {
+                <tr>
+                    <td>@Model.Products[i].Name</td>
+                    <td>@Model.Products[i].UnitPrice</td>
+                    <td>@Model.Products[i].Stock</td>
+                    <td>
+                        @Html.TextBoxFor(m => Model.Products[i].Quantity, new { @class = "form-control", type = "number", min = "1", max = Model.Products[i].Stock })
+                        @Html.HiddenFor(m => Model.Products[i].IdProduct)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">Guardar Productos</button>
+}

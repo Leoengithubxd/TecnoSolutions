@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "ListQuotesAproved";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+@model List<TechnoSolutions.Dtos.QuoteDto>
+
+<h2>Listado de Cotizaciones</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Número de Cotización</th>
+            <th>Persona</th>
+            <th>Estado</th>
+            <th>Id Crew</th>
+            <th>Dirección</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha Final</th>
+            <th>Precio Total</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quote in Model)
+        {
+            <tr>
+                <td>@quote.IdQuote</td>
+                <td>@quote.IdPerson</td>
+                <td>@quote.IdState</td>
+                <td>@quote.IdCrew</td>
+                <td>@quote.ServiceAddress</td>
+                <td>@quote.StarDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@quote.EndDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@quote.Price</td>
+                <td>
+                    <button class="btn btn-success accept-quote" data-id="@quote.IdQuote">Finalizar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".accept-quote").click(function () {
+            var quoteId = $(this).data("id"); // Obtener el ID de la cotización
+            var button = $(this); // Guardar referencia al botón
+
+            $.ajax({
+                url: '@Url.Action("EndQuote", "Quote")',
+                type: "POST",
+                data: { id: quoteId },
+                success: function (response) {
+                    if (response.success) {
+                        $("#state-" + quoteId).text("4"); // Cambia el estado en la tabla
+                        button.prop("disabled", true); // Deshabilita el botón
+                        alert("Cotización aceptada exitosamente.");
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error al procesar la solicitud.");
+                }
+            });
+        });
+    });
+</script>
+
+
+

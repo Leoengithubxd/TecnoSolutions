@@ -9,6 +9,7 @@ using System.Linq;
 using TecnoSolutions.Repository;
 using System.Web.Mvc;
 using TechnoSolutions.Repositories;
+using CRACKED.Utilities;
 
 public class ProductRepository
 {
@@ -59,14 +60,13 @@ public class ProductRepository
         }
     }
     public List<PRODUCT> GetProductsByIds(List<int> ids)
+    {
+        using (SqlConnection db = new SqlConnection("Data Source= LEO; Initial Catalog= BD 14_02; Integrated Security=true"))
         {
-            using (SqlConnection db = new SqlConnection("Data Source= LEO; Initial Catalog= BD 14_02; Integrated Security=true"))
-            {
-                string query = "SELECT * FROM PRODUCT WHERE IdProduct IN @Ids";
-                return db.Query<PRODUCT>(query, new { Ids = ids }).ToList();
-            }
+            string query = "SELECT * FROM PRODUCT WHERE IdProduct IN @Ids";
+            return db.Query<PRODUCT>(query, new { Ids = ids }).ToList();
         }
-
+    }
     public void UpdateProduct(PRODUCT product)
     {
         using (SqlConnection connection = new SqlConnection("Data Source=LEO; Initial Catalog=BD 14_02; Integrated Security=true"))
@@ -109,5 +109,71 @@ public class ProductRepository
             return connection.QuerySingleOrDefault<Product>("SELECT * FROM PRODUCT WHERE IdProduct = @id", new { id });
         }
     }
+}
 
+namespace TecnoSolutions.Controllers
+{
+    public class AnalistController : Controller
+    {
+        private ProductRepository _productRepository = new ProductRepository();
+
+        public class ProductRequest
+        {
+            public int IdProduct { get; set; }
+            public string Name { get; set; }
+            public int RequestedStock { get; set; }
+        }
+
+        [HttpPost]
+        public ActionResult SendEmail(List<ProductRequest> products)
+        {
+            if (products == null || !products.Any())
+            {
+                ViewBag.ErrorMessage = "❌ No se recibieron productos seleccionados.";
+                return View("AnalistCrud", "Product"); // Redirige a la vista pero mostrando un mensaje opcional
+            }
+
+            foreach (var product in products)
+            {
+                if (string.IsNullOrEmpty(product.Name))
+                {
+                    var dbProduct = _productRepository.GetProductById(product.IdProduct);
+                    product.Name = dbProduct?.Name ?? "Producto Desconocido";
+                }
+            }
+
+            string mensaje = "<h2>📝 Solicitud de Productos</h2>";
+            mensaje += "<p>Buenos días estimado mayorista,</p>";
+            mensaje += "<p>Por favor, se solicita el siguiente pedido de productos:</p>";
+            mensaje += "<table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse; width:100%; text-align:left;'>";
+            mensaje += "<thead style='background-color:#f2f2f2;'><tr><th>Producto</th><th>Cantidad Solicitada</th></tr></thead>";
+            mensaje += "<tbody>";
+
+            foreach (var product in products)
+            {
+                mensaje += $"<tr><td>{product.Name}</td><td>{product.RequestedStock}</td></tr>";
+            }
+
+            mensaje += "</tbody></table>";
+            mensaje += "<p>Gracias por su atención.</p>";
+            mensaje += "<p>Saludos cordiales,</p>";
+            mensaje += "<p><strong>DistriRedes y Comunicaciones</strong></p>";
+
+            try
+            {
+                Correos correo = new Correos();
+                string destinatario = "valentinavelandiacastro2005@gmail.com";
+                string asunto = "Solicitud de Pedido de Productos";
+                correo.EnviarCorreo(destinatario, asunto, mensaje, true);
+
+                TempData["SuccessMessage"] = "✅ Correo enviado con éxito.";
+                return RedirectToAction("AnalysticHome", "User"); // Redirige a la acción 'AnalistCrud' en este mismo controlador
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"❌ Error al enviar el correo: {ex.Message}";
+                return RedirectToAction("AnalysticHome", "User");
+            }
+        }
+    }
 }

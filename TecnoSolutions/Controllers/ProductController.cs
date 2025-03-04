@@ -9,7 +9,6 @@ using Dapper;
 using Microsoft.Ajax.Utilities;
 using TechnoSolutions.Dtos;
 using TechnoSolutions.Repositories;
-using TecnoSolutions.Dtos;
 using TecnoSolutions.Models;
 using TecnoSolutions.Repository;
 using TecnoSolutions.Controllers;
@@ -56,6 +55,8 @@ namespace TechnoSolutions.Controllers
             }
             return View(product);
         }
+
+
         [HttpPost]
         public ActionResult Edit(Product product)
         {
@@ -88,7 +89,6 @@ namespace TechnoSolutions.Controllers
                 return View(product); // Devuelve la vista con los datos ingresados.
             }
         }
-
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -101,6 +101,8 @@ namespace TechnoSolutions.Controllers
             _productRepository.DeleteProduct(id);
             return Json(new { success = true }); // Retorna un JSON indicando éxito
         }
+
+
         public ActionResult AddProducts()
         {
             return View();
@@ -146,13 +148,15 @@ namespace TechnoSolutions.Controllers
         {
             return View();
         }
-                public class ProductRequest
+        public class ProductRequest
         {
             public int IdProduct { get; set; }
             public string Name { get; set; }
             public int RequestedStock { get; set; }
 
         }
+
+
         [HttpPost]
         public ActionResult GeneratePDF(List<ProductRequest> products)
         {
@@ -191,6 +195,7 @@ namespace TechnoSolutions.Controllers
             byte[] pdfBytes = memoryStream.ToArray();
             return File(pdfBytes, "application/pdf", "ProductReport.pdf");
         }
+
         public ActionResult ExportToPdf(List<int> selectedProducts, Dictionary<int, int> requestedStock)
         {
             if (selectedProducts == null || !selectedProducts.Any())
@@ -221,10 +226,8 @@ namespace TechnoSolutions.Controllers
                 FileName = "Reporte_Productos.pdf"
             };
         }
-        public ActionResult Invoice()
-        {
-            return View();
-        }
+
+
 
         [HttpGet] //Mostrar Productos tabla Product_Person
         public ActionResult PurchaseConfirmation(List<ProductSelectionDto> GetSelectedProducts)
@@ -244,20 +247,88 @@ namespace TechnoSolutions.Controllers
             }
 
             ViewBag.TotalGeneral = selectedProducts.Sum(p => p.TotalPriceProduct);
+
             return View(selectedProducts);
         }
-        public List<Product> GetProductsByIds(List<int> ids)
+
+        public ActionResult Invoice()
         {
-            using (SqlConnection connection = new SqlConnection("Data Source=LEO; Initial Catalog=BD 14_02; Integrated Security=true"))
+            var userId = (Session["IdUser"] != null) ? (int)Session["IdUser"] : 0;
+
+            if (userId == 0)
             {
-                string query = "SELECT * FROM PRODUCT WHERE IdProduct IN @Ids";
-                return connection.Query<Product>(query, new { Ids = ids }).ToList();
+                return RedirectToAction("Login", "User");
             }
+
+            var invoices = _productPersonRepository.GetInvoices(userId);
+
+            if (invoices == null || !invoices.Any())
+            {
+                TempData["Message"] = "No tienes facturas registradas.";
+            }
+
+            return View(invoices);
+        } //Mostrar Facturas
+
+        public ActionResult InvoiceDetails(int? invoiceId)
+        {
+            if (!invoiceId.HasValue)
+            {
+                return RedirectToAction("ListInvoices");
+            }
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+
+            var invoice = _productPersonRepository.GetInvoiceDetail(userId, invoiceId);
+
+            if (invoice == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(invoice);
         }
 
+        public ActionResult DeliveryHome()
+        {
+            var userId = (Session["IdUser"] != null) ? (int)Session["IdUser"] : 0;
+
+            if (userId == 0)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            var invoices = _productPersonRepository.GetInvoicesDelivery();
+
+            if (invoices == null || !invoices.Any())
+            {
+                TempData["Message"] = "No tienes facturas registradas.";
+            }
+
+            return View(invoices);
+        } //Mostrar Facturas
+
+        public ActionResult InvoiceDetailsdelivery(int? invoiceId)
+        {
+            if (!invoiceId.HasValue)
+            {
+                return RedirectToAction("ListInvoices");
+            }
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+
+            var invoice = _productPersonRepository.GetInvoiceDetailDelivery(invoiceId);
+
+            if (invoice == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(invoice);
+        }
 
         [HttpPost] //Cargar tabla Product_Person
-        public ActionResult SelectProducts(List<ProductSelectionDto > selectedProducts, string address, string department, string city)
+        public ActionResult SelectProducts(List<ProductSelectionDto> selectedProducts, string address, string department, string city)
         {
             var userId = (Session["IdUser"] != null) ? (int)Session["IdUser"] : 0;
 
@@ -272,8 +343,10 @@ namespace TechnoSolutions.Controllers
                 return RedirectToAction("SelectProducts");
             }
             _productPersonRepository.SaveSelectedProducts(userId, productsToSave, address, department, city);
-            return RedirectToAction("PurchaseConfirmation","Product");
+
+            return RedirectToAction("PurchaseConfirmation", "Product");
         }
+
 
         [HttpPost] //Confirmar Compra
         public ActionResult ConfirmPurchase(List<ProductSelectionDto> selectedProducts, string address, string department, string city)
@@ -290,12 +363,22 @@ namespace TechnoSolutions.Controllers
                 TempData["Message"] = "No tienes productos seleccionados.";
                 return RedirectToAction("SelectProducts");
             }
-            _productPersonRepository.CreateInvoice(userId, purchaseProducts, address, department, city);
+            var addressInvoice = _productPersonRepository.GetAddressInvoice(userId);
+            if (addressInvoice == null)
+            {
+                TempData["Message"] = "No se encontraron datos de dirección.";
+                return RedirectToAction("SelectProducts");
+            }
+            _productPersonRepository.CreateInvoice(userId, purchaseProducts,
+                                           addressInvoice.ProductsAddress,
+                                           addressInvoice.ProductsDepartment,
+                                           addressInvoice.ProductsCity);
+            _productPersonRepository.DeleteProductsByUserId(userId);
 
             TempData["Message"] = "Compra realizada";
 
             ViewBag.TotalGeneral = purchaseProducts.Sum(p => p.TotalPriceProduct);
-            return View("Invoice", purchaseProducts);
+            return RedirectToAction("SelectProducts", "Product");
         }
 
         [HttpPost] //Cancelar compra
@@ -313,5 +396,17 @@ namespace TechnoSolutions.Controllers
             TempData["Message"] = "Compra cancelada. Los productos han sido eliminados.";
             return RedirectToAction("SelectProducts");
         }
+
+
+
+        public List<Product> GetProductsByIds(List<int> ids)
+        {
+            using (SqlConnection connection = new SqlConnection("Data Source=LEO; Initial Catalog=BD 14_02; Integrated Security=true"))
+            {
+                string query = "SELECT * FROM PRODUCT WHERE IdProduct IN @Ids";
+                return connection.Query<Product>(query, new { Ids = ids }).ToList();
+            }
+        }
+       
     }
 }

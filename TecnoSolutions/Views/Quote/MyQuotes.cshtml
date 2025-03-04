@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "MyQuotes";
+    Layout = "~/Views/Shared/_LayoutCliente.cshtml";
+}
+
+@model List<TechnoSolutions.Dtos.QuoteDto>
+
+<h2>Listado de Cotizaciones</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No hay cotizaciones registradas.</p>
+}
+else
+{
+    <div class="table-container">
+        <table class="table table-primary">
+            <thead>
+                <tr>
+                    <th>Número de Cotización</th>
+                    <th>Persona</th>
+                    <th>Estado</th>
+                    <th>Id Crew</th>
+                    <th>Dirección</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha Final</th>
+                    <th>Precio Total</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var quote in Model)
+                {
+                    <tr id="quote-@quote.IdQuote">
+                        <td>@quote.IdQuote</td>
+                        <td>@quote.IdPerson</td>
+                        <td id="state-@quote.IdQuote">@quote.IdState</td>
+                        <td>@quote.IdCrew</td>
+                        <td>@quote.ServiceAddress</td>
+                        <td>@quote.StarDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@quote.EndDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@quote.Price</td>
+                        <td>
+                            <button class="btn btn-success accept-quote" data-id="@quote.IdQuote">Aceptar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".accept-quote").click(function () {
+            var quoteId = $(this).data("id");
+            var button = $(this);
+
+            $.ajax({
+                url: '@Url.Action("AcceptQuote", "Quote")',
+                type: "POST",
+                data: { id: quoteId },
+                success: function (response) {
+                    if (response.success) {
+                        $("#state-" + quoteId).text("2");
+                        button.prop("disabled", true);
+                        alert("Cotización aceptada exitosamente.");
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error al procesar la solicitud.");
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    body {
+        background-color: #f4f4f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .table-primary {
+        --bs-table-bg: #0d3039;
+        --bs-table-color: whitesmoke;
+    }
+
+    .table-container {
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #091324;
+    }
+
+    .header-title {
+        font-size: 28px;
+        color: #0d6efd;
+        text-align: center;
+        margin-bottom: 20px;
+        background-color: #0d3039;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .btn-primary, .btn-success, .btn-danger {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #0d3039;
+        color: whitesmoke;
+    }
+
+        .btn-primary:hover {
+            background-color: #091021;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+        }
+
+    .text-principal {
+        color: whitesmoke;
+    }
+
+    .alert-danger {
+        border-radius: 8px;
+    }
+
+    .btn-info {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #17a2b8;
+        color: whitesmoke;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">

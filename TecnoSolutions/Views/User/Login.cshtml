@@ -2,6 +2,12 @@
 @{
     ViewBag.Title = "Login";
 }
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @ViewData["Message"]
+    </div>
+}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -41,7 +47,7 @@
                         <!-- Logo -->
                         <div class="col-md-6 logo-container">
                             <img src="~/Content/Image/logo.jpeg" alt="Logo" class="img-fluid">
-                       
+
                         </div>
                     </div>
                 </div>

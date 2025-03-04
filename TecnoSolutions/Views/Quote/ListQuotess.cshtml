@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "ListQuotes";
+    Layout = "~/Views/Shared/_LayoutAnalista.cshtml";
+}
+
+@model List<TechnoSolutions.Dtos.QuoteDto>
+
+<h2>Listado de Cotizaciones</h2>
+
+@using (Html.BeginForm("SaveQuotes", "Quote", FormMethod.Post))
+{
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table table-hover table-primary">
+                <thead>
+                    <tr>
+                        <th>Número de Cotización</th>
+                        <th>Persona</th>
+                        <th>Estado</th>
+                        <th>Id Crew</th>
+                        <th>Dirección</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Fecha Final</th>
+                        <th>Precio Total</th>
+                        <th>Acción</th> <!-- Nueva columna para el botón -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Model[i].IdQuote
+                                @Html.HiddenFor(m => m[i].IdQuote)
+                            </td>
+                            <td>@Model[i].IdPerson</td>
+                            <td>@Model[i].IdState</td>
+                            <td>
+                                @Html.DropDownListFor(m => m[i].IdCrew, new SelectList(new[] { 1, 2, 3 }, Model[i].IdCrew), new { @class = "form-control" })
+                            </td>
+                            <td>@Model[i].ServiceAddress</td>
+                            <td>
+                                @Html.TextBoxFor(m => m[i].StarDate, new { @class = "form-control", type = "datetime-local" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m[i].EndDate, new { @class = "form-control", type = "datetime-local" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m[i].Price, new { @class = "form-control", type = "number" })
+                            </td>
+                            <td>
+                                <a href="@Url.Action("SelectProducts", "Quote", new { id = Model[i].IdQuote })" class="btn btn-success">
+                                    Seleccionar Productos
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
+}
+
+<style>
+    body {
+        background-color: #f4f4f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* Contenedor de la tabla */
+    .table-container {
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #091324;
+        margin-bottom: 20px;
+    }
+    /* Estilos de la tabla */
+    .table-primary {
+        --bs-table-bg: #0d3039;
+        --bs-table-color: whitesmoke;
+    }
+    /* Botones */
+    .btn-success {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #17a2b8;
+        color: whitesmoke;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        .btn-success:hover {
+            background-color: #138496;
+        }
+
+    .btn-primary {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #0d3039;
+        color: whitesmoke;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #5a6268;
+        }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">

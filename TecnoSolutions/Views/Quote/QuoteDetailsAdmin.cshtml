@@ -1,24 +1,22 @@
-﻿
-@{
+﻿@{ 
     ViewBag.Title = "QuoteDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<h2>Detalles de la Cotización</h2>
+<h2>Detalles de la Cotización seleccionada</h2>
 
 <table class="table table-container">
     <tr>
-        <th class="table-primary" >ID Cotización:</th>
+        <th class="table-primary">ID Cotización:</th>
         <td>@Model.IdQuote</td>
     </tr>
     <tr>
-        <th class="table-primary">ID Persona:</th>
-        <td>@Model.IdPerson</td>
+        <th class="table-primary">Nombre:</th>
+        <td>@Model.PersonName</td>
     </tr>
     <tr>
         <th class="table-primary">Estado:</th>
-        <td>@Model.IdState</td>
+        <td>@Model.StateName</td>
     </tr>
     <tr>
         <th class="table-primary">Dirección de Servicio:</th>
@@ -34,19 +32,40 @@
     </tr>
     <tr>
         <th class="table-primary">Fecha Inicio:</th>
-        <td>@Model.StarDate?  ("dd/MM/yyyy")</td>
+        @{
+            string start = (Model.StarDate == null || Model.StarDate == DateTime.MinValue)
+                ? "Sin asignación"
+                : Model.StarDate?.ToString("yyyy-MM-dd HH:mm");
+        }
+        <td>@start</td>
     </tr>
     <tr>
         <th class="table-primary">Fecha Fin:</th>
-        <td>@Model.EndDate? ("dd/MM/yyyy")</td>
+        @{
+            string End = (Model.EndDate == null || Model.EndDate == DateTime.MinValue)
+                ? "Sin asignación"
+                : Model.StarDate?.ToString("yyyy-MM-dd HH:mm");
+            <td>@End</td>
+        }
+    </tr>
+    <tr>
+        <th class="table-primary">Cuadrilla:</th>
+        <td>@Model.IdCrewPerson</td>
     </tr>
     <tr>
         <th class="table-primary">Precio:</th>
-        <td>@Model.Price.ToString("C")</td>
+        <td>@($"{Model.Price:N0} COP")</td>
     </tr>
 </table>
+<a href="@Url.Action("ApproveQuoteAdmin", "Quote")" class="btn btn-secondary">Volver</a>
+<button onclick="printQuote()" class="btn btn-info">Imprimir Cotización</button>
 
-<a href="@Url.Action("ApproveQuoteAna", "Quote")" class="btn btn-secondary">Volver</a>
+<script>
+    function printQuote() {
+        window.print();
+    }
+</script> @*Imprimir*@
+
 
 <style>
     body {
@@ -96,18 +115,18 @@
         }
 
     .btn-success {
-        background-color: #198754;
+        background-color: #0d3039;
     }
 
         .btn-success:hover {
-            background-color: #157347;
+            background-color: #091021;
         }
 
     .btn-secondary {
         width: 100%;
         padding: 10px;
         font-size: 16px;
-        background-color: midnightblue;
+        background-color: dimgray;
         color: whitesmoke;
         border: none;
         border-radius: 5px;
@@ -120,7 +139,7 @@
         }
 
     .btn-danger {
-        background-color: #dc3545;
+        background-color: maroon;
     }
 
         .btn-danger:hover {

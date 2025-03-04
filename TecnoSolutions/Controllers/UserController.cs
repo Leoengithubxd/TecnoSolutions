@@ -65,68 +65,65 @@ namespace TecnoSolutions.Views.User
         [HttpPost]
         public ActionResult SignUpEmployees(UserDto user)
         {
-            bool registered;
-            string message;
-            if (user.Document.Length < 0 || user.Document.Length > 10)
+            if (string.IsNullOrWhiteSpace(user.Document) || user.Document.Length > 10)
             {
-                ViewData["Message"] = "El documento no puede ser mayor a 10";
+                ViewData["Message"] = "El documento no puede ser mayor a 10 caracteres";
                 return View();
             }
-            if (!Regex.IsMatch(user.Phone, "^\\d{10}$"))
+            if (!Regex.IsMatch(user.Phone.Trim(), @"^\d{10}$"))
             {
-                ViewData["Message"] = "El Telefono debe tener 10 digitos";
+                ViewData["Message"] = "El teléfono debe tener 10 dígitos";
                 return View();
             }
-            if (!user.Email.EndsWith("@gmail.com"))
+            if (!user.Email.Trim().EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
             {
-                ViewData["Message"] = "Solo se admiten cuentas (@gmail.com)";
+                ViewData["Message"] = "Solo se admiten cuentas @gmail.com";
                 return View();
             }
-            if (user.Password.Length < 5 || user.Password.Length > 10)
+            if (user.Password.Length < 5 || user.Password.Length > 15)
             {
-                ViewData["Message"] = "La Contraseña debe tener entre 5 y 15 caracteres";
+                ViewData["Message"] = "La contraseña debe tener entre 5 y 15 caracteres";
                 return View();
             }
             if (!user.Password.Any(char.IsUpper))
             {
-                ViewData["Message"] = "La Contraseña debe tener 1 letra en mayuscula";
+                ViewData["Message"] = "La contraseña debe contener al menos 1 letra mayúscula";
                 return View();
             }
-                else
-                {
-                    if (user.Password.Any(c => !char.IsLetterOrDigit(c)))
-                    {
-                        ViewData["Message"] = "La Contraseña no puede tener caracteres especiales";
-                        return View();
-                    }
-                    if ((user.Password != user.VerifyPassword))
-                    {
-                        ViewData["Mensaje"] = "La Contraseña y la Confirmacion no coinciden";
-                        return View();
-                    }
-                        else
-                        {
-                            user.Password = ConvertirSha256(user.Password);
-                        }
-                }
+            if (user.Password.Any(c => !char.IsLetterOrDigit(c)))
+            {
+                ViewData["Message"] = "La contraseña no puede contener caracteres especiales";
+                return View();
+            }
+            if (user.Password != user.VerifyPassword)
+            {
+                ViewData["Message"] = "La contraseña y la confirmación no coinciden";
+                return View();
+            }
+
+            user.Password = ConvertirSha256(user.Password);
+
+            bool registered;
+            string message;
+
             using (SqlConnection cn = new SqlConnection(cadena))
             {
                 SqlCommand cmd = new SqlCommand("sp_UserRegisteredEmployees", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@IdRole", user.IdRole);
-                cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
-                cmd.Parameters.AddWithValue("@LastName", user.LastName);
-                cmd.Parameters.AddWithValue("@Document", user.Document);
-                cmd.Parameters.AddWithValue("@Phone", user.Phone);
-                cmd.Parameters.AddWithValue("@Address", user.Address);
-                cmd.Parameters.AddWithValue("@Department", user.Department);
-                cmd.Parameters.AddWithValue("@City", user.City);
-                cmd.Parameters.AddWithValue("@Email", user.Email);
+                cmd.Parameters.AddWithValue("@FirstName", user.FirstName.Trim());
+                cmd.Parameters.AddWithValue("@LastName", user.LastName.Trim());
+                cmd.Parameters.AddWithValue("@Document", user.Document.Trim());
+                cmd.Parameters.AddWithValue("@Phone", user.Phone.Trim());
+                cmd.Parameters.AddWithValue("@Address", user.Address.Trim());
+                cmd.Parameters.AddWithValue("@Department", user.Department.Trim());
+                cmd.Parameters.AddWithValue("@City", user.City.Trim());
+                cmd.Parameters.AddWithValue("@Email", user.Email.Trim());
                 cmd.Parameters.AddWithValue("@Password", user.Password);
-                cmd.Parameters.AddWithValue("@Arl", user.Arl);
-                cmd.Parameters.AddWithValue("@Eps", user.Eps);
-                cmd.Parameters.AddWithValue("@Position", user.Position);
+                cmd.Parameters.AddWithValue("@Arl", user.Arl.Trim());
+                cmd.Parameters.AddWithValue("@Eps", user.Eps.Trim());
+                cmd.Parameters.AddWithValue("@Position", user.Position.Trim());
 
                 SqlParameter outputRegistered = new SqlParameter("@Registered", SqlDbType.Bit) { Direction = ParameterDirection.Output };
                 SqlParameter outputMessage = new SqlParameter("@Message", SqlDbType.VarChar, 100) { Direction = ParameterDirection.Output };
@@ -140,13 +137,16 @@ namespace TecnoSolutions.Views.User
                 registered = Convert.ToBoolean(outputRegistered.Value);
                 message = outputMessage.Value.ToString();
             }
-            ViewData["Message"] = message;
+
             if (registered)
             {
                 return RedirectToAction("Login", "User");
             }
+
+            ViewData["Message"] = message;
             return View();
         }
+
 
 
         [HttpPost]
@@ -165,37 +165,37 @@ namespace TecnoSolutions.Views.User
                 return View();
             }
             if (!user.Email.EndsWith("@gmail.com"))
-                {
-                    ViewData["Message"] = "Solo se admiten cuentas (@gmail.com)";
-                    return View();
-                }
+            {
+                ViewData["Message"] = "Solo se admiten cuentas (@gmail.com)";
+                return View();
+            }
             if (user.Password.Length < 5 || user.Password.Length > 15)
-                {
-                    ViewData["Message"] = "La Contraseña debe tener entre 5 y 15 caracteres";
-                    return View();
-                }
+            {
+                ViewData["Message"] = "La Contraseña debe tener entre 5 y 15 caracteres";
+                return View();
+            }
             if (!user.Password.Any(char.IsUpper))
             {
                 ViewData["Message"] = "La Contraseña debe tener 1 letra en mayuscula";
                 return View();
             }
+            else
+            {
+                if (user.Password.Any(c => !char.IsLetterOrDigit(c)))
+                {
+                    ViewData["Message"] = "La Contraseña no puede tener caracteres especiales";
+                    return View();
+                }
+                if ((user.Password != user.VerifyPassword))
+                {
+                    ViewData["Mensaje"] = "La Contraseña y la Confirmacion no coinciden";
+                    return View();
+                }
                 else
                 {
-                    if (user.Password.Any(c => !char.IsLetterOrDigit(c)))
-                    {
-                        ViewData["Message"] = "La Contraseña no puede tener caracteres especiales";
-                        return View();
-                    }
-                    if ((user.Password != user.VerifyPassword))
-                    {
-                        ViewData["Mensaje"] = "La Contraseña y la Confirmacion no coinciden";
-                        return View();
-                    }
-                        else
-                        {
-                            user.Password = ConvertirSha256(user.Password);
-                        }
+                    user.Password = ConvertirSha256(user.Password);
                 }
+            }
             int IdRol = 1;
             using (SqlConnection cn = new SqlConnection(cadena))
             {
@@ -210,7 +210,7 @@ namespace TecnoSolutions.Views.User
                 cmd.Parameters.AddWithValue("City", user.City);
                 cmd.Parameters.AddWithValue("Email", user.Email);
                 cmd.Parameters.AddWithValue("Password", user.Password);
-                cmd.Parameters.Add("@Registered",SqlDbType.BigInt).Direction = ParameterDirection.Output;
+                cmd.Parameters.Add("@Registered", SqlDbType.BigInt).Direction = ParameterDirection.Output;
                 cmd.Parameters.Add("@Message", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
                 cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
@@ -219,39 +219,85 @@ namespace TecnoSolutions.Views.User
                 message = cmd.Parameters["@Message"].Value.ToString();
             }
             ViewData["Message"] = message;
-            if (registered==true)
+            if (registered == true)
             {
                 return RedirectToAction("Login", "User");
             }
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            // Limpia todas las variables de sesión
+            Session.Clear();
+            Session.Abandon();
+
+            // Redirige al login
+            return RedirectToAction("Login", "User");
+        }
 
         [HttpPost]
         public ActionResult Login(UserDto user)
         {
+            // Encriptar la contraseña
             user.Password = ConvertirSha256(user.Password);
+
             using (SqlConnection cn = new SqlConnection(cadena))
             {
-                SqlCommand cmd = new SqlCommand("sp_VerifyUser", cn);
-                cmd.Parameters.AddWithValue("Email", user.Email);
-                cmd.Parameters.AddWithValue("Password", user.Password);
-                cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
-                cmd.ExecuteNonQuery();
-                user.IdPerson = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
+                // Primera consulta: Obtener IdPerson usando el SP
+                using (SqlCommand cmd = new SqlCommand("sp_VerifyUser", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Email", user.Email);
+                    cmd.Parameters.AddWithValue("@Password", user.Password);
+
+                    // sp_VerifyUser devuelve solo IdPerson
+                    object result = cmd.ExecuteScalar();
+                    user.IdPerson = result != null ? Convert.ToInt32(result) : 0;
+                }
+              
+                // Si se encontró el usuario, se consulta el rol
+                if (user.IdPerson != 0)
+                {
+                    using (SqlCommand cmdRole = new SqlCommand("SELECT IdRole FROM PERSON WHERE IdPerson = @IdPerson", cn))
+                    {
+                        cmdRole.Parameters.AddWithValue("@IdPerson", user.IdPerson);
+                        object roleResult = cmdRole.ExecuteScalar();
+                        user.IdRole = roleResult != null ? Convert.ToInt32(roleResult) : 0;
+                    }
+                }
             }
+
+            // Si se encontró el usuario, guardamos en Session y redirigimos según el rol
             if (user.IdPerson != 0)
             {
+                Session["UserId"] = user.IdPerson;
+                Session["UserRole"] = user.IdRole;
+
+                // Ejemplo: si el rol es 6, se redirige a AdminHome, de lo contrario a UserHome
+                if (user.IdRole == 6)
+                    return RedirectToAction("AdminHome", "User");
                 Session["IdUser"] = user.IdPerson;
-                return RedirectToAction("AdminHome","User");
+                if (user.IdRole == 5)
+                    return RedirectToAction("AssistantHome", "User");
+
+                if (user.IdRole == 3)
+                    return RedirectToAction("AnalysticHome", "User");
+                if (user.IdRole == 2)
+                    return RedirectToAction("EmployeeHome", "Quote");
+                if (user.IdRole == 4)
+                    return RedirectToAction("DeliveryHome", "Product");
+                else
+                    return RedirectToAction("Home", "User");
             }
-            else
-            {
-                ViewData["Message"] = "User not found.";
-                return View();
-            }
+
+            // Si no se encontró el usuario, se muestra el mensaje
+            ViewData["Message"] = "User not found.";
+            return View();
         }
+
 
 
 

@@ -1,9 +1,9 @@
 ﻿@{
     ViewBag.Title = "ApproveQuote";
-    Layout = "~/Views/Shared/_LayoutAnalista.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Cotizaciones</h2>
+<h2>Cotizaciones Finalizadas</h2>
 
 <table class="table table-striped">
     <thead class="table-primary">
@@ -20,9 +20,9 @@
             <tr>
                 <td>@quote.IdQuote</td>
                 <td>@quote.IdState</td>
-                <td>@quote.Price.ToString("C")</td>
+                <td>@($"{quote.Price:N0} COP")</td>
                 <td>
-                    <a href="@Url.Action("QuoteDetailsA", "Quote", new { id = quote.IdQuote })" class="btn btn-primary">
+                    <a href="@Url.Action("QuoteDetailsAdmin", "Quote", new { quoteId = quote.IdQuote })" class="btn btn-primary">
                         Ver Detalles
                     </a>
                 </td>
@@ -138,5 +138,6 @@
 
             .btn-info:hover {
                 background-color: #138496;
+            }
     </style>
 </head> 

@@ -1,4 +1,4 @@
-﻿@{
+﻿    @{
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_LayoutCliente.cshtml";
 }
@@ -43,6 +43,17 @@
             width: 100%;
             padding: 10px;
             font-size: 16px;
+            background-color: #0b5ed7;
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-secondary {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
             background-color: #0d3039;
             color: whitesmoke;
             border: none;
@@ -50,7 +61,17 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-
+        .btn-atras {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: rgb(45, 32, 32, 0,10);
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
             .btn-primary:hover {
                 background-color: #091021;
             }
@@ -81,53 +102,60 @@
                 @TempData["Message"]
             </div>}
 
-    <div class="table-container">
-        @using (Html.BeginForm("SelectProducts", "Product", FormMethod.Post))
-        {
-            <table class="table table-hover">
-                <thead class="table-primary">
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio Unitario</th>
-                        <th>Cantidad (Metros o Unidades)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i = 0; i < Model.Count; i++)
-                    {
-                        <tr>
-                            <td>
-                                @Html.HiddenFor(m => Model[i].IdProduct)
-                                @Html.HiddenFor(m => Model[i].NameProduct)
-                                @Html.HiddenFor(m => Model[i].UnitPrice)
-                                @Model[i].NameProduct
-                            </td>
-                            <td>@Model[i].UnitPrice.ToString("C")</td>
-                            <td>
-                                @Html.TextBoxFor(m => Model[i].Quantity, new { type = "number", min = "0", @class = "form-control" })
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <h3>Información de Contacto</h3>
-            <div class="form-group">
-                <label for="address">Dirección:</label>
-                <input type="text" name="address" id="address" class="form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="department">Departamento:</label>
-                <input type="text" name="department" id="department" class="form-control" required />
-            </div>
-            <div class="form-group">
-                <label for="city">Ciudad:</label>
-                <input type="text" name="city" id="city" class="form-control" required />
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Agregar Products</button>
-        }   
-    </div>
-    </div>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <div class="table-container">
+            @using (Html.BeginForm("SelectProducts", "Product", FormMethod.Post))
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio Unitario</th>
+                                <th>Cantidad (Metros o Unidades)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.HiddenFor(m => Model[i].IdProduct)
+                                        @Html.HiddenFor(m => Model[i].NameProduct)
+                                        @Html.HiddenFor(m => Model[i].UnitPrice)
+                                        @Model[i].NameProduct
+                                    </td>
+                                    <td>@Model[i].UnitPrice.ToString("C", new System.Globalization.CultureInfo("es-CO"))</td>
+
+                                    <td>
+                                        @Html.TextBoxFor(m => Model[i].Quantity, new { type = "number", min = "0", @class = "form-control" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Información de Contacto</h3>
+                <div class="form-group">
+                    <label for="address">Dirección:</label>
+                    <input type="text" name="address" id="address" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="department">Departamento:</label>
+                    <input type="text" name="department" id="department" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="city">Ciudad:</label>
+                    <input type="text" name="city" id="city" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Agregar Products</button>
+            }
+            <a href="@Url.Action("Invoice", "Product")" class="btn btn-secondary">
+                <i class="bi bi-receipt"></i> Mis Facturas
+            </a>
+            <a href="@Url.Action("Home", "User")" class="btn btn-atras">Volver</a>
+        </div>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 </body>
 </html>

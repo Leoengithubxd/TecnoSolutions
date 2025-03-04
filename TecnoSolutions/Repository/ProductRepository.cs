@@ -6,10 +6,11 @@ using System.Linq;
 using System.Web;
 using Dapper;
 using TechnoSolutions.Dtos;
-using TecnoSolutions.Dtos;
+
 using TecnoSolutions.Models;
 using TecnoSolutions.Repository;
 using TechnoSolutions.Controllers;
+using System.Web.Mvc;
 namespace TechnoSolutions.Repositories
 {
     public class ProductRepository
@@ -85,10 +86,25 @@ namespace TechnoSolutions.Repositories
                 connection.Execute(sql, parameters);
             }
         }
-
     }
+
     public class ProductPersonRepository
     {
+        public string connectionString = "Data Source= LEO ; Initial Catalog= BD 14_02 ; Integrated Security=true";
+        public void DeleteProductsByUserId(int userId)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var query = "DELETE FROM PRODUCT_PERSON WHERE IdPerson = @UserId";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void SaveSelectedProducts(int userId, List<ProductSelectionDto> selectedProducts,
             string address, string department, string city) //Llenar tabla Product_Person
         {
@@ -131,7 +147,7 @@ namespace TechnoSolutions.Repositories
                     p.Department,
                     p.City
                 })
-                .AsEnumerable() 
+                .AsEnumerable()
                 .Select(p1 => new ProductSelectionDto
                 {
                     IdProduct = (int)p1.IdProduct,
@@ -146,7 +162,7 @@ namespace TechnoSolutions.Repositories
                 .ToList();
                 return productsSelected;
             }
-        } 
+        }
 
         public void DeleteUserProducts(int userId) //Eliminar productos seleccionados tabla Product_Person
         {
@@ -162,31 +178,203 @@ namespace TechnoSolutions.Repositories
             }
         }
 
-        public void CreateInvoice(int userId,List<ProductSelectionDto> selectedProducts, string address, string department, string city) //Llenar tabla Invoice
+        public ProductSelectionDto GetAddressInvoice(int userId) //Traer Direccion Factura
         {
             using (var db = new BD_14_02Entities())
             {
-                int lastInvoiceId = db.INVOICE.Any() ? db.INVOICE.Max(i => i.IdInvoice) : 0;
-                foreach (var invoice in selectedProducts)
-                {
-                    lastInvoiceId++;
-                    var invoiceProducts = new INVOICE
-                    {
-                        IdInvoice = lastInvoiceId,
-                        IdPerson = userId,
-                        IdProduct = invoice.IdProduct,
-                        NameProduct = invoice.NameProduct,
-                        Quantity = invoice.Quantity,
-                        UnitPrice = (double)invoice.UnitPrice,
-                        TotalPriceProduct = (double)(invoice.UnitPrice * invoice.Quantity),
-                        Address =invoice.ProductsAddress,
-                        Department = invoice.ProductsDepartment,
-                        City = invoice.ProductsCity,
-                    };
-                    db.INVOICE.Add(invoiceProducts);
-                }
-                db.SaveChanges();
+                return db.PRODUCT_PERSON
+                         .Where(p => p.IdPerson == userId)
+                         .Select(p => new ProductSelectionDto
+                         {
+                             ProductsAddress = p.Address,
+                             ProductsDepartment = p.Department,
+                             ProductsCity = p.City
+                         })
+                         .FirstOrDefault();
             }
         }
+
+        public void CreateInvoice(int userId, List<ProductSelectionDto> selectedProducts,
+            string address, string department, string city)
+        {
+            using (var db = new BD_14_02Entities())
+            {
+                var invoice = new INVOICE
+                { 
+                    IdPerson = userId,
+                    Address = address,
+                    Department = department,
+                    City = city,
+                    TotalPrice = (double)selectedProducts.Sum(p => p.UnitPrice * p.Quantity),
+                    RegisteredAt = DateTime.Now
+                };
+
+                db.INVOICE.Add(invoice);
+                db.SaveChanges();
+
+                var invoiceProducts = selectedProducts.Select(product => new INVOICE_PRODUCT
+                {
+                    IdInvoice = invoice.IdInvoice,
+                    IdProduct = product.IdProduct,
+                    NameProduct = product.NameProduct,
+                    Quantity = product.Quantity,
+                    UnitPrice = (double)product.UnitPrice,
+                    TotalPriceProduct = (double)(product.UnitPrice * product.Quantity)
+                }).ToList();
+
+                db.INVOICE_PRODUCT.AddRange(invoiceProducts);
+                db.SaveChanges();
+            }
+        } //Crear Factura
+
+        public List<InvoiceDto> GetInvoices(int userId)
+        {
+            using (var db = new BD_14_02Entities())
+            {
+                return db.INVOICE
+                         .Where(i => i.IdPerson == userId)
+                         .OrderByDescending(i => i.RegisteredAt)
+                         .ToList()
+                         .Select(i => new InvoiceDto
+                         {
+                             IdInvoice = i.IdInvoice,
+                             RegisteredAt = i.RegisteredAt,
+                             TotalPriceProduct = Convert.ToDecimal(i.TotalPrice)
+                         })
+                         .ToList();
+            }
         }
+
+        public List<InvoiceDto> GetInvoicesDelivery()
+        {
+            using (var db = new BD_14_02Entities())
+            {
+                return db.INVOICE
+                         .OrderByDescending(i => i.RegisteredAt)
+                         .ToList()
+                         .Select(i => new InvoiceDto
+                         {
+                             IdInvoice = i.IdInvoice,
+                             RegisteredAt = i.RegisteredAt,
+                             TotalPriceProduct = Convert.ToDecimal(i.TotalPrice)
+                         })
+                         .ToList();
+            }
+        }
+
+        public InvoiceDto GetInvoiceDetail(int userId, int? invoiceId)
+        {
+            using (var db = new BD_14_02Entities())
+            {
+                var invoice = (from i in db.INVOICE
+                               join p in db.PERSON on i.IdPerson equals p.IdPerson
+                               where i.IdPerson == userId && i.IdInvoice == invoiceId
+                               select new
+                               {
+                                   i.IdInvoice,
+                                   i.RegisteredAt,
+                                   i.TotalPrice,
+                                   i.Address,
+                                   i.City,
+                                   i.Department,
+                                   p.FirstName,
+                                   p.Email
+                               })
+                              .AsEnumerable()
+                              .Select(i => new InvoiceDto
+                              {
+                                  IdInvoice = i.IdInvoice,
+                                  RegisteredAt = i.RegisteredAt,
+                                  TotalPriceProduct = (decimal)Convert.ToDouble(i.TotalPrice),
+                                  ProductsAddress = i.Address,
+                                  ProductsCity = i.City,
+                                  ProductsDepartment = i.Department,
+                                  FirstName = i.FirstName,
+                                  Email = i.Email
+                              })
+                              .FirstOrDefault();
+
+                if (invoice != null)
+                {
+                    invoice.Products = (from ip in db.INVOICE_PRODUCT
+                                        join prod in db.PRODUCT on ip.IdProduct equals prod.IdProduct
+                                        where ip.IdInvoice == invoiceId
+                                        select new
+                                        {
+                                            prod.Name,
+                                            ip.Quantity,
+                                            ip.UnitPrice
+                                        })
+                   .AsEnumerable() // Cargar en memoria antes de cálculos
+                   .Select(ip => new ProductSelectionDto
+                   {
+                       NameProduct = ip.Name,
+                       Quantity = ip.Quantity,
+                       UnitPrice = (decimal)ip.UnitPrice,
+                       TotalPriceProduct = (decimal)(ip.Quantity * ip.UnitPrice) // Calcular en C#
+                   })
+                   .ToList();
+                }
+                return invoice;
+            }
+        }
+
+        public InvoiceDto GetInvoiceDetailDelivery(int? invoiceId)
+        {
+            using (var db = new BD_14_02Entities())
+            {
+                var invoice = (from i in db.INVOICE
+                               join p in db.PERSON on i.IdPerson equals p.IdPerson
+                               where i.IdInvoice == invoiceId
+                               select new
+                               {
+                                   i.IdInvoice,
+                                   i.RegisteredAt,
+                                   i.TotalPrice,
+                                   i.Address,
+                                   i.City,
+                                   i.Department,
+                                   p.FirstName,
+                                   p.Email
+                               })
+                              .AsEnumerable()
+                              .Select(i => new InvoiceDto
+                              {
+                                  IdInvoice = i.IdInvoice,
+                                  RegisteredAt = i.RegisteredAt,
+                                  TotalPriceProduct = Convert.ToDecimal(i.TotalPrice),
+                                  ProductsAddress = i.Address,
+                                  ProductsCity = i.City,
+                                  ProductsDepartment = i.Department,
+                                  FirstName = i.FirstName,
+                                  Email = i.Email
+                              })
+                              .FirstOrDefault();
+
+                if (invoice != null)
+                {
+                    invoice.Products = (from ip in db.INVOICE_PRODUCT
+                                        join prod in db.PRODUCT on ip.IdProduct equals prod.IdProduct
+                                        where ip.IdInvoice == invoiceId
+                                        select new
+                                        {
+                                            prod.Name,
+                                            ip.Quantity,
+                                            ip.UnitPrice
+                                        })
+                   .AsEnumerable()
+                   .Select(ip => new ProductSelectionDto
+                   {
+                       NameProduct = ip.Name,
+                       Quantity = ip.Quantity,
+                       UnitPrice = Convert.ToDecimal(ip.UnitPrice),
+                       TotalPriceProduct = Convert.ToDecimal(ip.Quantity * ip.UnitPrice)
+                   })
+                   .ToList();
+                }
+                return invoice;
+            }
+        }
+
+    }
 }

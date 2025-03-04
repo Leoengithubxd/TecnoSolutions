@@ -14,15 +14,16 @@
             <th>Acción</th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var quote in Model)
         {
             <tr>
                 <td>@quote.IdQuote</td>
-                <td>@quote.IdState</td>
-                <td>@quote.Price.ToString("C")</td>
+                <td>@quote.StateName</td>
+                <td>@($"{quote.Price:N0} COP")</td>
                 <td>
-                    <a href="@Url.Action("QuoteDetails", "Quote", new { id = quote.IdQuote })" class="btn btn-primary">
+                    <a href="@Url.Action("QuoteDetails", "Quote", new { quoteId = quote.IdQuote })" class="btn btn-primary">
                         Ver Detalles
                     </a>
                 </td>
@@ -31,15 +32,8 @@
     </tbody>
 </table>
 
-<a href="@Url.Action("SelectProducts", "Product")" class="btn btn-secondary">Volver</a>
+<a href="@Url.Action("Home", "User")" class="btn btn-secondary">Volver</a>
 
-<button onclick="printQuote()" class="btn btn-info">Imprimir Cotización</button>
-
-<script>
-    function printQuote() {
-        window.print();
-    }
-</script>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -144,5 +138,6 @@
 
             .btn-info:hover {
                 background-color: #138496;
+            }
     </style>
 </head> 

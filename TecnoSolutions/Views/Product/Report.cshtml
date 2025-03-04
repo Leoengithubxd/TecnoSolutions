@@ -1,10 +1,15 @@
-﻿@{
-
-}
+﻿
 @{
     ViewBag.Title = "Report";
     Layout = "~/Views/Shared/_LayoutAsistente.cshtml";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 @model List<TecnoSolutions.Models.PRODUCT>
 
 <div class="container d-flex justify-content-center align-items-center vh-100">
@@ -12,7 +17,7 @@
         <div class="card login-card">
             <div class="card-body">
                 <h2 class="text-center text-principal mb-4">Generar Reporte</h2>
-                <form method="post" action="@Url.Action("GeneratePDF", "Product")">
+                <form method="post" action="@Url.Action("SendEmail", "Analist")">
                     <div class="table-responsive">
                         <table class="table table-dark table-hover">
                             <thead>
@@ -36,8 +41,8 @@
                         </table>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
-                        <button type="submit" class="btn btn-primary w-50">Generar PDF</button>
-                        <button type="button" class="btn btn-secondary w-50 ms-2" onclick="printInvoice()">Imprimir</button>
+                        <button type="submit" class="btn btn-primary w-50">Enviar Email</button>
+                        <button type="button" class="btn btn-secondary w-50 ms-2" onclick="printInvoice()">Generar PDF</button>
                     </div>
                 </form>
             </div>

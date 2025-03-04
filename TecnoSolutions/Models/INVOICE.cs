@@ -14,18 +14,21 @@ namespace TecnoSolutions.Models
     
     public partial class INVOICE
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public INVOICE()
+        {
+            this.INVOICE_PRODUCT = new HashSet<INVOICE_PRODUCT>();
+        }
+    
         public int IdInvoice { get; set; }
         public int IdPerson { get; set; }
-        public int IdProduct { get; set; }
-        public string NameProduct { get; set; }
-        public double Quantity { get; set; }
-        public double UnitPrice { get; set; }
-        public double TotalPriceProduct { get; set; }
+        public double TotalPrice { get; set; }
         public string Address { get; set; }
         public string Department { get; set; }
         public string City { get; set; }
+        public System.DateTime RegisteredAt { get; set; }
     
-        public virtual PERSON PERSON { get; set; }
-        public virtual PRODUCT PRODUCT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INVOICE_PRODUCT> INVOICE_PRODUCT { get; set; }
     }
 }

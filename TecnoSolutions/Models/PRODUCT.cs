@@ -17,7 +17,7 @@ namespace TecnoSolutions.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PRODUCT()
         {
-            this.INVOICE = new HashSet<INVOICE>();
+            this.INVOICE_PRODUCT = new HashSet<INVOICE_PRODUCT>();
             this.PRODUCT_PERSON = new HashSet<PRODUCT_PERSON>();
             this.QUOTE_PRODUCT = new HashSet<QUOTE_PRODUCT>();
         }
@@ -28,7 +28,7 @@ namespace TecnoSolutions.Models
         public Nullable<double> UnitPrice { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INVOICE> INVOICE { get; set; }
+        public virtual ICollection<INVOICE_PRODUCT> INVOICE_PRODUCT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRODUCT_PERSON> PRODUCT_PERSON { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

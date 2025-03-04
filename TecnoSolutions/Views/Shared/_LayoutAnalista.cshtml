@@ -107,11 +107,22 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="@Url.Action("Login", "User")" class="nav-link">
-                        <i class="bi bi-person-fill nav-icon"></i>
-                    </a>
-                </li>
+                @if (Session["UserId"] != null)
+                {
+                    <li class="nav-item">
+                        <a href="@Url.Action("Logout", "User")" class="nav-link">
+                            <i class="bi bi-box-arrow-right nav-icon"></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a href="@Url.Action("Login", "User")" class="nav-link">
+                            <i class="bi bi-person-fill nav-icon"></i>
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
 

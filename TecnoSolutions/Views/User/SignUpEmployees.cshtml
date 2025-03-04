@@ -23,7 +23,17 @@
             --bs-table-bg: #0d3039;
             --bs-table-color: whitesmoke;
         }
-
+        .btn-atras {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #808080;
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
         .table-container {
             padding: 20px;
             border-radius: 15px;
@@ -181,7 +191,8 @@
                             <div class="alert alert-danger mt-3">@ViewData["Mensaje"]</div>
                         }
 
-                        <button type="submit" class="btn-primary w-100 mt-4">Registrarse</button>
+                        <button type="submit" class="btn-primary w-100 mt-4">Registrar</button>
+                        <a href="@Url.Action("AdminHome", "User")" class="btn btn-atras">Volver</a>
                     </form>
                 </div>
             </div>
